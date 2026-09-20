@@ -19,6 +19,11 @@ h1 { color:#58a6ff; font-size:20px; margin-bottom:15px; margin-top:10px; }
 #settingBtn { position:fixed; top:12px; right:12px; width:42px; height:42px; border-radius:50%; background:#21262d; border:1px solid #30363d; color:#fff; font-size:20px; cursor:pointer; z-index:100; }
 #linkBtn { position:fixed; top:12px; left:12px; width:42px; height:42px; border-radius:50%; background:#21262d; border:1px solid #30363d; color:#fff; font-size:20px; cursor:pointer; z-index:100; }
 #toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:#238636; color:#fff; padding:12px 24px; border-radius:10px; font-size:14px; z-index:9999; display:none; }
+.broker-box { max-width:500px; margin:15px auto 10px; padding:12px; background:#161b22; border-radius:12px; border:1px solid #30363d; }
+.broker-box .label { color:#8b949e; font-size:12px; margin-bottom:8px; }
+.broker-btns { display:flex; gap:6px; justify-content:center; flex-wrap:wrap; }
+.broker-btn { flex:1; min-width:80px; padding:12px 6px; border-radius:10px; border:2px solid #30363d; background:#21262d; color:#8b949e; font-size:12px; font-weight:bold; cursor:pointer; transition:all 0.2s; }
+.broker-btn.active { border-color:#2ea043; background:#0d2818; color:#3fb950; box-shadow:0 0 15px rgba(46,160,67,0.4); }
 select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; background:#21262d; color:#fff; font-size:14px; width:46%; }
 #bigBtn { display:block; width:100%; max-width:500px; margin:20px auto; padding:35px 20px; font-size:28px; font-weight:bold; background:linear-gradient(135deg,#238636,#2ea043); color:#fff; border:none; border-radius:20px; cursor:pointer; box-shadow:0 0 30px rgba(46,160,67,0.5); }
 #bigBtn.loading { background:linear-gradient(135deg,#d29922,#e3b341); }
@@ -32,6 +37,8 @@ select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; 
 #result.wait { border-color:#d29922; }
 #details { margin-top:15px; font-size:14px; color:#8b949e; line-height:1.7; }
 #details b { color:#c9d1d9; }
+#brokerShow { color:#3fb950; font-size:13px; margin-top:5px; }
+#tfShow { color:#58a6ff; font-size:12px; margin-top:3px; }
 #historyBox { max-width:500px; margin:15px auto; padding:12px; background:#161b22; border-radius:10px; border:1px solid #30363d; text-align:left; font-size:13px; }
 #historyBox h3 { color:#58a6ff; margin-bottom:8px; font-size:15px; }
 .hist-item { padding:6px 0; border-bottom:1px solid #21262d; color:#8b949e; }
@@ -69,30 +76,62 @@ select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; 
   <button id="linkBtn" onclick="copyBoardLink()">🔗</button>
   <button id="settingBtn" onclick="openSettings()">⚙️</button>
   <h1>📊 Signal Board Pro</h1>
+
+  <div class="broker-box">
+    <div class="label">🏢 Apna Broker Chunein:</div>
+    <div class="broker-btns">
+      <button class="broker-btn active" id="b-quotex" onclick="selectBroker('Quotex')">Quotex</button>
+      <button class="broker-btn" id="b-pocket" onclick="selectBroker('Pocket Option')">Pocket<br>Option</button>
+      <button class="broker-btn" id="b-pbroker" onclick="selectBroker('Pocket Broker')">Pocket<br>Broker</button>
+      <button class="broker-btn" id="b-xm" onclick="selectBroker('XM')">XM</button>
+    </div>
+  </div>
+
   <select id="pair">
     <option value="EURUSDT">EUR/USD</option>
     <option value="GBPUSDT">GBP/USD</option>
+    <option value="USDJPY">USD/JPY</option>
+    <option value="AUDUSDT">AUD/USD</option>
+    <option value="USDCAD">USD/CAD</option>
+    <option value="USDCHF">USD/CHF</option>
+    <option value="NZDUSDT">NZD/USD</option>
+    <option value="EURGBP">EUR/GBP</option>
+    <option value="EURJPY">EUR/JPY</option>
+    <option value="GBPJPY">GBP/JPY</option>
     <option value="BTCUSDT">BTC/USD</option>
     <option value="ETHUSDT">ETH/USD</option>
     <option value="SOLUSDT">SOL/USD</option>
-    <option value="AUDUSDT">AUD/USD</option>
+    <option value="XRPUSDT">XRP/USD</option>
+    <option value="DOGEUSDT">DOGE/USD</option>
+    <option value="XAUUSDT">GOLD (XAU/USD)</option>
+    <option value="XAGUSDT">SILVER (XAG/USD)</option>
   </select>
   <select id="tf">
-    <option value="1m">1 Minute</option>
-    <option value="5m" selected>5 Minute</option>
+    <option value="1m">5 Second</option>
+    <option value="1m">10 Second</option>
+    <option value="1m">15 Second</option>
+    <option value="1m">30 Second</option>
+    <option value="1m">60 Second</option>
+    <option value="1m" selected>1 Minute</option>
+    <option value="3m">3 Minute</option>
+    <option value="5m">5 Minute</option>
     <option value="15m">15 Minute</option>
+    <option value="30m">30 Minute</option>
     <option value="1h">1 Hour</option>
+    <option value="4h">4 Hour</option>
   </select>
   <button id="bigBtn" onclick="analyze()">🔍 SIGNAL DE</button>
   <div id="result">
     <div id="signalText">--</div>
     <div id="details">Button dabayein</div>
+    <div id="brokerShow">Broker: Quotex</div>
+    <div id="tfShow">Time: 1 Minute</div>
   </div>
   <div id="historyBox">
     <h3>📋 Signal History</h3>
     <div id="historyList">Abhi koi signal nahi</div>
   </div>
-  <div class="note">⚠️ Yeh tool sirf analysis ke liye hai. Pehle demo par test karein.</div>
+  <div class="note">⚠️ Yeh tool sirf analysis ke liye hai. OTC pairs par kaam nahi karega. Pehle demo par test karein.</div>
 </div>
 
 <div id="settingsModal">
@@ -116,12 +155,33 @@ select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; 
 <script>
 const KEY_PASS = 'sb_password';
 const KEY_HINT = 'sb_hint';
+const KEY_BROKER = 'sb_broker';
 const BOARD_URL = 'https://awaismajeed786.github.io/Signal.board/signal5.html';
+
+let selectedBroker = 'Quotex';
 
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.display = 'block';
   setTimeout(function(){ t.style.display = 'none'; }, 2000);
+}
+
+function selectBroker(name) {
+  selectedBroker = name;
+  localStorage.setItem(KEY_BROKER, name);
+  document.querySelectorAll('.broker-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (name === 'Quotex') document.getElementById('b-quotex').classList.add('active');
+  if (name === 'Pocket Option') document.getElementById('b-pocket').classList.add('active');
+  if (name === 'Pocket Broker') document.getElementById('b-pbroker').classList.add('active');
+  if (name === 'XM') document.getElementById('b-xm').classList.add('active');
+  document.getElementById('brokerShow').textContent = 'Broker: ' + name;
+  showToast('✅ ' + name + ' selected');
+}
+
+function loadBroker() {
+  const saved = localStorage.getItem(KEY_BROKER);
+  if (saved) selectBroker(saved);
+  else selectBroker('Quotex');
 }
 
 function checkLogin() {
@@ -166,6 +226,7 @@ function openBoard() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('mainBoard').style.display = 'block';
   document.getElementById('linkDisplay').textContent = BOARD_URL;
+  loadBroker();
 }
 
 function resetPassword() {
@@ -284,15 +345,15 @@ function playSound(type) {
   } catch(e) {}
 }
 
-function addToHistory(signal, pair, price) {
+function addToHistory(signal, pair, price, broker, tfText) {
   const time = new Date().toLocaleTimeString('en-PK', {hour:'2-digit', minute:'2-digit'});
-  history.unshift({ signal: signal, pair: pair, price: price, time: time });
+  history.unshift({ signal: signal, pair: pair, price: price, time: time, broker: broker, tf: tfText });
   if (history.length > 10) history.pop();
   const list = document.getElementById('historyList');
   if (history.length === 0) { list.innerHTML = 'Abhi koi signal nahi'; return; }
   list.innerHTML = history.map(function(h) {
     const cls = h.signal === 'BUY' ? 'hist-buy' : h.signal === 'SELL' ? 'hist-sell' : 'hist-wait';
-    return '<div class="hist-item">' + h.time + ' — ' + h.pair + ' — <span class="' + cls + '">' + h.signal + '</span> — ' + h.price + '</div>';
+    return '<div class="hist-item">' + h.time + ' — ' + h.pair + ' — <span class="' + cls + '">' + h.signal + '</span> — ' + h.price + ' — ' + h.tf + ' — ' + h.broker + '</div>';
   }).join('');
 }
 
@@ -301,13 +362,19 @@ async function analyze() {
   const result = document.getElementById('result');
   const text = document.getElementById('signalText');
   const details = document.getElementById('details');
-  const pair = document.getElementById('pair').value;
-  const tf = document.getElementById('tf').value;
+  const pairSelect = document.getElementById('pair');
+  const tfSelect = document.getElementById('tf');
+  const pair = pairSelect.value;
+  const tf = tfSelect.value;
+  const pairName = pairSelect.options[pairSelect.selectedIndex].text;
+  const tfName = tfSelect.options[tfSelect.selectedIndex].text;
   btn.classList.add('loading');
   btn.textContent = '⏳ Analysis...';
   result.className = '';
   text.textContent = '...';
   details.textContent = 'Data la rahe hain...';
+  document.getElementById('brokerShow').textContent = 'Broker: ' + selectedBroker;
+  document.getElementById('tfShow').textContent = 'Time: ' + tfName;
   try {
     const candles = await getData(pair, tf);
     const closes = candles.map(function(c){ return c.close; });
@@ -321,35 +388,28 @@ async function analyze() {
     const price = closes[closes.length - 1];
     let buyVotes = 0, sellVotes = 0, log = [];
 
-    // EMA - Strong trend
     if (ema9 > ema21) { buyVotes++; log.push('✅ EMA: BUY'); }
     else { sellVotes++; log.push('❌ EMA: SELL'); }
 
-    // RSI - Ab 40/60 par trigger
     if (rsiVal < 40) { buyVotes++; log.push('✅ RSI: BUY (' + rsiVal.toFixed(0) + ')'); }
     else if (rsiVal > 60) { sellVotes++; log.push('❌ RSI: SELL (' + rsiVal.toFixed(0) + ')'); }
     else log.push('➖ RSI: Neutral (' + rsiVal.toFixed(0) + ')');
 
-    // MACD - Strong momentum
     if (macdVal > 0) { buyVotes++; log.push('✅ MACD: BUY'); }
     else { sellVotes++; log.push('❌ MACD: SELL'); }
 
-    // Stochastic - Ab 30/70 par trigger
     if (stochVal < 30) { buyVotes++; log.push('✅ Stoch: BUY (' + stochVal.toFixed(0) + ')'); }
     else if (stochVal > 70) { sellVotes++; log.push('❌ Stoch: SELL (' + stochVal.toFixed(0) + ')'); }
     else log.push('➖ Stoch: Neutral (' + stochVal.toFixed(0) + ')');
 
-    // Bollinger Bands - Middle line se compare
     if (price < bb.middle) { buyVotes++; log.push('✅ BB: BUY (below middle)'); }
     else if (price > bb.middle) { sellVotes++; log.push('❌ BB: SELL (above middle)'); }
     else log.push('➖ BB: Neutral');
 
-    // Candle
     if (candle === "BUY") { buyVotes++; log.push('✅ Candle: BUY'); }
     else if (candle === "SELL") { sellVotes++; log.push('❌ Candle: SELL'); }
     else log.push('➖ Candle: Neutral');
 
-    // Signal - Quality ke saath (3 ya zyada, aur buy/sell mein clear jeet)
     let signal = 'WAIT';
     if (buyVotes >= 3 && buyVotes > sellVotes + 1) signal = 'BUY';
     else if (sellVotes >= 3 && sellVotes > buyVotes + 1) signal = 'SELL';
@@ -357,8 +417,8 @@ async function analyze() {
     text.textContent = signal;
     result.className = signal.toLowerCase();
     if (signal === 'BUY' || signal === 'SELL') playSound(signal);
-    addToHistory(signal, pair, price.toFixed(4));
-    details.innerHTML = '<b>' + pair + '</b> | Price: <b>' + price + '</b><br>Buy: <b style="color:#3fb950">' + buyVotes + '</b> | Sell: <b style="color:#f85149">' + sellVotes + '</b><br><br>' + log.join('<br>');
+    addToHistory(signal, pairName, price.toFixed(4), selectedBroker, tfName);
+    details.innerHTML = '<b>' + pairName + '</b> | Price: <b>' + price + '</b><br>Buy: <b style="color:#3fb950">' + buyVotes + '</b> | Sell: <b style="color:#f85149">' + sellVotes + '</b><br><br>' + log.join('<br>');
   } catch (e) {
     text.textContent = 'ERROR';
     details.textContent = 'Data nahi mila. Internet check karein.';

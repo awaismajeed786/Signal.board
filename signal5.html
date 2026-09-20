@@ -35,10 +35,15 @@ select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; 
 #result.buy { border-color:#3fb950; }
 #result.sell { border-color:#f85149; }
 #result.wait { border-color:#d29922; }
+#confidence { font-size:18px; font-weight:bold; margin-top:10px; padding:8px 20px; display:inline-block; border-radius:20px; background:#21262d; }
+.conf-high { color:#3fb950; }
+.conf-med { color:#d29922; }
+.conf-low { color:#f85149; }
 #details { margin-top:15px; font-size:14px; color:#8b949e; line-height:1.7; }
 #details b { color:#c9d1d9; }
 #brokerShow { color:#3fb950; font-size:13px; margin-top:5px; }
 #tfShow { color:#58a6ff; font-size:12px; margin-top:3px; }
+#trendShow { color:#d29922; font-size:12px; margin-top:3px; }
 #historyBox { max-width:500px; margin:15px auto; padding:12px; background:#161b22; border-radius:10px; border:1px solid #30363d; text-align:left; font-size:13px; }
 #historyBox h3 { color:#58a6ff; margin-bottom:8px; font-size:15px; }
 .hist-item { padding:6px 0; border-bottom:1px solid #21262d; color:#8b949e; }
@@ -123,9 +128,11 @@ select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; 
   <button id="bigBtn" onclick="analyze()">🔍 SIGNAL DE</button>
   <div id="result">
     <div id="signalText">--</div>
+    <div id="confidence">Confidence: --</div>
     <div id="details">Button dabayein</div>
     <div id="brokerShow">Broker: Quotex</div>
     <div id="tfShow">Time: 1 Minute</div>
+    <div id="trendShow">Trend: --</div>
   </div>
   <div id="historyBox">
     <h3>📋 Signal History</h3>
@@ -278,10 +285,24 @@ function fallbackCopy(text) {
   document.body.removeChild(ta);
 }
 
+// ============ HIGHER TIMEFRAME MAP ============
+function getHigherTF(tf) {
+  const map = {
+    '1m': '5m',
+    '3m': '15m',
+    '5m': '15m',
+    '15m': '1h',
+    '30m': '4h',
+    '1h': '4h',
+    '4h': '1d'
+  };
+  return map[tf] || '5m';
+}
+
 let history = [];
 
-async function getData(symbol, tf) {
-  const url = 'https://api.binance.com/api/v3/klines?symbol=' + symbol + '&interval=' + tf + '&limit=100';
+async function getData(symbol, tf, limit) {
+  const url = 'https://api.binance.com/api/v3/klines?symbol=' + symbol + '&interval=' + tf + '&limit=' + (limit || 100);
   const res = await fetch(url);
   const data = await res.json();
   return data.map(function(c){ return { open: parseFloat(c[1]), high: parseFloat(c[2]), low: parseFloat(c[3]), close: parseFloat(c[4]) }; });
@@ -345,16 +366,24 @@ function playSound(type) {
   } catch(e) {}
 }
 
-function addToHistory(signal, pair, price, broker, tfText) {
+function addToHistory(signal, pair, price, broker, tfText, conf) {
   const time = new Date().toLocaleTimeString('en-PK', {hour:'2-digit', minute:'2-digit'});
-  history.unshift({ signal: signal, pair: pair, price: price, time: time, broker: broker, tf: tfText });
+  history.unshift({ signal: signal, pair: pair, price: price, time: time, broker: broker, tf: tfText, conf: conf });
   if (history.length > 10) history.pop();
   const list = document.getElementById('historyList');
   if (history.length === 0) { list.innerHTML = 'Abhi koi signal nahi'; return; }
   list.innerHTML = history.map(function(h) {
     const cls = h.signal === 'BUY' ? 'hist-buy' : h.signal === 'SELL' ? 'hist-sell' : 'hist-wait';
-    return '<div class="hist-item">' + h.time + ' — ' + h.pair + ' — <span class="' + cls + '">' + h.signal + '</span> — ' + h.price + ' — ' + h.tf + ' — ' + h.broker + '</div>';
+    return '<div class="hist-item">' + h.time + ' — ' + h.pair + ' — <span class="' + cls + '">' + h.signal + '</span> — ' + h.conf + '% — ' + h.tf + ' — ' + h.broker + '</div>';
   }).join('');
+}
+
+// ============ FETCH 200 CANDLES FOR EMA 200 ============
+async function getDataForTrend(symbol, tf) {
+  const url = 'https://api.binance.com/api/v3/klines?symbol=' + symbol + '&interval=' + tf + '&limit=250';
+  const res = await fetch(url);
+  const data = await res.json();
+  return data.map(function(c){ return parseFloat(c[4]); });
 }
 
 async function analyze() {
@@ -362,67 +391,166 @@ async function analyze() {
   const result = document.getElementById('result');
   const text = document.getElementById('signalText');
   const details = document.getElementById('details');
+  const confEl = document.getElementById('confidence');
   const pairSelect = document.getElementById('pair');
   const tfSelect = document.getElementById('tf');
   const pair = pairSelect.value;
   const tf = tfSelect.value;
   const pairName = pairSelect.options[pairSelect.selectedIndex].text;
   const tfName = tfSelect.options[tfSelect.selectedIndex].text;
+  const higherTF = getHigherTF(tf);
+
   btn.classList.add('loading');
   btn.textContent = '⏳ Analysis...';
   result.className = '';
   text.textContent = '...';
+  confEl.textContent = 'Confidence: --';
+  confEl.className = '';
   details.textContent = 'Data la rahe hain...';
   document.getElementById('brokerShow').textContent = 'Broker: ' + selectedBroker;
   document.getElementById('tfShow').textContent = 'Time: ' + tfName;
+  document.getElementById('trendShow').textContent = 'Trend: Check ho raha hai...';
+
   try {
-    const candles = await getData(pair, tf);
+    // Main timeframe data
+    const candles = await getData(pair, tf, 100);
     const closes = candles.map(function(c){ return c.close; });
     const highs = candles.map(function(c){ return c.high; });
     const lows = candles.map(function(c){ return c.low; });
+    const price = closes[closes.length - 1];
+
+    // Feature 1: Higher Timeframe Confirmation
+    let higherTFResult = 'NEUTRAL';
+    try {
+      const htCandles = await getData(pair, higherTF, 60);
+      const htCloses = htCandles.map(function(c){ return c.close; });
+      const htEma9 = ema(htCloses, 9);
+      const htEma21 = ema(htCloses, 21);
+      if (htEma9 > htEma21) higherTFResult = 'BUY';
+      else higherTFResult = 'SELL';
+    } catch(e) { higherTFResult = 'NEUTRAL'; }
+
+    // Feature 2: Trend Filter (EMA 200 on current tf)
+    let trendResult = 'NEUTRAL';
+    let ema200Val = 0;
+    try {
+      const trendCloses = await getDataForTrend(pair, tf);
+      if (trendCloses.length >= 200) {
+        ema200Val = ema(trendCloses, 200);
+        if (price > ema200Val) trendResult = 'BUY';
+        else trendResult = 'SELL';
+      }
+    } catch(e) { trendResult = 'NEUTRAL'; }
+
+    // Main indicators
     const ema9 = ema(closes, 9), ema21 = ema(closes, 21);
     const rsiVal = rsi(closes, 14), macdVal = macd(closes);
     const stochVal = stochastic(highs, lows, closes, 14);
     const bb = bollinger(closes, 20, 2);
     const candle = candlePattern(candles);
-    const price = closes[closes.length - 1];
-    let buyVotes = 0, sellVotes = 0, log = [];
 
+    let buyVotes = 0, sellVotes = 0, totalVotes = 0, log = [];
+
+    // Main 6 indicators
     if (ema9 > ema21) { buyVotes++; log.push('✅ EMA: BUY'); }
     else { sellVotes++; log.push('❌ EMA: SELL'); }
+    totalVotes++;
 
     if (rsiVal < 40) { buyVotes++; log.push('✅ RSI: BUY (' + rsiVal.toFixed(0) + ')'); }
     else if (rsiVal > 60) { sellVotes++; log.push('❌ RSI: SELL (' + rsiVal.toFixed(0) + ')'); }
     else log.push('➖ RSI: Neutral (' + rsiVal.toFixed(0) + ')');
+    totalVotes++;
 
     if (macdVal > 0) { buyVotes++; log.push('✅ MACD: BUY'); }
     else { sellVotes++; log.push('❌ MACD: SELL'); }
+    totalVotes++;
 
     if (stochVal < 30) { buyVotes++; log.push('✅ Stoch: BUY (' + stochVal.toFixed(0) + ')'); }
     else if (stochVal > 70) { sellVotes++; log.push('❌ Stoch: SELL (' + stochVal.toFixed(0) + ')'); }
     else log.push('➖ Stoch: Neutral (' + stochVal.toFixed(0) + ')');
+    totalVotes++;
 
-    if (price < bb.middle) { buyVotes++; log.push('✅ BB: BUY (below middle)'); }
-    else if (price > bb.middle) { sellVotes++; log.push('❌ BB: SELL (above middle)'); }
+    if (price < bb.middle) { buyVotes++; log.push('✅ BB: BUY'); }
+    else if (price > bb.middle) { sellVotes++; log.push('❌ BB: SELL'); }
     else log.push('➖ BB: Neutral');
+    totalVotes++;
 
     if (candle === "BUY") { buyVotes++; log.push('✅ Candle: BUY'); }
     else if (candle === "SELL") { sellVotes++; log.push('❌ Candle: SELL'); }
     else log.push('➖ Candle: Neutral');
+    totalVotes++;
 
+    // Trend Filter (EMA 200) - Extra vote
+    log.push('');
+    log.push('━━━ Filter ━━━');
+    if (trendResult === 'BUY') { log.push('✅ Trend: UP (EMA 200)'); }
+    else if (trendResult === 'SELL') { log.push('❌ Trend: DOWN (EMA 200)'); }
+    else log.push('➖ Trend: Unknown');
+
+    // Higher Timeframe - Extra vote
+    if (higherTFResult === 'BUY') { log.push('✅ ' + higherTF + ': UP'); }
+    else if (higherTFResult === 'SELL') { log.push('❌ ' + higherTF + ': DOWN'); }
+    else log.push('➖ ' + higherTF + ': Unknown');
+
+    // ============ SIGNAL LOGIC WITH FILTERS ============
     let signal = 'WAIT';
-    if (buyVotes >= 3 && buyVotes > sellVotes + 1) signal = 'BUY';
-    else if (sellVotes >= 3 && sellVotes > buyVotes + 1) signal = 'SELL';
+    let confidence = 0;
 
+    // Check if trend filter allows
+    const trendAllowsBuy = (trendResult === 'BUY' || trendResult === 'NEUTRAL');
+    const trendAllowsSell = (trendResult === 'SELL' || trendResult === 'NEUTRAL');
+
+    // Check if higher TF confirms
+    const htAllowsBuy = (higherTFResult === 'BUY' || higherTFResult === 'NEUTRAL');
+    const htAllowsSell = (higherTFResult === 'SELL' || higherTFResult === 'NEUTRAL');
+
+    if (buyVotes >= 3 && buyVotes > sellVotes + 1 && trendAllowsBuy && htAllowsBuy) {
+      signal = 'BUY';
+      confidence = Math.round((buyVotes / totalVotes) * 100);
+    } else if (sellVotes >= 3 && sellVotes > buyVotes + 1 && trendAllowsSell && htAllowsSell) {
+      signal = 'SELL';
+      confidence = Math.round((sellVotes / totalVotes) * 100);
+    } else {
+      // Explain why WAIT
+      if (buyVotes >= 3 && buyVotes > sellVotes + 1 && !trendAllowsBuy) {
+        log.push('');
+        log.push('⚠️ BUY strong, lekin Trend DOWN');
+      }
+      if (sellVotes >= 3 && sellVotes > buyVotes + 1 && !trendAllowsSell) {
+        log.push('');
+        log.push('⚠️ SELL strong, lekin Trend UP');
+      }
+    }
+
+    // Display
     text.textContent = signal;
     result.className = signal.toLowerCase();
+
+    // Confidence Score
+    if (signal === 'WAIT') {
+      confEl.textContent = 'Confidence: --';
+      confEl.className = 'conf-low';
+    } else {
+      confEl.textContent = 'Confidence: ' + confidence + '%';
+      if (confidence >= 80) confEl.className = 'conf-high';
+      else if (confidence >= 60) confEl.className = 'conf-med';
+      else confEl.className = 'conf-low';
+    }
+
     if (signal === 'BUY' || signal === 'SELL') playSound(signal);
-    addToHistory(signal, pairName, price.toFixed(4), selectedBroker, tfName);
-    details.innerHTML = '<b>' + pairName + '</b> | Price: <b>' + price + '</b><br>Buy: <b style="color:#3fb950">' + buyVotes + '</b> | Sell: <b style="color:#f85149">' + sellVotes + '</b><br><br>' + log.join('<br>');
+
+    document.getElementById('trendShow').textContent = 'Trend: ' + (trendResult === 'BUY' ? 'UP 📈' : trendResult === 'SELL' ? 'DOWN 📉' : 'Unknown');
+
+    addToHistory(signal, pairName, price.toFixed(4), selectedBroker, tfName, confidence);
+
+    details.innerHTML = '<b>' + pairName + '</b> | Price: <b>' + price + '</b><br>Buy: <b style="color:#3fb950">' + buyVotes + '</b> | Sell: <b style="color:#f85149">' + sellVotes + '</b> | Total: <b>' + totalVotes + '</b><br><br>' + log.join('<br>');
+
   } catch (e) {
     text.textContent = 'ERROR';
     details.textContent = 'Data nahi mila. Internet check karein.';
+    document.getElementById('trendShow').textContent = 'Trend: --';
   }
+
   btn.classList.remove('loading');
   btn.textContent = '🔍 SIGNAL DE';
 }

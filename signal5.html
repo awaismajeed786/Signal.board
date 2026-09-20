@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal Board Pro</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; }
+  body { background:#0d1117; color:#fff; padding:15px; text-align:center; }
+  
+  #loginScreen {
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    background:#0d1117; display:flex; flex-direction:column;
+    justify-content:center; align-items:center; padding:20px; z-index:9999;
+  }
+  #loginScreen h2 { color:#58a6ff; margin-bottom:20px; font-size:22px; }
+  #loginScreen input {
+    width:100%; max-width:320px; padding:14px; margin:8px 0;
+    border-radius:10px; border:1px solid #30363d; background:#21262d;
+    color:#fff; font-size:16px; text-align:center;
+  }
+  #loginScreen button {
+    width:100%; max-width:320px; padding:14px; margin-top:15px;
+    border-radius:10px; border:none; background:#238636; color:#fff;
+    font-size:16px; font-weight:bold; cursor:pointer;
+  }
+  #loginScreen .hint-text { color:#8b949e; font-size:13px; margin-top:12px; }
+  #loginScreen .error { color:#f85149; font-size:14px; margin-top:10px; }
+  #loginScreen .link { color:#58a6ff; font-size:13px; margin-top:15px; text-decoration:underline; cursor:pointer; }
+  
+  #mainBoard { display:none; }
+  
+  h1 { color:#58a6ff; font-size:20px; margin-bottom:15px; margin-top:10px; }
+  
+  #settingBtn {
+    position:fixed; top:12px; right:12px; width:42px; height:42px;
+    border-radius:50%; background:#21262d; border:1px solid #30363d;
+    color:#fff; font-size:20px; cursor:pointer; z-index:100;
+  }
+  #settingBtn:active { background:#30363d; }
+  
+  #linkBtn {
+    position:fixed; top:12px; left:12px; width:42px; height:42px;
+    border-radius:50%; background:#21262d; border:1px solid #30363d;
+    color:#fff; font-size:20px; cursor:pointer; z-index:100;
+  }
+  #linkBtn:active { background:#30363d; }
+  
+  #toast {
+    position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
+    background:#238636; color:#fff; padding:12px 24px; border-radius:10px;
+    font-size:14px; z-index:9999; display:none; box-shadow:0 4px 12px rgba(0,0,0,0.5);
+  }
+  
+  select {
+    padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d;
+    background:#21262d; color:#fff; font-size:14px; width:46%;
+  }
+  
+  #bigBtn {
+    display:block; width:100%; max-width:500px; margin:20px auto;
+    padding:35px 20px; font-size:28px; font-weight:bold;
+    background:linear-gradient(135deg,#238636,#2ea043);
+    color:#fff; border:none; border-radius:20px; cursor:pointer;
+    box-shadow:0 0 30px rgba(46,160,67,0.5);
+  }
+  #bigBtn:active { transform:scale(0.97); }
+  #bigBtn.loading { background:linear-gradient(135deg,#d29922,#e3b341); }
+  
+  #result {
+    max-width:500px; margin:15px auto; padding:30px 20px;
+    border-radius:20px; border:3px solid #30363d;
+    background:#161b22; min-height:180px;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  
+  #signalText { font-size:60px; font-weight:900; letter-spacing:4px; }
+  .buy #signalText { color:#3fb950; text-shadow:0 0 30px #3fb950; }
+  .sell #signalText { color:#f85149; text-shadow:0 0 30px #f85149; }
+  .wait #signalText { color:#d29922; text-shadow:0 0 30px #d29922; }
+  
+  #result.buy { border-color:#3fb950; }
+  #result.sell { border-color:#f85149; }
+  #result.wait { border-color:#d29922; }
+  
+  #details { margin-top:15px; font-size:14px; color:#8b949e; line-height:1.7; }
+  #details b { color:#c9d1d9; }
+  
+  #historyBox {
+    max-width:500px; margin:15px auto; padding:12px;
+    background:#161b22; border-radius:10px; border:1px solid #30363d;
+    text-align:left; font-size:13px;
+  }
+  #historyBox h3 { color:#58a6ff; margin-bottom:8px; font-size:15px; }
+  .hist-item { padding:6px 0; border-bottom:1px solid #21262d; color:#8b949e; }
+  .hist-buy { color:#3fb950; font-weight:bold; }
+  .hist-sell { color:#f85149; font-weight:bold; }
+  .hist-wait { color:#d29922; font-weight:bold; }
+  
+  .note { font-size:11px; color:#8b949e; padding:10px;
+          background:#161b22; border-radius:8px; max-width:500px; margin:15px auto; }
+  
+  #settingsModal {
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    background:rgba(0,0,0,0.85); display:none;
+    justify-content:center; align-items:center; padding:20px; z-index:200;
+    overflow-y:auto;
+  }
+  #settingsModal .box {
+    background:#161b22; padding:20px; border-radius:15px;
+    border:1px solid #30363d; width:100%; max-width:360px;
+    margin:auto;
+  }
+  #settingsModal h3 { color:#58a6ff; margin-bottom:15px; font-size:18px; }
+  #settingsModal h4 { color:#8b949e; margin:15px 0 8px; font-size:14px; text-align:left; }
+  #settingsModal input {
+    width:100%; padding:12px; margin:6px 0; border-radius:8px;
+    border:1px solid #30363d; background:#0d1117; color:#fff; font-size:15px;
+  }
+  #settingsModal button {
+    width:100%; padding:12px; margin-top:10px; border-radius:8px;
+    border:none; font-size:15px; font-weight:bold; cursor:pointer;
+  }
+  #settingsModal .save-btn { background:#238636; color:#fff; }
+  #settingsModal .link-btn { background:#1f6feb; color:#fff; }
+  #settingsModal .close-btn { background:#30363d; color:#fff; }
+  #settingsModal .error { color:#f85149; font-size:13px; margin-top:8px; }
+  
+  .link-box {
+    background:#0d1117; border:1px solid #30363d; border-radius:8px;
+    padding:10px; font-size:12px; color:#58a6ff; word-break:break-all;
+    margin-top:8px; text-align:left;
+  }
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <h2 id="loginTitle">🔐 Password Set Karein</h2>
+  <input type="password" id="passInput" placeholder="Password likhein">
+  <input type="password" id="passConfirm" placeholder="Dobara password likhein" style="display:none;">
+  <input type="text" id="hintInput" placeholder="Hint (yaad rakhne ke liye)" style="display:none;">
+  <button onclick="handleLogin()" id="loginBtn">Set Karein</button>
+  <div class="error" id="loginError"></div>
+  <div class="hint-text" id="hintShow"></div>
+  <div class="link" id="resetLink" onclick="resetPassword()" style="display:none;">Password bhool gaye? Reset karein</div>
+</div>
+
+<div id="mainBoard">
+  <button id="linkBtn" onclick="copyBoardLink()">🔗</button>
+  <button id="settingBtn" onclick="openSettings()">⚙️</button>
+  
+  <h1>📊 Signal Board Pro</h1>
+
+  <select id="pair">
+    <option value="EURUSDT">EUR/USD</option>
+    <option value="GBPUSDT">GBP/USD</option>
+    <option value="BTCUSDT">BTC/USD</option>
+    <option value="ETHUSDT">ETH/USD</option>
+    <option value="SOLUSDT">SOL/USD</option>
+    <option value="AUDUSDT">AUD/USD</option>
+  </select>
+
+  <select id="tf">
+    <option value="1m">1 Minute</option>
+    <option value="5m" selected>5 Minute</option>
+    <option value="15m">15 Minute</option>
+    <option value="1h">1 Hour</option>
+  </select>
+
+  <button id="bigBtn" onclick="analyze()">🔍 SIGNAL DE</button>
+
+  <div id="result">
+    <div id="signalText">--</div>
+    <div id="details">Button dabayein</div>
+  </div>
+
+  <div id="historyBox">
+    <h3>📋 Signal History</h3>
+    <div id="historyList">Abhi koi signal nahi</div>
+  </div>
+
+  <div class="note">
+    ⚠️ Yeh tool sirf analysis ke liye hai. Pehle demo par test karein.
+  </div>
+</div>
+
+<div id="settingsModal">
+  <div class="box">
+    <h3>⚙️ Settings</h3>
+    
+    <h4>🔐 Password Change</h4>
+    <input type="password" id="oldPass" placeholder="Purana password">
+    <input type="password" id="newPass" placeholder="Naya password">
+    <input type="text" id="newHint" placeholder="Naya hint (optional)">
+    <button class="save-btn" onclick="changePassword()">Password Change Karein</button>
+    <div class="error" id="settingsError"></div>
+    
+    <h4 style="margin-top:20px;">🔗 Board Ka Link</h4>
+    <div class="link-box" id="linkDisplay">Link yahan dikhega</div>
+    <button class="link-btn" onclick="copyBoardLink()">📋 Link Copy Karein</button>
+    
+    <button class="close-btn" onclick="closeSettings()" style="margin-top:15px;">Band Karein</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const KEY_PASS = 'sb_password';
+const KEY_HINT = 'sb_hint';
+const BOARD_URL = 'https://awaismajeed786.github.io/Signal.board/signal5.html';
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 2000);
+}
+
+function checkLogin() {
+  const savedPass = localStorage.getItem(KEY_PASS);
+  if (!savedPass) {
+    document.getElementById('loginTitle').textContent = '🔐 Password Set Karein';
+    document.getElementById('passConfirm').style.display = 'block';
+    document.getElementById('hintInput').style.display = 'block';
+    document.getElementById('loginBtn').textContent = 'Set Karein';
+    document.getElementById('resetLink').style.display = 'none';
+  } else {
+    document.getElementById('loginTitle').textContent = '🔐 Password Daalein';
+    document.getElementById('passConfirm').style.display = 'none';
+    document.getElementById('hintInput').style.display = 'none';
+    document.getElementById('loginBtn').textContent = 'Kholein';
+    document.getElementById('resetLink').style.display = 'block';
+    const hint = localStorage.getItem(KEY_HINT);
+    if (hint) document.getElementById('hintShow').textContent = '💡 Hint: ' + hint;
+  }
+}
+
+function handleLogin() {
+  const savedPass = localStorage.getItem(KEY_PASS);
+  const pass = document.getElementById('passInput').value;
+  const errorEl = document.getElementById('loginError');
+  
+  if (!savedPass) {
+    const confirm = document.getElementById('passConfirm').value;
+    const hint = document.getElementById('hintInput').value;
+    if (pass.length < 3) { errorEl.textContent = 'Password kam az kam 3 characters'; return; }
+    if (pass !== confirm) { errorEl.textContent = 'Dono passwords match nahi'; return; }
+    localStorage.setItem(KEY_PASS, pass);
+    if (hint) localStorage.setItem(KEY_HINT, hint);
+    errorEl.textContent = '';
+    openBoard();
+  } else {
+    if (pass === savedPass) { errorEl.textContent = ''; openBoard(); }
+    else { errorEl.textContent = '❌ Galat password'; }
+  }
+}
+
+function openBoard() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainBoard').style.display = 'block';
+  document.getElementById('linkDisplay').textContent = BOARD_URL;
+}
+
+function resetPassword() {
+  if (confirm('Password reset karein? Naya password set karna padega.')) {
+    localStorage.removeItem(KEY_PASS);
+    localStorage.removeItem(KEY_HINT);
+    location.reload();
+  }
+}
+
+function openSettings() {
+  document.getElementById('settingsModal').style.display = 'flex';
+  document.getElementById('oldPass').value = '';
+  document.getElementById('newPass').value = '';
+  document.getElementById('newHint').value = '';
+  document.getElementById('settingsError').textContent = '';
+  document.getElementById('linkDisplay').textContent = BOARD_URL;
+}
+
+function closeSettings() {
+  document.getElementById('settingsModal').style.display = 'none';
+}
+
+function changePassword() {
+  const oldPass = document.getElementById('oldPass').value;
+  const newPass = document.getElementById('newPass').value;
+  const newHint = document.getElementById('newHint').value;
+  const errorEl = document.getElementById('settingsError');
+  const savedPass = localStorage.getItem(KEY_PASS);
+  if (oldPass !== savedPass) { errorEl.textContent = '❌ Purana password galat'; return; }
+  if (newPass.length < 3) { errorEl.textContent = 'Naya password 3+ characters'; return; }
+  localStorage.setItem(KEY_PASS, newPass);
+  if (newHint) localStorage.setItem(KEY_HINT, newHint);
+  errorEl.style.color = '#3fb950';
+  errorEl.textContent = '✅ Password change ho gaya!';
+  setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = '#f85149'; }, 2000);
+}
+
+function copyBoardLink() {
+  const link = BOARD_URL;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(link).then(() => showToast('✅ Link copy ho gaya!')).catch(() => fallbackCopy(link));
+  } else {
+    fallbackCopy(link);
+  }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); showToast('✅ Link copy ho gaya!'); }
+  catch(e) { showToast('❌ Copy nahi hua'); }
+  document.body.removeChild(ta);
+}
+
+let history = [];
+
+async function getData(symbol, tf) {
+  const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${tf}&limit=100`;
+  const res = await fetch(url);
+  const data = await res.json();
+  return data.map(c => ({
+    open: parseFloat(c[1]), high: parseFloat(c[2]),
+    low: parseFloat(c[3]), close: parseFloat(c[4])
+  }));
+}
+
+function ema(prices, period) {
+  const k = 2 / (period + 1);
+  let e = prices.slice(0, period).reduce((a,b)=>a+b,0) / period;
+  for (let i = period; i < prices.length; i++) e = prices[i] * k + e * (1 - k);
+  return e;
+}
+
+function rsi(closes, period = 14) {
+  let gains = 0, losses = 0;
+  for (let i = closes.length - period; i < closes.length; i++) {
+    const diff = closes[i] - closes[i-1];
+    if (diff >= 0) gains += diff; else losses -= diff;
+  }
+  const rs = (gains/period) / (losses/period);
+  return 100 - (100 / (1 + rs));
+}
+
+function macd(closes) { return ema(closes, 12) - ema(closes, 26); }
+
+function stochastic(highs, lows, closes, period = 14) {
+  const high = Math.max(...highs.slice(-period));
+  const low = Math.min(...lows.slice(-period));
+  return ((closes[closes.length-1] - low) / (high - low)) * 100;
+}
+
+function bollinger(closes, period = 20, mult = 2) {
+  const slice = closes.slice(-period);
+  const sma = slice.reduce((a,b)=>a+b,0) / period;
+  const variance = slice.reduce((a,b)=>a+Math.pow(b-sma,2),0) / period;
+  const sd = Math.sqrt(variance);
+  return { upper: sma + mult*sd, lower: sma - mult*sd };
+}
+
+function candlePattern(candles) {
+  const last = candles[candles.length - 1];
+  const prev = candles[candles.length - 2];
+  const body = Math.abs(last.close - last.open);
+  const range = last.high - last.low;
+  if (last.close > last.open && prev.close < prev.open && last.close > prev.open && last.open < prev.close) return "BUY";
+  if (last.close < last.open && prev.close > prev.open && last.close < prev.open && last.open > prev.close) return "SELL";
+  if (range > 0 && body / range < 0.3 && last.close > last.open) return "BUY";
+  if (range > 0 && body / range < 0.3 && last.close < last.open) return "SELL";
+  return "NEUTRAL";
+}
+
+function playSound(type) {
+  try {
+    if (navigator.vibrate) navigator.vibrate(type === 'BUY' ? [100,50,100] : [200,100,200]);
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = type === 'BUY' ? 880 : 440;
+    gain.gain.value = 0.3;
+    osc.start(); osc.stop(ctx.currentTime + 0.3);
+  } catch(e) {}
+}
+
+function addToHistory(signal, pair, price) {
+  const time = new Date().toLocaleTimeString('en-PK', {hour:'2-digit', minute:'2-digit'});
+  history.unshift({ signal, pair, price, time });
+  if (history.length > 10) history.pop();
+  const list = document.getElementById('historyList');
+  if (history.length === 0) { list.innerHTML = 'Abhi koi signal nahi'; return; }
+  list.innerHTML = history.map(h => {
+    const cls = h.signal === 'BUY' ? 'hist-buy' : h.signal === 'SELL' ? 'hist-sell' : 'hist-wait';
+    return `<div class="hist-item">${h.time} — ${h.pair} — <span class="${cls}">${h.signal}</span> — ${h.price}</div>`;
+  }).join('');
+}
+
+async function analyze() {
+  const btn = document.getElementById('bigBtn');
+  const result = document.getElementById('result');
+  const text = document.getElementById('signalText');
+  const details = document.getElementById('details');
+  const pair = document.getElementById('pair').value;
+  const tf = document.getElementById('tf').value;
+  
+  btn.classList.add('loading');
+  btn.textContent = '⏳ Analysis...';
+  result.className = '';
+  text.textContent = '...';
+  details.textContent = 'Data la rahe hain...';
+  
+  try {
+    const candles = await getData(pair, tf);
+    const closes = candles.map(c => c.close);
+    const highs = candles.map(c => c.high);
+    const lows = candles.map(c => c.low);
+    
+    const ema9 = ema(closes, 9), ema21 = ema(closes, 21);
+    const rsiVal = rsi(closes), macdVal = macd(closes);
+    const stochVal = stochastic(highs, lows, closes);
+    const bb = bollinger(closes);
+    const candle = candlePattern(candles);
+    const price = closes[closes.length - 1];
+    
+    let buyVotes = 0, sellVotes = 0, log = [];
+    
+    if (ema9 > ema21) { buyVotes++; log.push('✅ EMA: BUY'); } else { sellVotes++; log.push('❌ EMA: SELL'); }
+    if (rsiVal < 30) { buyVotes++; log.push('✅ RSI: BUY'); }
+    else if (rsiVal > 70) { sellVotes++; log.push('❌ RSI: SELL'); }
+    else log.push('➖ RSI: Neutral');
+    if (macdVal > 0) { buyVotes++; log.push('✅ MACD: BUY'); } else { sellVotes++; log.push('❌ MACD: SELL'); }
+    if (stochVal < 20) { buyVotes++; log.push('✅ Stoch: BUY'); }
+    else if (stochVal > 80) { sellVotes++; log.push('❌ Stoch: SELL'); }
+    else log.push('➖ Stoch: Neutral');
+    if (price <= bb.lower) { buyVotes++; log.push('✅ BB: BUY'); }
+    else if (price >= bb.upper) { sellVotes++; log.push('❌ BB: SELL'); }
+    else log.push('➖ BB: Neutral');
+    if (candle === "BUY") { buyVotes++; log.push('✅ Candle: BUY'); }
+    else if (candle === "SELL") { sellVotes++; log.push('❌ Candle: SELL'); }
+    else log.push('➖ Candle: Neutral');
+    
+    let signal = 'WAIT';
+    if (buyVotes >= 4 && buyVotes > sellVotes) signal = 'BUY';
+    else if (sellVotes >= 4 && sellVotes > buyVotes) signal = 'SELL';
+    
+    text.textContent = signal;
+    result.className = signal.toLowerCase();
+    if (signal === 'BUY' || signal === 'SELL') playSound(signal);
+    addToHistory(signal, pair, price.toFixed(4));
+    
+    details.innerHTML = `<b>${pair}</b> | Price: <b>${price}</b><br>Buy: <b style="color:#3fb950">${buyVotes}</b> | Sell: <b style="color:#f85149">${sellVotes}</b><br><br>` + log.join('<br>');
+  } catch (e) {
+    text.textContent = 'ERROR';
+    details.textContent = 'Data nahi mila. Internet check karein.';
+  }
+  
+  btn.classList.remove('loading');
+  btn.textContent = '🔍 SIGNAL DE';
+}
+
+checkLogin();
+</script>
+
+</body>
+</html>

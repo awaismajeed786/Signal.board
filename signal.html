@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal Board</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; }
+  body { background:#0d1117; color:#fff; padding:20px; text-align:center; }
+  
+  h1 { color:#58a6ff; font-size:22px; margin-bottom:20px; }
+  
+  select {
+    padding:12px; margin:5px; border-radius:8px; border:1px solid #30363d;
+    background:#21262d; color:#fff; font-size:16px; width:45%;
+  }
+  
+  #bigBtn {
+    display:block; width:100%; max-width:500px; margin:30px auto;
+    padding:40px 20px; font-size:32px; font-weight:bold;
+    background:linear-gradient(135deg,#238636,#2ea043);
+    color:#fff; border:none; border-radius:20px; cursor:pointer;
+    box-shadow:0 0 30px rgba(46,160,67,0.5);
+    transition:all 0.3s;
+  }
+  #bigBtn:active { transform:scale(0.97); }
+  #bigBtn.loading { background:linear-gradient(135deg,#d29922,#e3b341); cursor:wait; }
+  
+  #result {
+    max-width:500px; margin:20px auto; padding:40px 20px;
+    border-radius:20px; border:3px solid #30363d;
+    background:#161b22; min-height:200px;
+    display:flex; flex-direction:column; justify-content:center;
+    transition:all 0.3s;
+  }
+  
+  #signalText { font-size:70px; font-weight:900; letter-spacing:5px; }
+  .buy #signalText { color:#3fb950; text-shadow:0 0 30px #3fb950; }
+  .sell #signalText { color:#f85149; text-shadow:0 0 30px #f85149; }
+  .wait #signalText { color:#d29922; text-shadow:0 0 30px #d29922; }
+  
+  #result.buy { border-color:#3fb950; box-shadow:0 0 40px rgba(63,185,80,0.6); }
+  #result.sell { border-color:#f85149; box-shadow:0 0 40px rgba(248,81,73,0.6); }
+  #result.wait { border-color:#d29922; box-shadow:0 0 40px rgba(210,153,34,0.6); }
+  
+  #details { margin-top:20px; font-size:15px; color:#8b949e; line-height:1.8; }
+  #details b { color:#c9d1d9; }
+  
+  .note { font-size:12px; color:#8b949e; margin-top:20px; padding:10px;
+          background:#161b22; border-radius:8px; max-width:500px; margin:20px auto; }
+</style>
+</head>
+<body>
+
+<h1>📊 Signal Board</h1>
+
+<select id="pair">
+  <option value="EURUSDT">EUR/USD</option>
+  <option value="GBPUSDT">GBP/USD</option>
+  <option value="BTCUSDT">BTC/USD</option>
+  <option value="ETHUSDT">ETH/USD</option>
+  <option value="SOLUSDT">SOL/USD</option>
+  <option value="AUDUSDT">AUD/USD</option>
+</select>
+
+<select id="tf">
+  <option value="1m">1 Minute</option>
+  <option value="5m" selected>5 Minute</option>
+  <option value="15m">15 Minute</option>
+  <option value="1h">1 Hour</option>
+</select>
+
+<button id="bigBtn" onclick="analyze()">🔍 SIGNAL DE</button>
+
+<div id="result">
+  <div id="signalText">--</div>
+  <div id="details">Button dabayein</div>
+</div>
+
+<div class="note">
+  ⚠️ Yeh tool sirf analysis ke liye hai. Trading mein nuqsan ka khatra hai. 
+  Pehle demo par test karein.
+</div>
+
+<script>
+async function getData(symbol, tf) {
+  const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${tf}&limit=100`;
+  const res = await fetch(url);
+  const data = await res.json();
+  return data.map(c => ({
+    open: parseFloat(c[1]),
+    high: parseFloat(c[2]),
+    low: parseFloat(c[3]),
+    close: parseFloat(c[4])
+  }));
+}
+
+function ema(prices, period) {
+  const k = 2 / (period + 1);
+  let e = prices.slice(0, period).reduce((a,b)=>a+b,0) / period;
+  for (let i = period; i < prices.length; i++) {
+    e = prices[i] * k + e * (1 - k);
+  }
+  return e;
+}
+
+function rsi(closes, period = 14) {
+  let gains = 0, losses = 0;
+  for (let i = closes.length - period; i < closes.length; i++) {
+    const diff = closes[i] - closes[i-1];
+    if (diff >= 0) gains += diff;
+    else losses -= diff;
+  }
+  const rs = (gains/period) / (losses/period);
+  return 100 - (100 / (1 + rs));
+}
+
+function macd(closes) {
+  const ema12 = ema(closes, 12);
+  const ema26 = ema(closes, 26);
+  return ema12 - ema26;
+}
+
+function stochastic(highs, lows, closes, period = 14) {
+  const sliceH = highs.slice(-period);
+  const sliceL = lows.slice(-period);
+  const high = Math.max(...sliceH);
+  const low = Math.min(...sliceL);
+  return ((closes[closes.length-1] - low) / (high - low)) * 100;
+}
+
+function candlePattern(candles) {
+  const last = candles[candles.length - 1];
+  const prev = candles[candles.length - 2];
+  const body = Math.abs(last.close - last.open);
+  const range = last.high - last.low;
+  
+  if (last.close > last.open && prev.close < prev.open &&
+      last.close > prev.open && last.open < prev.close) return "BUY";
+  if (last.close < last.open && prev.close > prev.open &&
+      last.close < prev.open && last.open > prev.close) return "SELL";
+  if (range > 0 && body / range < 0.3 && last.close > last.open) return "BUY";
+  if (range > 0 && body / range < 0.3 && last.close < last.open) return "SELL";
+  
+  return "NEUTRAL";
+}
+
+async function analyze() {
+  const btn = document.getElementById('bigBtn');
+  const result = document.getElementById('result');
+  const text = document.getElementById('signalText');
+  const details = document.getElementById('details');
+  
+  const pair = document.getElementById('pair').value;
+  const tf = document.getElementById('tf').value;
+  
+  btn.classList.add('loading');
+  btn.textContent = '⏳ Analysis ho rahi hai...';
+  result.className = '';
+  text.textContent = '...';
+  details.textContent = 'Market data la rahe hain...';
+  
+  try {
+    const candles = await getData(pair, tf);
+    const closes = candles.map(c => c.close);
+    const highs = candles.map(c => c.high);
+    const lows = candles.map(c => c.low);
+    
+    const ema9 = ema(closes, 9);
+    const ema21 = ema(closes, 21);
+    const rsiVal = rsi(closes);
+    const macdVal = macd(closes);
+    const stochVal = stochastic(highs, lows, closes);
+    const candle = candlePattern(candles);
+    const price = closes[closes.length - 1];
+    
+    let buyVotes = 0, sellVotes = 0;
+    let log = [];
+    
+    if (ema9 > ema21) { buyVotes++; log.push('✅ EMA: BUY'); }
+    else { sellVotes++; log.push('❌ EMA: SELL'); }
+    
+    if (rsiVal < 30) { buyVotes++; log.push('✅ RSI: BUY (oversold)'); }
+    else if (rsiVal > 70) { sellVotes++; log.push('❌ RSI: SELL (overbought)'); }
+    else log.push('➖ RSI: Neutral (' + rsiVal.toFixed(1) + ')');
+    
+    if (macdVal > 0) { buyVotes++; log.push('✅ MACD: BUY'); }
+    else { sellVotes++; log.push('❌ MACD: SELL'); }
+    
+    if (stochVal < 20) { buyVotes++; log.push('✅ Stoch: BUY'); }
+    else if (stochVal > 80) { sellVotes++; log.push('❌ Stoch: SELL'); }
+    else log.push('➖ Stoch: Neutral (' + stochVal.toFixed(1) + ')');
+    
+    if (candle === "BUY") { buyVotes++; log.push('✅ Candle: BUY'); }
+    else if (candle === "SELL") { sellVotes++; log.push('❌ Candle: SELL'); }
+    else log.push('➖ Candle: Neutral');
+    
+    let signal = 'WAIT';
+    if (buyVotes >= 3 && buyVotes > sellVotes) signal = 'BUY';
+    else if (sellVotes >= 3 && sellVotes > buyVotes) signal = 'SELL';
+    
+    text.textContent = signal;
+    result.className = signal.toLowerCase();
+    
+    details.innerHTML = 
+      `<b>${pair}</b> | Price: <b>${price}</b><br>` +
+      `Buy: <b style="color:#3fb950">${buyVotes}</b> | ` +
+      `Sell: <b style="color:#f85149">${sellVotes}</b><br><br>` +
+      log.join('<br>');
+    
+  } catch (e) {
+    text.textContent = 'ERROR';
+    details.textContent = 'Data nahi mila. Internet check karein.';
+  }
+  
+  btn.classList.remove('loading');
+  btn.textContent = '🔍 SIGNAL DE';
+}
+</script>
+
+</body>
+</html>

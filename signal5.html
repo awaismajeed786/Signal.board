@@ -27,17 +27,23 @@ h1 { color:#58a6ff; font-size:20px; margin-bottom:15px; margin-top:10px; }
 select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; background:#21262d; color:#fff; font-size:14px; width:46%; }
 .pair-info { max-width:500px; margin:5px auto; font-size:12px; color:#3fb950; text-align:left; padding:0 5px; }
 
-#timerBox { max-width:500px; margin:10px auto; padding:25px; background:#161b22; border-radius:15px; border:3px solid #30363d; transition:all 0.3s; display:none; }
+#timerBox {
+  max-width:500px; margin:10px auto; padding:15px;
+  background:#161b22; border-radius:12px; border:2px solid #30363d;
+  transition:all 0.3s; display:none;
+}
 #timerBox.active { display:block; }
-#timerBox.done { border-color:#3fb950; background:#0d2818; box-shadow:0 0 35px rgba(63,185,80,0.7); animation:pulse 0.6s infinite; }
-@keyframes pulse { 0%,100% { box-shadow:0 0 35px rgba(63,185,80,0.7); } 50% { box-shadow:0 0 55px rgba(63,185,80,1); } }
-#timerBox .timer-label { color:#8b949e; font-size:13px; margin-bottom:10px; }
-#timerBox .timer-value { font-size:72px; font-weight:900; letter-spacing:4px; }
+#timerBox.done {
+  border-color:#3fb950; background:#0d2818;
+  box-shadow:0 0 25px rgba(63,185,80,0.6);
+}
+#timerBox .timer-label { color:#8b949e; font-size:12px; margin-bottom:6px; }
+#timerBox .timer-value { font-size:40px; font-weight:900; letter-spacing:2px; }
 #timerBox .timer-value.normal { color:#58a6ff; }
 #timerBox .timer-value.warning { color:#d29922; }
 #timerBox .timer-value.ready { color:#f85149; }
-#timerBox .timer-value.done { color:#3fb950; font-size:60px; }
-#timerBox .timer-hint { font-size:14px; margin-top:12px; color:#8b949e; font-weight:bold; }
+#timerBox .timer-value.done { color:#3fb950; font-size:36px; }
+#timerBox .timer-hint { font-size:12px; margin-top:8px; color:#8b949e; font-weight:bold; }
 
 #bigBtn { display:block; width:100%; max-width:500px; margin:15px auto; padding:35px 20px; font-size:28px; font-weight:bold; background:linear-gradient(135deg,#238636,#2ea043); color:#fff; border:none; border-radius:20px; cursor:pointer; box-shadow:0 0 30px rgba(46,160,67,0.5); }
 #bigBtn.loading { background:linear-gradient(135deg,#d29922,#e3b341); }
@@ -168,7 +174,6 @@ const KEY_HINT = 'sb_hint';
 const KEY_BROKER = 'sb_broker';
 const BOARD_URL = 'https://awaismajeed786.github.io/Signal.board/signal5.html';
 
-// ============ BROKER-PAIR MAPPING ============
 const BROKER_PAIRS = {
   'Quotex': [
     { v:'EURUSDT', n:'EUR/USD' },
@@ -416,6 +421,9 @@ function startTimer(tf, tfName) {
       timerHint.style.color = '#3fb950';
       playSound('BUY');
       playSound('SELL');
+      setTimeout(function(){
+        timerBox.classList.remove('active', 'done');
+      }, 10000);
       return;
     }
     remaining--;

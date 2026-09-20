@@ -540,7 +540,6 @@ async function analyze() {
   const tf = tfSelect.value;
   const pairName = pairSelect.options[pairSelect.selectedIndex].text;
   const tfName = tfSelect.options[tfSelect.selectedIndex].text;
-  const higherTF = getHigherTF(tf);
 
   if (!pair) { alert('Koi pair select karein'); return; }
 
@@ -564,16 +563,6 @@ async function analyze() {
     const highs = candles.map(function(c){ return c.high; });
     const lows = candles.map(function(c){ return c.low; });
     const price = closes[closes.length - 1];
-
-    let higherTFResult = 'NEUTRAL';
-    try {
-      const htCandles = await getData(pair, higherTF, 60);
-      const htCloses = htCandles.map(function(c){ return c.close; });
-      const htEma9 = ema(htCloses, 9);
-      const htEma21 = ema(htCloses, 21);
-      if (htEma9 > htEma21) higherTFResult = 'BUY';
-      else higherTFResult = 'SELL';
-    } catch(e) { higherTFResult = 'NEUTRAL'; }
 
     let trendResult = 'NEUTRAL';
     try {
@@ -621,32 +610,27 @@ async function analyze() {
     else if (trendResult === 'SELL') log.push('❌ Trend: DOWN (EMA 200)');
     else log.push('➖ Trend: Unknown');
 
-    if (higherTFResult === 'BUY') log.push('✅ ' + higherTF + ': UP');
-    else if (higherTFResult === 'SELL') log.push('❌ ' + higherTF + ': DOWN');
-    else log.push('➖ ' + higherTF + ': Unknown');
-
     let signal = 'WAIT';
     let confidence = 0;
 
     const trendAllowsBuy = (trendResult === 'BUY' || trendResult === 'NEUTRAL');
     const trendAllowsSell = (trendResult === 'SELL' || trendResult === 'NEUTRAL');
-    const htAllowsBuy = (higherTFResult === 'BUY' || higherTFResult === 'NEUTRAL');
-    const htAllowsSell = (higherTFResult === 'SELL' || higherTFResult === 'NEUTRAL');
 
     const activeVotes = buyVotes + sellVotes;
 
-    if (buyVotes >= 3 && buyVotes > sellVotes + 1 && trendAllowsBuy && htAllowsBuy) {
+    // ⭐ BALANCED RULE: 3+ votes aur clear jeet + trend match
+    if (buyVotes >= 3 && buyVotes > sellVotes && trendAllowsBuy) {
       signal = 'BUY';
       confidence = activeVotes > 0 ? Math.round((buyVotes / activeVotes) * 100) : 0;
-    } else if (sellVotes >= 3 && sellVotes > buyVotes + 1 && trendAllowsSell && htAllowsSell) {
+    } else if (sellVotes >= 3 && sellVotes > buyVotes && trendAllowsSell) {
       signal = 'SELL';
       confidence = activeVotes > 0 ? Math.round((sellVotes / activeVotes) * 100) : 0;
     } else {
-      if (buyVotes >= 3 && buyVotes > sellVotes + 1 && !trendAllowsBuy) {
+      if (buyVotes >= 3 && buyVotes > sellVotes && !trendAllowsBuy) {
         log.push('');
         log.push('⚠️ BUY strong, lekin Trend DOWN');
       }
-      if (sellVotes >= 3 && sellVotes > buyVotes + 1 && !trendAllowsSell) {
+      if (sellVotes >= 3 && sellVotes > buyVotes && !trendAllowsSell) {
         log.push('');
         log.push('⚠️ SELL strong, lekin Trend UP');
       }

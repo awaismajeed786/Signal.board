@@ -121,7 +121,7 @@ const BOARD_URL = 'https://awaismajeed786.github.io/Signal.board/signal5.html';
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.display = 'block';
-  setTimeout(() => { t.style.display = 'none'; }, 2000);
+  setTimeout(function(){ t.style.display = 'none'; }, 2000);
 }
 
 function checkLogin() {
@@ -199,13 +199,13 @@ function changePassword() {
   if (newHint) localStorage.setItem(KEY_HINT, newHint);
   errorEl.style.color = '#3fb950';
   errorEl.textContent = '✅ Password change ho gaya!';
-  setTimeout(() => { errorEl.textContent = ''; errorEl.style.color = '#f85149'; }, 2000);
+  setTimeout(function(){ errorEl.textContent = ''; errorEl.style.color = '#f85149'; }, 2000);
 }
 
 function copyBoardLink() {
   const link = BOARD_URL;
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(link).then(() => showToast('✅ Link copy ho gaya!')).catch(() => fallbackCopy(link));
+    navigator.clipboard.writeText(link).then(function(){ showToast('✅ Link copy ho gaya!'); }).catch(function(){ fallbackCopy(link); });
   } else { fallbackCopy(link); }
 }
 
@@ -223,12 +223,12 @@ async function getData(symbol, tf) {
   const url = 'https://api.binance.com/api/v3/klines?symbol=' + symbol + '&interval=' + tf + '&limit=100';
   const res = await fetch(url);
   const data = await res.json();
-  return data.map(c => ({ open: parseFloat(c[1]), high: parseFloat(c[2]), low: parseFloat(c[3]), close: parseFloat(c[4]) }));
+  return data.map(function(c){ return { open: parseFloat(c[1]), high: parseFloat(c[2]), low: parseFloat(c[3]), close: parseFloat(c[4]) }; });
 }
 
 function ema(prices, period) {
   const k = 2 / (period + 1);
-  let e = prices.slice(0, period).reduce((a,b)=>a+b,0) / period;
+  let e = prices.slice(0, period).reduce(function(a,b){ return a+b; },0) / period;
   for (let i = period; i < prices.length; i++) e = prices[i] * k + e * (1 - k);
   return e;
 }
@@ -253,10 +253,10 @@ function stochastic(highs, lows, closes, period) {
 
 function bollinger(closes, period, mult) {
   const slice = closes.slice(-period);
-  const sma = slice.reduce((a,b)=>a+b,0) / period;
-  const variance = slice.reduce((a,b)=>a+Math.pow(b-sma,2),0) / period;
+  const sma = slice.reduce(function(a,b){ return a+b; },0) / period;
+  const variance = slice.reduce(function(a,b){ return a+Math.pow(b-sma,2); },0) / period;
   const sd = Math.sqrt(variance);
-  return { upper: sma + mult*sd, lower: sma - mult*sd };
+  return { upper: sma + mult*sd, middle: sma, lower: sma - mult*sd };
 }
 
 function candlePattern(candles) {
@@ -320,23 +320,40 @@ async function analyze() {
     const candle = candlePattern(candles);
     const price = closes[closes.length - 1];
     let buyVotes = 0, sellVotes = 0, log = [];
-    if (ema9 > ema21) { buyVotes++; log.push('✅ EMA: BUY'); } else { sellVotes++; log.push('❌ EMA: SELL'); }
-    if (rsiVal < 30) { buyVotes++; log.push('✅ RSI: BUY'); }
-    else if (rsiVal > 70) { sellVotes++; log.push('❌ RSI: SELL'); }
-    else log.push('➖ RSI: Neutral');
-    if (macdVal > 0) { buyVotes++; log.push('✅ MACD: BUY'); } else { sellVotes++; log.push('❌ MACD: SELL'); }
-    if (stochVal < 20) { buyVotes++; log.push('✅ Stoch: BUY'); }
-    else if (stochVal > 80) { sellVotes++; log.push('❌ Stoch: SELL'); }
-    else log.push('➖ Stoch: Neutral');
-    if (price <= bb.lower) { buyVotes++; log.push('✅ BB: BUY'); }
-    else if (price >= bb.upper) { sellVotes++; log.push('❌ BB: SELL'); }
+
+    // EMA - Strong trend
+    if (ema9 > ema21) { buyVotes++; log.push('✅ EMA: BUY'); }
+    else { sellVotes++; log.push('❌ EMA: SELL'); }
+
+    // RSI - Ab 40/60 par trigger
+    if (rsiVal < 40) { buyVotes++; log.push('✅ RSI: BUY (' + rsiVal.toFixed(0) + ')'); }
+    else if (rsiVal > 60) { sellVotes++; log.push('❌ RSI: SELL (' + rsiVal.toFixed(0) + ')'); }
+    else log.push('➖ RSI: Neutral (' + rsiVal.toFixed(0) + ')');
+
+    // MACD - Strong momentum
+    if (macdVal > 0) { buyVotes++; log.push('✅ MACD: BUY'); }
+    else { sellVotes++; log.push('❌ MACD: SELL'); }
+
+    // Stochastic - Ab 30/70 par trigger
+    if (stochVal < 30) { buyVotes++; log.push('✅ Stoch: BUY (' + stochVal.toFixed(0) + ')'); }
+    else if (stochVal > 70) { sellVotes++; log.push('❌ Stoch: SELL (' + stochVal.toFixed(0) + ')'); }
+    else log.push('➖ Stoch: Neutral (' + stochVal.toFixed(0) + ')');
+
+    // Bollinger Bands - Middle line se compare
+    if (price < bb.middle) { buyVotes++; log.push('✅ BB: BUY (below middle)'); }
+    else if (price > bb.middle) { sellVotes++; log.push('❌ BB: SELL (above middle)'); }
     else log.push('➖ BB: Neutral');
+
+    // Candle
     if (candle === "BUY") { buyVotes++; log.push('✅ Candle: BUY'); }
     else if (candle === "SELL") { sellVotes++; log.push('❌ Candle: SELL'); }
     else log.push('➖ Candle: Neutral');
+
+    // Signal - Quality ke saath (3 ya zyada, aur buy/sell mein clear jeet)
     let signal = 'WAIT';
-    if (buyVotes >= 3 && buyVotes > sellVotes) signal = 'BUY';
-    else if (sellVotes >= 3 && sellVotes > buyVotes) signal = 'SELL';
+    if (buyVotes >= 3 && buyVotes > sellVotes + 1) signal = 'BUY';
+    else if (sellVotes >= 3 && sellVotes > buyVotes + 1) signal = 'SELL';
+
     text.textContent = signal;
     result.className = signal.toLowerCase();
     if (signal === 'BUY' || signal === 'SELL') playSound(signal);

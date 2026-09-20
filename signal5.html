@@ -25,7 +25,30 @@ h1 { color:#58a6ff; font-size:20px; margin-bottom:15px; margin-top:10px; }
 .broker-btn { flex:1; min-width:80px; padding:12px 6px; border-radius:10px; border:2px solid #30363d; background:#21262d; color:#8b949e; font-size:12px; font-weight:bold; cursor:pointer; transition:all 0.2s; }
 .broker-btn.active { border-color:#2ea043; background:#0d2818; color:#3fb950; box-shadow:0 0 15px rgba(46,160,67,0.4); }
 select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; background:#21262d; color:#fff; font-size:14px; width:46%; }
-#bigBtn { display:block; width:100%; max-width:500px; margin:20px auto; padding:35px 20px; font-size:28px; font-weight:bold; background:linear-gradient(135deg,#238636,#2ea043); color:#fff; border:none; border-radius:20px; cursor:pointer; box-shadow:0 0 30px rgba(46,160,67,0.5); }
+
+/* TIMER */
+#timerBox {
+  max-width:500px; margin:10px auto; padding:15px;
+  background:#161b22; border-radius:12px; border:2px solid #30363d;
+  transition:all 0.3s;
+}
+#timerBox.ready {
+  border-color:#3fb950; background:#0d2818;
+  box-shadow:0 0 25px rgba(63,185,80,0.6);
+  animation:pulse 0.5s infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow:0 0 25px rgba(63,185,80,0.6); }
+  50% { box-shadow:0 0 45px rgba(63,185,80,1); }
+}
+#timerBox .timer-label { color:#8b949e; font-size:12px; margin-bottom:5px; }
+#timerBox .timer-value { font-size:44px; font-weight:900; letter-spacing:2px; }
+#timerBox .timer-value.normal { color:#58a6ff; }
+#timerBox .timer-value.warning { color:#d29922; }
+#timerBox .timer-value.ready { color:#3fb950; }
+#timerBox .timer-hint { font-size:12px; margin-top:5px; color:#8b949e; }
+
+#bigBtn { display:block; width:100%; max-width:500px; margin:15px auto; padding:35px 20px; font-size:28px; font-weight:bold; background:linear-gradient(135deg,#238636,#2ea043); color:#fff; border:none; border-radius:20px; cursor:pointer; box-shadow:0 0 30px rgba(46,160,67,0.5); }
 #bigBtn.loading { background:linear-gradient(135deg,#d29922,#e3b341); }
 #result { max-width:500px; margin:15px auto; padding:30px 20px; border-radius:20px; border:3px solid #30363d; background:#161b22; min-height:180px; display:flex; flex-direction:column; justify-content:center; }
 #signalText { font-size:60px; font-weight:900; letter-spacing:4px; }
@@ -111,13 +134,8 @@ select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; 
     <option value="XAUUSDT">GOLD (XAU/USD)</option>
     <option value="XAGUSDT">SILVER (XAG/USD)</option>
   </select>
-  <select id="tf">
-    <option value="1m">5 Second</option>
-    <option value="1m">10 Second</option>
-    <option value="1m">15 Second</option>
-    <option value="1m">30 Second</option>
-    <option value="1m">60 Second</option>
-    <option value="1m" selected>1 Minute</option>
+  <select id="tf" onchange="updateTimerForTF()">
+    <option value="1m">1 Minute</option>
     <option value="3m">3 Minute</option>
     <option value="5m">5 Minute</option>
     <option value="15m">15 Minute</option>
@@ -125,7 +143,16 @@ select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; 
     <option value="1h">1 Hour</option>
     <option value="4h">4 Hour</option>
   </select>
+
+  <!-- LIVE TIMER -->
+  <div id="timerBox">
+    <div class="timer-label">⏱️ Agli Candle Band Hone Mein:</div>
+    <div class="timer-value normal" id="timerValue">-- : --</div>
+    <div class="timer-hint" id="timerHint">Candle band hone par trade lagayein</div>
+  </div>
+
   <button id="bigBtn" onclick="analyze()">🔍 SIGNAL DE</button>
+
   <div id="result">
     <div id="signalText">--</div>
     <div id="confidence">Confidence: --</div>
@@ -234,6 +261,7 @@ function openBoard() {
   document.getElementById('mainBoard').style.display = 'block';
   document.getElementById('linkDisplay').textContent = BOARD_URL;
   loadBroker();
+  startTimer();
 }
 
 function resetPassword() {
@@ -285,6 +313,79 @@ function fallbackCopy(text) {
   document.body.removeChild(ta);
 }
 
+// ============ TIMER ============
+let timerInterval = null;
+
+function getTFSeconds(tf) {
+  const map = {
+    '1m': 60,
+    '3m': 180,
+    '5m': 300,
+    '15m': 900,
+    '30m': 1800,
+    '1h': 3600,
+    '4h': 14400
+  };
+  return map[tf] || 60;
+}
+
+function updateTimerForTF() {
+  // Timer khud update hoga har second
+}
+
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(updateTimer, 200);
+  updateTimer();
+}
+
+function updateTimer() {
+  const tfSelect = document.getElementById('tf');
+  if (!tfSelect) return;
+  const tf = tfSelect.value;
+  const tfSec = getTFSeconds(tf);
+  const now = new Date();
+  const epoch = Math.floor(now.getTime() / 1000);
+  const secondsInCurrentCandle = epoch % tfSec;
+  const secondsLeft = tfSec - secondsInCurrentCandle;
+
+  const timerBox = document.getElementById('timerBox');
+  const timerValue = document.getElementById('timerValue');
+  const timerHint = document.getElementById('timerHint');
+
+  // Format
+  let display;
+  if (secondsLeft >= 60) {
+    const m = Math.floor(secondsLeft / 60);
+    const s = secondsLeft % 60;
+    display = m + ':' + (s < 10 ? '0' : '') + s;
+  } else {
+    display = secondsLeft + 's';
+  }
+
+  timerValue.textContent = display;
+
+  // Class change
+  timerValue.classList.remove('normal', 'warning', 'ready');
+  timerBox.classList.remove('ready');
+
+  if (secondsLeft <= 3) {
+    timerValue.classList.add('ready');
+    timerBox.classList.add('ready');
+    timerHint.textContent = '🚀 ABHI TRADE LAGAYEIN!';
+    timerHint.style.color = '#3fb950';
+  } else if (secondsLeft <= 10) {
+    timerValue.classList.add('warning');
+    timerHint.textContent = '⚠️ Taiyar ho jayein...';
+    timerHint.style.color = '#d29922';
+  } else {
+    timerValue.classList.add('normal');
+    timerHint.textContent = 'Candle band hone par trade lagayein';
+    timerHint.style.color = '#8b949e';
+  }
+}
+
+// ============ SIGNAL BOARD ============
 function getHigherTF(tf) {
   const map = { '1m': '5m', '3m': '15m', '5m': '15m', '15m': '1h', '30m': '4h', '1h': '4h', '4h': '1d' };
   return map[tf] || '5m';

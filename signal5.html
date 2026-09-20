@@ -25,22 +25,12 @@ h1 { color:#58a6ff; font-size:20px; margin-bottom:15px; margin-top:10px; }
 .broker-btn { flex:1; min-width:80px; padding:12px 6px; border-radius:10px; border:2px solid #30363d; background:#21262d; color:#8b949e; font-size:12px; font-weight:bold; cursor:pointer; transition:all 0.2s; }
 .broker-btn.active { border-color:#2ea043; background:#0d2818; color:#3fb950; box-shadow:0 0 15px rgba(46,160,67,0.4); }
 select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; background:#21262d; color:#fff; font-size:14px; width:46%; }
+.pair-info { max-width:500px; margin:5px auto; font-size:12px; color:#3fb950; text-align:left; padding:0 5px; }
 
-#timerBox {
-  max-width:500px; margin:10px auto; padding:25px;
-  background:#161b22; border-radius:15px; border:3px solid #30363d;
-  transition:all 0.3s; display:none;
-}
+#timerBox { max-width:500px; margin:10px auto; padding:25px; background:#161b22; border-radius:15px; border:3px solid #30363d; transition:all 0.3s; display:none; }
 #timerBox.active { display:block; }
-#timerBox.done {
-  border-color:#3fb950; background:#0d2818;
-  box-shadow:0 0 35px rgba(63,185,80,0.7);
-  animation:pulse 0.6s infinite;
-}
-@keyframes pulse {
-  0%,100% { box-shadow:0 0 35px rgba(63,185,80,0.7); }
-  50% { box-shadow:0 0 55px rgba(63,185,80,1); }
-}
+#timerBox.done { border-color:#3fb950; background:#0d2818; box-shadow:0 0 35px rgba(63,185,80,0.7); animation:pulse 0.6s infinite; }
+@keyframes pulse { 0%,100% { box-shadow:0 0 35px rgba(63,185,80,0.7); } 50% { box-shadow:0 0 55px rgba(63,185,80,1); } }
 #timerBox .timer-label { color:#8b949e; font-size:13px; margin-bottom:10px; }
 #timerBox .timer-value { font-size:72px; font-weight:900; letter-spacing:4px; }
 #timerBox .timer-value.normal { color:#58a6ff; }
@@ -118,22 +108,6 @@ select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; 
 
   <select id="pair">
     <option value="EURUSDT">EUR/USD</option>
-    <option value="GBPUSDT">GBP/USD</option>
-    <option value="USDJPY">USD/JPY</option>
-    <option value="AUDUSDT">AUD/USD</option>
-    <option value="USDCAD">USD/CAD</option>
-    <option value="USDCHF">USD/CHF</option>
-    <option value="NZDUSDT">NZD/USD</option>
-    <option value="EURGBP">EUR/GBP</option>
-    <option value="EURJPY">EUR/JPY</option>
-    <option value="GBPJPY">GBP/JPY</option>
-    <option value="BTCUSDT">BTC/USD</option>
-    <option value="ETHUSDT">ETH/USD</option>
-    <option value="SOLUSDT">SOL/USD</option>
-    <option value="XRPUSDT">XRP/USD</option>
-    <option value="DOGEUSDT">DOGE/USD</option>
-    <option value="XAUUSDT">GOLD (XAU/USD)</option>
-    <option value="XAGUSDT">SILVER (XAG/USD)</option>
   </select>
   <select id="tf">
     <option value="1m">1 Minute</option>
@@ -145,9 +119,10 @@ select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; 
     <option value="4h">4 Hour</option>
   </select>
 
+  <div class="pair-info" id="pairInfo">✅ 8 pairs available</div>
+
   <button id="bigBtn" onclick="analyze()">🔍 SIGNAL DE</button>
 
-  <!-- TIMER: Signal ke saath shuru hoga, 000 par khatam -->
   <div id="timerBox">
     <div class="timer-label" id="timerLabel">⏱️ Signal Time:</div>
     <div class="timer-value normal" id="timerValue">--</div>
@@ -193,6 +168,59 @@ const KEY_HINT = 'sb_hint';
 const KEY_BROKER = 'sb_broker';
 const BOARD_URL = 'https://awaismajeed786.github.io/Signal.board/signal5.html';
 
+// ============ BROKER-PAIR MAPPING ============
+const BROKER_PAIRS = {
+  'Quotex': [
+    { v:'EURUSDT', n:'EUR/USD' },
+    { v:'GBPUSDT', n:'GBP/USD' },
+    { v:'AUDUSDT', n:'AUD/USD' },
+    { v:'BTCUSDT', n:'BTC/USD' },
+    { v:'ETHUSDT', n:'ETH/USD' },
+    { v:'SOLUSDT', n:'SOL/USD' },
+    { v:'XRPUSDT', n:'XRP/USD' },
+    { v:'DOGEUSDT', n:'DOGE/USD' }
+  ],
+  'Pocket Option': [
+    { v:'EURUSDT', n:'EUR/USD' },
+    { v:'GBPUSDT', n:'GBP/USD' },
+    { v:'AUDUSDT', n:'AUD/USD' },
+    { v:'BTCUSDT', n:'BTC/USD' },
+    { v:'ETHUSDT', n:'ETH/USD' },
+    { v:'SOLUSDT', n:'SOL/USD' },
+    { v:'XRPUSDT', n:'XRP/USD' },
+    { v:'DOGEUSDT', n:'DOGE/USD' }
+  ],
+  'Pocket Broker': [
+    { v:'BTCUSDT', n:'BTC/USD' },
+    { v:'ETHUSDT', n:'ETH/USD' }
+  ],
+  'XM': [
+    { v:'EURUSDT', n:'EUR/USD' },
+    { v:'GBPUSDT', n:'GBP/USD' },
+    { v:'USDJPY', n:'USD/JPY' },
+    { v:'AUDUSDT', n:'AUD/USD' },
+    { v:'USDCAD', n:'USD/CAD' },
+    { v:'USDCHF', n:'USD/CHF' },
+    { v:'NZDUSDT', n:'NZD/USD' },
+    { v:'EURGBP', n:'EUR/GBP' },
+    { v:'EURJPY', n:'EUR/JPY' },
+    { v:'GBPJPY', n:'GBP/JPY' },
+    { v:'BTCUSDT', n:'BTC/USD' },
+    { v:'ETHUSDT', n:'ETH/USD' },
+    { v:'SOLUSDT', n:'SOL/USD' },
+    { v:'XRPUSDT', n:'XRP/USD' },
+    { v:'DOGEUSDT', n:'DOGE/USD' },
+    { v:'LTCUSDT', n:'LTC/USD' }
+  ]
+};
+
+const BROKER_NOTES = {
+  'Quotex': '✅ Quotex ke saare real pairs (OTC na karein)',
+  'Pocket Option': '✅ Pocket Option ke saare real pairs (OTC na karein)',
+  'Pocket Broker': '⚠️ Pocket Broker par sirf shares hain — board kaam nahi karega',
+  'XM': '✅ XM ke saare pairs available hain — sabse behtar'
+};
+
 let selectedBroker = 'Quotex';
 let timerInterval = null;
 
@@ -200,6 +228,24 @@ function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.display = 'block';
   setTimeout(function(){ t.style.display = 'none'; }, 2000);
+}
+
+function updatePairDropdown(broker) {
+  const pairSelect = document.getElementById('pair');
+  pairSelect.innerHTML = '';
+  const pairs = BROKER_PAIRS[broker] || [];
+  pairs.forEach(function(p){
+    const opt = document.createElement('option');
+    opt.value = p.v;
+    opt.textContent = p.n;
+    pairSelect.appendChild(opt);
+  });
+  document.getElementById('pairInfo').textContent = BROKER_NOTES[broker] || '';
+  if (broker === 'Pocket Broker') {
+    document.getElementById('pairInfo').style.color = '#d29922';
+  } else {
+    document.getElementById('pairInfo').style.color = '#3fb950';
+  }
 }
 
 function selectBroker(name) {
@@ -211,7 +257,8 @@ function selectBroker(name) {
   if (name === 'Pocket Broker') document.getElementById('b-pbroker').classList.add('active');
   if (name === 'XM') document.getElementById('b-xm').classList.add('active');
   document.getElementById('brokerShow').textContent = 'Broker: ' + name;
-  showToast('✅ ' + name + ' selected');
+  updatePairDropdown(name);
+  showToast('✅ ' + name + ' pairs load ho gaye');
 }
 
 function loadBroker() {
@@ -314,7 +361,6 @@ function fallbackCopy(text) {
   document.body.removeChild(ta);
 }
 
-// ============ TIMER (Signal ke saath auto shuru) ============
 function getTFSeconds(tf) {
   const map = { '1m': 60, '3m': 180, '5m': 300, '15m': 900, '30m': 1800, '1h': 3600, '4h': 14400 };
   return map[tf] || 60;
@@ -322,22 +368,18 @@ function getTFSeconds(tf) {
 
 function startTimer(tf, tfName) {
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-
   const totalSeconds = getTFSeconds(tf);
   const timerBox = document.getElementById('timerBox');
   const timerValue = document.getElementById('timerValue');
   const timerHint = document.getElementById('timerHint');
   const timerLabel = document.getElementById('timerLabel');
-
   timerBox.classList.add('active');
   timerBox.classList.remove('done');
   timerLabel.textContent = '⏱️ ' + tfName + ' Ka Timer:';
   timerValue.className = 'timer-value normal';
   timerHint.style.color = '#8b949e';
   timerHint.textContent = 'Timer 000 hone par trade lagayein...';
-
   let remaining = totalSeconds;
-
   function formatTime(sec) {
     const h = Math.floor(sec / 3600);
     const m = Math.floor((sec % 3600) / 60);
@@ -346,11 +388,9 @@ function startTimer(tf, tfName) {
     if (m > 0) return m + ':' + (s < 10 ? '0' : '') + s;
     return s;
   }
-
   function update() {
     timerValue.textContent = formatTime(remaining);
     timerValue.classList.remove('normal', 'warning', 'ready', 'done');
-
     if (remaining <= 5) {
       timerValue.classList.add('ready');
       timerHint.textContent = '⚡ ' + remaining + ' second bache!';
@@ -364,7 +404,6 @@ function startTimer(tf, tfName) {
       timerHint.textContent = 'Timer 000 hone par trade lagayein...';
       timerHint.style.color = '#8b949e';
     }
-
     if (remaining <= 0) {
       clearInterval(timerInterval);
       timerInterval = null;
@@ -379,15 +418,12 @@ function startTimer(tf, tfName) {
       playSound('SELL');
       return;
     }
-
     remaining--;
   }
-
   update();
   timerInterval = setInterval(update, 1000);
 }
 
-// ============ SIGNAL BOARD ============
 function getHigherTF(tf) {
   const map = { '1m': '5m', '3m': '15m', '5m': '15m', '15m': '1h', '30m': '4h', '1h': '4h', '4h': '1d' };
   return map[tf] || '5m';
@@ -498,7 +534,8 @@ async function analyze() {
   const tfName = tfSelect.options[tfSelect.selectedIndex].text;
   const higherTF = getHigherTF(tf);
 
-  // Purana timer band karein (agar chal raha ho)
+  if (!pair) { alert('Koi pair select karein'); return; }
+
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   document.getElementById('timerBox').classList.remove('active', 'done');
 
@@ -622,7 +659,6 @@ async function analyze() {
 
     if (signal === 'BUY' || signal === 'SELL') {
       playSound(signal);
-      // ⭐ SIGNAL AAYA → TIMER AUTO SHURU
       startTimer(tf, tfName);
     }
 

@@ -284,7 +284,17 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
   <div class="appHeader">
     <div class="hLogo">
       <div class="moonIcon">
-        <img src="icon-512.png" style="width:45px; height:45px; border-radius:10px; object-fit:contain;">
+        <svg viewBox="0 0 100 100" width="50" height="50">
+          <!-- Bada Chand (Crescent Moon) -->
+          <path d="M 45 10 A 40 40 0 1 0 45 90 A 30 30 0 1 1 45 10 Z" fill="#ffffff" filter="drop-shadow(0 0 4px rgba(255,255,255,0.8))"/>
+          
+          <!-- Chand ke andar center mein Golden Sitara -->
+          <path d="M 40 42 L 43 50 L 51 50 L 45 55 L 47 63 L 40 58 L 33 63 L 35 55 L 29 50 L 37 50 Z" fill="#f5c542" filter="drop-shadow(0 0 3px rgba(245,197,66,1))"/>
+          
+          <!-- Upar ki taraf jaati tedhi line (Uptrend Arrow) -->
+          <polyline points="60,85 72,68 78,74 90,52" stroke="#3fb950" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <polygon points="90,52 82,55 88,62" fill="#3fb950"/>
+        </svg>
       </div>
       <div class="hText">
         <div class="t1">Moon AI</div>

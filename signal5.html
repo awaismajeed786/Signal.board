@@ -1,8 +1,328 @@
-  if (broker === 'Pocket Broker') {
-    document.getElementById('pairInfo').style.color = '#d29922';
-  } else {
-    document.getElementById('pairInfo').style.color = '#3fb950';
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moon AI Trading Board</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; }
+body { background:#0d1117; color:#fff; padding:15px; text-align:center; }
+#loginScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0d1117; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px; z-index:9999; }
+#loginScreen h2 { color:#58a6ff; margin-bottom:20px; font-size:22px; }
+#loginScreen input { width:100%; max-width:320px; padding:14px; margin:8px 0; border-radius:10px; border:1px solid #30363d; background:#21262d; color:#fff; font-size:16px; text-align:center; }
+#loginScreen button { width:100%; max-width:320px; padding:14px; margin-top:15px; border-radius:10px; border:none; background:#238636; color:#fff; font-size:16px; font-weight:bold; cursor:pointer; }
+#loginScreen .hint-text { color:#8b949e; font-size:13px; margin-top:12px; }
+#loginScreen .error { color:#f85149; font-size:14px; margin-top:10px; }
+#loginScreen .link { color:#58a6ff; font-size:13px; margin-top:15px; text-decoration:underline; cursor:pointer; }
+#mainBoard { display:none; }
+.appHeader { max-width:500px; margin:0 auto 12px; padding:10px 12px; background:linear-gradient(135deg, #161b22, #1c2430); border-radius:14px; border:1px solid #30363d; display:flex; align-items:center; justify-content:space-between; gap:6px; }
+.appHeader .logoBox { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.moonIcon { width:36px; height:36px; border-radius:50%; background:radial-gradient(circle at 30% 30%, #4a9eff, #1a3a6e); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow:0 0 12px rgba(74,158,255,0.5); flex-shrink:0; }
+.moonIcon .moonShape { width:22px; height:22px; border-radius:50%; background:#fff; box-shadow:inset -7px 0 0 0 #1a3a6e; }
+.moonIcon .moonStar { position:absolute; top:6px; right:7px; color:#fff; font-size:9px; text-shadow:0 0 3px #fff; }
+.appHeader .appName { text-align:left; line-height:1.1; }
+.appHeader .appName .n1 { font-size:12px; font-weight:bold; color:#fff; }
+.appHeader .appName .n2 { font-size:9px; color:#8b949e; }
+.appHeader .liveTag { display:flex; align-items:center; gap:4px; font-size:9px; color:#3fb950; font-weight:bold; flex-shrink:0; }
+.appHeader .liveDot { width:6px; height:6px; border-radius:50%; background:#3fb950; box-shadow:0 0 6px #3fb950; animation:pulseDot 1.5s infinite; }
+@keyframes pulseDot { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
+.appHeader .binanceTag { display:flex; align-items:center; gap:3px; font-size:9px; color:#f0b90b; font-weight:bold; flex-shrink:0; }
+.appHeader .binanceTag svg { width:12px; height:12px; }
+#toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:#238636; color:#fff; padding:12px 24px; border-radius:10px; font-size:14px; z-index:9999; display:none; }
+.pairCard { max-width:500px; margin:10px auto; padding:14px; background:linear-gradient(135deg, #161b22, #1c2430); border-radius:14px; border:1px solid #30363d; display:flex; align-items:center; gap:12px; }
+.pairCard .pairLogo { width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:900; color:#fff; box-shadow:0 0 12px rgba(255,255,255,0.2); flex-shrink:0; }
+.pairCard .pairDetails { flex:1; text-align:left; }
+.pairCard .pairName { font-size:16px; font-weight:bold; color:#fff; }
+.pairCard .pairSub { font-size:11px; color:#8b949e; margin-top:2px; }
+.pairCard .priceTag { text-align:right; }
+.pairCard .liveLbl { font-size:10px; color:#3fb950; font-weight:bold; }
+.pairCard .priceVal { font-size:16px; font-weight:bold; color:#3fb950; margin-top:2px; }
+.broker-box { max-width:500px; margin:10px auto; padding:12px; background:#161b22; border-radius:12px; border:1px solid #30363d; }
+.broker-box .label { color:#8b949e; font-size:12px; margin-bottom:8px; }
+.broker-btns { display:flex; gap:6px; justify-content:center; flex-wrap:wrap; }
+.broker-btn { flex:1; min-width:80px; padding:12px 6px; border-radius:10px; border:2px solid #30363d; background:#21262d; color:#8b949e; font-size:12px; font-weight:bold; cursor:pointer; transition:all 0.2s; }
+.broker-btn.active { border-color:#2ea043; background:#0d2818; color:#3fb950; box-shadow:0 0 15px rgba(46,160,67,0.4); }
+select { padding:10px; margin:4px; border-radius:8px; border:1px solid #30363d; background:#21262d; color:#fff; font-size:14px; width:46%; }
+.pair-info { max-width:500px; margin:5px auto; font-size:12px; color:#3fb950; text-align:left; padding:0 5px; }
+#timerBox { max-width:500px; margin:10px auto; padding:15px; background:#161b22; border-radius:12px; border:2px solid #30363d; transition:all 0.3s; display:none; }
+#timerBox.active { display:block; }
+#timerBox.done { border-color:#3fb950; background:#0d2818; box-shadow:0 0 25px rgba(63,185,80,0.6); }
+#timerBox .timer-label { color:#8b949e; font-size:12px; margin-bottom:6px; }
+#timerBox .timer-value { font-size:40px; font-weight:900; letter-spacing:2px; }
+#timerBox .timer-value.normal { color:#58a6ff; }
+#timerBox .timer-value.warning { color:#d29922; }
+#timerBox .timer-value.ready { color:#f85149; }
+#timerBox .timer-value.done { color:#3fb950; font-size:36px; }
+#timerBox .timer-hint { font-size:12px; margin-top:8px; color:#8b949e; font-weight:bold; }
+#bigBtn { display:block; width:100%; max-width:500px; margin:15px auto; padding:35px 20px; font-size:28px; font-weight:bold; background:linear-gradient(135deg,#238636,#2ea043); color:#fff; border:none; border-radius:20px; cursor:pointer; box-shadow:0 0 30px rgba(46,160,67,0.5); }
+#bigBtn.loading { background:linear-gradient(135deg,#d29922,#e3b341); }
+#result { max-width:500px; margin:15px auto; padding:30px 20px; border-radius:20px; border:3px solid #30363d; background:#161b22; min-height:180px; display:flex; flex-direction:column; justify-content:center; }
+#signalText { font-size:60px; font-weight:900; letter-spacing:4px; }
+.buy #signalText { color:#3fb950; text-shadow:0 0 30px #3fb950; }
+.sell #signalText { color:#f85149; text-shadow:0 0 30px #f85149; }
+.wait #signalText { color:#d29922; text-shadow:0 0 30px #d29922; }
+#result.buy { border-color:#3fb950; }
+#result.sell { border-color:#f85149; }
+#result.wait { border-color:#d29922; }
+#confidence { font-size:18px; font-weight:bold; margin-top:10px; padding:8px 20px; display:inline-block; border-radius:20px; background:#21262d; }
+.conf-high { color:#3fb950; }
+.conf-med { color:#d29922; }
+.conf-low { color:#f85149; }
+#details { margin-top:15px; font-size:14px; color:#8b949e; line-height:1.7; }
+#details b { color:#c9d1d9; }
+#brokerShow { color:#3fb950; font-size:13px; margin-top:5px; }
+#tfShow { color:#58a6ff; font-size:12px; margin-top:3px; }
+#trendShow { color:#d29922; font-size:12px; margin-top:3px; }
+#historyBox { max-width:500px; margin:15px auto; padding:12px; background:#161b22; border-radius:10px; border:1px solid #30363d; text-align:left; font-size:13px; }
+#historyBox h3 { color:#58a6ff; margin-bottom:8px; font-size:15px; }
+.hist-item { padding:6px 0; border-bottom:1px solid #21262d; color:#8b949e; }
+.hist-buy { color:#3fb950; font-weight:bold; }
+.hist-sell { color:#f85149; font-weight:bold; }
+.hist-wait { color:#d29922; font-weight:bold; }
+.note { font-size:11px; color:#8b949e; padding:10px; background:#161b22; border-radius:8px; max-width:500px; margin:15px auto; }
+.profileBox { max-width:500px; margin:10px auto; padding:20px; background:#161b22; border-radius:12px; border:1px solid #30363d; text-align:left; }
+.profileBox h3 { color:#58a6ff; font-size:15px; margin-bottom:12px; }
+.profileBox input { width:100%; padding:12px; margin:6px 0; border-radius:8px; border:1px solid #30363d; background:#0d1117; color:#fff; font-size:15px; }
+.profileBox button { width:100%; padding:12px; margin-top:10px; border-radius:8px; border:none; font-size:15px; font-weight:bold; cursor:pointer; }
+.btn-green { background:#238636; color:#fff; }
+.btn-blue { background:#1f6feb; color:#fff; }
+.profileBox .error { color:#f85149; font-size:13px; margin-top:8px; }
+.link-box { background:#0d1117; border:1px solid #30363d; border-radius:8px; padding:10px; font-size:12px; color:#58a6ff; word-break:break-all; margin-top:8px; }
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <h2 id="loginTitle">🔐 Password Set Karein</h2>
+  <input type="password" id="passInput" placeholder="Password likhein">
+  <input type="password" id="passConfirm" placeholder="Dobara password likhein" style="display:none;">
+  <input type="text" id="hintInput" placeholder="Hint (yaad rakhne ke liye)" style="display:none;">
+  <button onclick="handleLogin()" id="loginBtn">Set Karein</button>
+  <div class="error" id="loginError"></div>
+  <div class="hint-text" id="hintShow"></div>
+  <div class="link" id="resetLink" onclick="resetPassword()" style="display:none;">Password bhool gaye? Reset karein</div>
+</div>
+
+<div id="mainBoard">
+  <div class="appHeader">
+    <div class="logoBox">
+      <div class="moonIcon">
+        <div class="moonShape"></div>
+        <div class="moonStar">★</div>
+      </div>
+      <div class="appName">
+        <div class="n1">Moon AI</div>
+        <div class="n2">Trading Board</div>
+      </div>
+    </div>
+    <div class="liveTag">
+      <div class="liveDot"></div>
+      Live
+    </div>
+    <div class="binanceTag">
+      <svg viewBox="0 0 24 24" fill="#f0b90b">
+        <path d="M12 0L8.5 3.5 12 7l3.5-3.5L12 0zM3.5 8.5L0 12l3.5 3.5L7 12 3.5 8.5zm8.5 0L8.5 12 12 15.5 15.5 12 12 8.5zm8.5 0L17 12l3.5 3.5L24 12l-3.5-3.5zM12 17l-3.5 3.5L12 24l3.5-3.5L12 17z"/>
+      </svg>
+      Binance ▼
+    </div>
+  </div>
+
+  <div class="broker-box">
+    <div class="label">🏢 Apna Broker Chunein:</div>
+    <div class="broker-btns">
+      <button class="broker-btn active" id="b-quotex" onclick="selectBroker('Quotex')">Quotex</button>
+      <button class="broker-btn" id="b-pocket" onclick="selectBroker('Pocket Option')">Pocket Option</button>
+      <button class="broker-btn" id="b-pbroker" onclick="selectBroker('Pocket Broker')">Pocket Broker</button>
+      <button class="broker-btn" id="b-xm" onclick="selectBroker('XM')">XM</button>
+    </div>
+  </div>
+
+  <select id="pair" onchange="updatePairCard()"><option value="EURUSDT">EUR/USD</option></select>
+  <select id="tf">
+    <option value="1m">1 Minute</option>
+    <option value="3m">3 Minute</option>
+    <option value="5m">5 Minute</option>
+    <option value="15m">15 Minute</option>
+    <option value="30m">30 Minute</option>
+    <option value="1h">1 Hour</option>
+    <option value="4h">4 Hour</option>
+  </select>
+  <div class="pair-info" id="pairInfo">✅ 8 pairs available</div>
+
+  <div class="pairCard">
+    <div class="pairLogo" id="pairLogo" style="background:#003399;">€</div>
+    <div class="pairDetails">
+      <div class="pairName" id="pairName">EUR/USD</div>
+      <div class="pairSub" id="pairSub">Euro / US Dollar</div>
+    </div>
+    <div class="priceTag">
+      <div class="liveLbl">● LIVE</div>
+      <div class="priceVal" id="pairPrice">--</div>
+    </div>
+  </div>
+
+  <button id="bigBtn" onclick="analyze()">🔍 SIGNAL DE</button>
+
+  <div id="timerBox">
+    <div class="timer-label" id="timerLabel">⏱️ Signal Time:</div>
+    <div class="timer-value normal" id="timerValue">--</div>
+    <div class="timer-hint" id="timerHint">Intezar karein...</div>
+  </div>
+
+  <div id="result">
+    <div id="signalText">--</div>
+    <div id="confidence">Confidence: --</div>
+    <div id="details">Button dabayein</div>
+    <div id="brokerShow">Broker: Quotex</div>
+    <div id="tfShow">Time: 1 Minute</div>
+    <div id="trendShow">Trend: --</div>
+  </div>
+
+  <div id="historyBox">
+    <h3>📋 Signal History</h3>
+    <div id="historyList">Abhi koi signal nahi</div>
+  </div>
+
+  <div class="profileBox">
+    <h3>🔐 Password Change</h3>
+    <input type="password" id="oldPass" placeholder="Purana password">
+    <input type="password" id="newPass" placeholder="Naya password">
+    <input type="text" id="newHint" placeholder="Naya hint (optional)">
+    <button class="btn-green" onclick="changePassword()">Password Change Karein</button>
+    <div class="error" id="settingsError"></div>
+  </div>
+
+  <div class="profileBox">
+    <h3>🔗 Board Ka Link</h3>
+    <div class="link-box" id="linkDisplay">Link yahan dikhega</div>
+    <button class="btn-blue" onclick="copyBoardLink()">📋 Link Copy Karein</button>
+  </div>
+
+  <div class="note">⚠️ Yeh tool sirf analysis ke liye hai. OTC pairs par kaam nahi karega. Pehle demo par test karein.</div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const KEY_PASS = 'sb_password';
+const KEY_HINT = 'sb_hint';
+const KEY_BROKER = 'sb_broker';
+const BOARD_URL = 'https://awaismajeed786.github.io/Signal.board/signal5.html';
+
+const PAIR_DATA = {
+  'EURUSDT':  { sym:'€',  bg:'#003399', sub:'Euro / US Dollar' },
+  'GBPUSDT':  { sym:'£',  bg:'#C8102E', sub:'British Pound / USD' },
+  'USDJPY':   { sym:'¥',  bg:'#BC002D', sub:'US Dollar / Japanese Yen' },
+  'AUDUSDT':  { sym:'A$', bg:'#00843D', sub:'Australian Dollar / USD' },
+  'USDCAD':   { sym:'C$', bg:'#FF0000', sub:'US Dollar / Canadian Dollar' },
+  'USDCHF':   { sym:'₣',  bg:'#DA291C', sub:'US Dollar / Swiss Franc' },
+  'NZDUSDT':  { sym:'NZ$', bg:'#000000', sub:'New Zealand Dollar / USD' },
+  'EURGBP':   { sym:'€£', bg:'#003399', sub:'Euro / British Pound' },
+  'EURJPY':   { sym:'€¥', bg:'#003399', sub:'Euro / Japanese Yen' },
+  'GBPJPY':   { sym:'£¥', bg:'#C8102E', sub:'British Pound / Yen' },
+  'BTCUSDT':  { sym:'₿',  bg:'#F7931A', sub:'Bitcoin / USD' },
+  'ETHUSDT':  { sym:'Ξ',  bg:'#627EEA', sub:'Ethereum / USD' },
+  'SOLUSDT':  { sym:'◎',  bg:'#9945FF', sub:'Solana / USD' },
+  'XRPUSDT':  { sym:'✕',  bg:'#23292F', sub:'Ripple / USD' },
+  'DOGEUSDT': { sym:'Ð',  bg:'#C2A633', sub:'Dogecoin / USD' },
+  'LTCUSDT':  { sym:'Ł',  bg:'#345D9D', sub:'Litecoin / USD' }
+};
+
+const BROKER_PAIRS = {
+  'Quotex': [
+    { v:'EURUSDT', n:'EUR/USD' }, { v:'GBPUSDT', n:'GBP/USD' },
+    { v:'AUDUSDT', n:'AUD/USD' }, { v:'BTCUSDT', n:'BTC/USD' },
+    { v:'ETHUSDT', n:'ETH/USD' }, { v:'SOLUSDT', n:'SOL/USD' },
+    { v:'XRPUSDT', n:'XRP/USD' }, { v:'DOGEUSDT', n:'DOGE/USD' }
+  ],
+  'Pocket Option': [
+    { v:'EURUSDT', n:'EUR/USD' }, { v:'GBPUSDT', n:'GBP/USD' },
+    { v:'AUDUSDT', n:'AUD/USD' }, { v:'BTCUSDT', n:'BTC/USD' },
+    { v:'ETHUSDT', n:'ETH/USD' }, { v:'SOLUSDT', n:'SOL/USD' },
+    { v:'XRPUSDT', n:'XRP/USD' }, { v:'DOGEUSDT', n:'DOGE/USD' }
+  ],
+  'Pocket Broker': [
+    { v:'BTCUSDT', n:'BTC/USD' }, { v:'ETHUSDT', n:'ETH/USD' }
+  ],
+  'XM': [
+    { v:'EURUSDT', n:'EUR/USD' }, { v:'GBPUSDT', n:'GBP/USD' },
+    { v:'USDJPY', n:'USD/JPY' }, { v:'AUDUSDT', n:'AUD/USD' },
+    { v:'USDCAD', n:'USD/CAD' }, { v:'USDCHF', n:'USD/CHF' },
+    { v:'NZDUSDT', n:'NZD/USD' }, { v:'EURGBP', n:'EUR/GBP' },
+    { v:'EURJPY', n:'EUR/JPY' }, { v:'GBPJPY', n:'GBP/JPY' },
+    { v:'BTCUSDT', n:'BTC/USD' }, { v:'ETHUSDT', n:'ETH/USD' },
+    { v:'SOLUSDT', n:'SOL/USD' }, { v:'XRPUSDT', n:'XRP/USD' },
+    { v:'DOGEUSDT', n:'DOGE/USD' }, { v:'LTCUSDT', n:'LTC/USD' }
+  ]
+};
+
+const BROKER_NOTES = {
+  'Quotex': '✅ Quotex ke saare real pairs (OTC na karein)',
+  'Pocket Option': '✅ Pocket Option ke saare real pairs (OTC na karein)',
+  'Pocket Broker': '⚠️ Pocket Broker par sirf shares hain — board kaam nahi karega',
+  'XM': '✅ XM ke saare pairs available hain — sabse behtar'
+};
+
+let selectedBroker = 'Quotex';
+let timerInterval = null;
+let priceInterval = null;
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(function(){ t.style.display = 'none'; }, 2000);
+}
+
+function updatePairCard() {
+  const sel = document.getElementById('pair');
+  const val = sel.value;
+  const name = sel.options[sel.selectedIndex].text;
+  const data = PAIR_DATA[val] || { sym:'?', bg:'#30363d', sub:name };
+  document.getElementById('pairLogo').textContent = data.sym;
+  document.getElementById('pairLogo').style.background = data.bg;
+  document.getElementById('pairName').textContent = name;
+  document.getElementById('pairSub').textContent = data.sub;
+  document.getElementById('pairPrice').textContent = '--';
+  loadPrice(val);
+}
+
+async function loadPrice(symbol) {
+  try {
+    const url = 'https://api.binance.com/api/v3/ticker/price?symbol=' + symbol;
+    const res = await fetch(url);
+    const data = await res.json();
+    const p = parseFloat(data.price);
+    let display;
+    if (p > 1000) display = p.toFixed(2);
+    else if (p > 10) display = p.toFixed(3);
+    else display = p.toFixed(4);
+    document.getElementById('pairPrice').textContent = display;
+  } catch(e) {
+    document.getElementById('pairPrice').textContent = '--';
   }
+}
+
+function startPriceRefresh() {
+  if (priceInterval) clearInterval(priceInterval);
+  priceInterval = setInterval(function(){
+    const sel = document.getElementById('pair');
+    if (sel && sel.value) loadPrice(sel.value);
+  }, 5000);
+}
+
+function updatePairDropdown(broker) {
+  const pairSelect = document.getElementById('pair');
+  pairSelect.innerHTML = '';
+  const pairs = BROKER_PAIRS[broker] || [];
+  pairs.forEach(function(p){
+    const opt = document.createElement('option');
+    opt.value = p.v; opt.textContent = p.n;
+    pairSelect.appendChild(opt);
+  });
+  document.getElementById('pairInfo').textContent = BROKER_NOTES[broker] || '';
+  if (broker === 'Pocket Broker') document.getElementById('pairInfo').style.color = '#d29922';
+  else document.getElementById('pairInfo').style.color = '#3fb950';
+  updatePairCard();
 }
 
 function selectBroker(name) {
@@ -15,7 +335,7 @@ function selectBroker(name) {
   if (name === 'XM') document.getElementById('b-xm').classList.add('active');
   document.getElementById('brokerShow').textContent = 'Broker: ' + name;
   updatePairDropdown(name);
-  showToast('✅ ' + name + ' pairs load ho gaye');
+  showToast('✅ ' + name + ' selected');
 }
 
 function loadBroker() {
@@ -65,28 +385,18 @@ function handleLogin() {
 function openBoard() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('mainBoard').style.display = 'block';
-  document.getElementById('linkDisplay').textContent = BOARD_URL;
   loadBroker();
+  startPriceRefresh();
+  document.getElementById('linkDisplay').textContent = BOARD_URL;
 }
 
 function resetPassword() {
-  if (confirm('Password reset karein? Naya password set karna padega.')) {
+  if (confirm('Password reset karein?')) {
     localStorage.removeItem(KEY_PASS);
     localStorage.removeItem(KEY_HINT);
     location.reload();
   }
 }
-
-function openSettings() {
-  document.getElementById('settingsModal').style.display = 'flex';
-  document.getElementById('oldPass').value = '';
-  document.getElementById('newPass').value = '';
-  document.getElementById('newHint').value = '';
-  document.getElementById('settingsError').textContent = '';
-  document.getElementById('linkDisplay').textContent = BOARD_URL;
-}
-
-function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
 
 function changePassword() {
   const oldPass = document.getElementById('oldPass').value;
@@ -171,22 +481,14 @@ function startTimer(tf, tfName) {
       timerLabel.textContent = '✅ AB TRADE LAGAYEIN!';
       timerHint.textContent = '🚀 Turant apne broker par trade lagayein!';
       timerHint.style.color = '#3fb950';
-      playSound('BUY');
-      playSound('SELL');
-      setTimeout(function(){
-        timerBox.classList.remove('active', 'done');
-      }, 10000);
+      playSound('BUY'); playSound('SELL');
+      setTimeout(function(){ timerBox.classList.remove('active', 'done'); }, 10000);
       return;
     }
     remaining--;
   }
   update();
   timerInterval = setInterval(update, 1000);
-}
-
-function getHigherTF(tf) {
-  const map = { '1m': '5m', '3m': '15m', '5m': '15m', '15m': '1h', '30m': '4h', '1h': '4h', '4h': '1d' };
-  return map[tf] || '5m';
 }
 
 let history = [];
@@ -294,7 +596,6 @@ async function analyze() {
   const tfName = tfSelect.options[tfSelect.selectedIndex].text;
 
   if (!pair) { alert('Koi pair select karein'); return; }
-
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   document.getElementById('timerBox').classList.remove('active', 'done');
 
@@ -307,7 +608,6 @@ async function analyze() {
   details.textContent = 'Data la rahe hain...';
   document.getElementById('brokerShow').textContent = 'Broker: ' + selectedBroker;
   document.getElementById('tfShow').textContent = 'Time: ' + tfName;
-  document.getElementById('trendShow').textContent = 'Trend: Check ho raha hai...';
 
   try {
     const candles = await getData(pair, tf, 100);
@@ -321,10 +621,9 @@ async function analyze() {
       const trendCloses = await getDataForTrend(pair, tf);
       if (trendCloses.length >= 200) {
         const ema200Val = ema(trendCloses, 200);
-        if (price > ema200Val) trendResult = 'BUY';
-        else trendResult = 'SELL';
+        if (price > ema200Val) trendResult = 'BUY'; else trendResult = 'SELL';
       }
-    } catch(e) { trendResult = 'NEUTRAL'; }
+    } catch(e) {}
 
     const ema9 = ema(closes, 9), ema21 = ema(closes, 21);
     const rsiVal = rsi(closes, 14), macdVal = macd(closes);
@@ -334,24 +633,17 @@ async function analyze() {
 
     let buyVotes = 0, sellVotes = 0, log = [];
 
-    if (ema9 > ema21) { buyVotes++; log.push('✅ EMA: BUY'); }
-    else { sellVotes++; log.push('❌ EMA: SELL'); }
-
+    if (ema9 > ema21) { buyVotes++; log.push('✅ EMA: BUY'); } else { sellVotes++; log.push('❌ EMA: SELL'); }
     if (rsiVal < 40) { buyVotes++; log.push('✅ RSI: BUY (' + rsiVal.toFixed(0) + ')'); }
     else if (rsiVal > 60) { sellVotes++; log.push('❌ RSI: SELL (' + rsiVal.toFixed(0) + ')'); }
     else log.push('➖ RSI: Neutral (' + rsiVal.toFixed(0) + ')');
-
-    if (macdVal > 0) { buyVotes++; log.push('✅ MACD: BUY'); }
-    else { sellVotes++; log.push('❌ MACD: SELL'); }
-
+    if (macdVal > 0) { buyVotes++; log.push('✅ MACD: BUY'); } else { sellVotes++; log.push('❌ MACD: SELL'); }
     if (stochVal < 30) { buyVotes++; log.push('✅ Stoch: BUY (' + stochVal.toFixed(0) + ')'); }
     else if (stochVal > 70) { sellVotes++; log.push('❌ Stoch: SELL (' + stochVal.toFixed(0) + ')'); }
     else log.push('➖ Stoch: Neutral (' + stochVal.toFixed(0) + ')');
-
     if (price < bb.middle) { buyVotes++; log.push('✅ BB: BUY'); }
     else if (price > bb.middle) { sellVotes++; log.push('❌ BB: SELL'); }
     else log.push('➖ BB: Neutral');
-
     if (candle === "BUY") { buyVotes++; log.push('✅ Candle: BUY'); }
     else if (candle === "SELL") { sellVotes++; log.push('❌ Candle: SELL'); }
     else log.push('➖ Candle: Neutral');
@@ -364,60 +656,38 @@ async function analyze() {
 
     let signal = 'WAIT';
     let confidence = 0;
-
     const trendAllowsBuy = (trendResult === 'BUY' || trendResult === 'NEUTRAL');
     const trendAllowsSell = (trendResult === 'SELL' || trendResult === 'NEUTRAL');
-
     const activeVotes = buyVotes + sellVotes;
 
-    // ⭐ BALANCED RULE: 3+ votes aur clear jeet + trend match
     if (buyVotes >= 3 && buyVotes > sellVotes && trendAllowsBuy) {
-      signal = 'BUY';
-      confidence = activeVotes > 0 ? Math.round((buyVotes / activeVotes) * 100) : 0;
+      signal = 'BUY'; confidence = activeVotes > 0 ? Math.round((buyVotes / activeVotes) * 100) : 0;
     } else if (sellVotes >= 3 && sellVotes > buyVotes && trendAllowsSell) {
-      signal = 'SELL';
-      confidence = activeVotes > 0 ? Math.round((sellVotes / activeVotes) * 100) : 0;
-    } else {
-      if (buyVotes >= 3 && buyVotes > sellVotes && !trendAllowsBuy) {
-        log.push('');
-        log.push('⚠️ BUY strong, lekin Trend DOWN');
-      }
-      if (sellVotes >= 3 && sellVotes > buyVotes && !trendAllowsSell) {
-        log.push('');
-        log.push('⚠️ SELL strong, lekin Trend UP');
-      }
+      signal = 'SELL'; confidence = activeVotes > 0 ? Math.round((sellVotes / activeVotes) * 100) : 0;
     }
 
     text.textContent = signal;
     result.className = signal.toLowerCase();
 
-    if (signal === 'WAIT') {
-      confEl.textContent = 'Confidence: --';
-      confEl.className = 'conf-low';
-    } else {
+    if (signal === 'WAIT') { confEl.textContent = 'Confidence: --'; confEl.className = 'conf-low'; }
+    else {
       confEl.textContent = 'Confidence: ' + confidence + '%';
       if (confidence >= 80) confEl.className = 'conf-high';
       else if (confidence >= 60) confEl.className = 'conf-med';
       else confEl.className = 'conf-low';
     }
 
-    if (signal === 'BUY' || signal === 'SELL') {
-      playSound(signal);
-      startTimer(tf, tfName);
-    }
+    if (signal === 'BUY' || signal === 'SELL') { playSound(signal); startTimer(tf, tfName); }
 
     document.getElementById('trendShow').textContent = 'Trend: ' + (trendResult === 'BUY' ? 'UP 📈' : trendResult === 'SELL' ? 'DOWN 📉' : 'Unknown');
-
     addToHistory(signal, pairName, price.toFixed(4), selectedBroker, tfName, confidence);
-
     details.innerHTML = '<b>' + pairName + '</b> | Price: <b>' + price + '</b><br>Buy: <b style="color:#3fb950">' + buyVotes + '</b> | Sell: <b style="color:#f85149">' + sellVotes + '</b><br><br>' + log.join('<br>');
+    loadPrice(pair);
 
   } catch (e) {
     text.textContent = 'ERROR';
     details.textContent = 'Data nahi mila. Internet check karein.';
-    document.getElementById('trendShow').textContent = 'Trend: --';
   }
-
   btn.classList.remove('loading');
   btn.textContent = '🔍 SIGNAL DE';
 }

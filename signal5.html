@@ -214,7 +214,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
         <div class="ringWrap">
           <svg class="ringSvg" viewBox="0 0 200 200">
             <circle cx="100" cy="100" r="92" fill="none" stroke="#1e2a44" stroke-width="2"></circle>
-            <circle class="ringFg" id="ringFg" cx="100" cy="100" r="85" stroke="#58a6ff" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="534 534" stroke-dashoffset="0"></circle>
+            <circle id="ringFg" cx="100" cy="100" r="85" stroke="#58a6ff" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="534" stroke-dashoffset="0" style="transition: stroke-dashoffset 0.8s ease, stroke 0.3s ease;"></circle>
             <circle cx="100" cy="100" r="78" fill="none" stroke="#1e2a44" stroke-width="2"></circle>
           </svg>
           <div class="ringArrow" id="ringArrow">
@@ -279,7 +279,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
         <div id="historyList">Abhi koi signal nahi</div>
       </div>
 
-      <div class="note">⚠️ Yeh tool sirf analysis ke liye hai. OTC pairs par kaam nahi karega. Pehle demo par test karein.</div>
+      <div class="note">⚠️ ✅ = Working pair &nbsp; | &nbsp; ❌ = Not working</div>
     </div>
 
     <div class="page" id="watchPage">
@@ -348,17 +348,50 @@ const BOARD_URL='https://awaismajeed786.github.io/Signal.board/signal5.html';
 
 const PAIR_DATA = {
   'EURUSDT':{sym:'€',bg:'#003399'},'GBPUSDT':{sym:'£',bg:'#C8102E'},'USDJPY':{sym:'¥',bg:'#BC002D'},
-  'AUDUSDT':{sym:'A$',bg:'#00843D'},'USDCAD':{sym:'C$',bg:'#FF0000'},'USDCHF':{sym:'₣',bg:'#DA291C'},
-  'NZDUSDT':{sym:'NZ$',bg:'#000000'},'EURGBP':{sym:'€£',bg:'#003399'},'EURJPY':{sym:'€¥',bg:'#003399'},
-  'GBPJPY':{sym:'£¥',bg:'#C8102E'},'BTCUSDT':{sym:'₿',bg:'#F7931A'},'ETHUSDT':{sym:'Ξ',bg:'#627EEA'},
-  'SOLUSDT':{sym:'◎',bg:'#9945FF'},'XRPUSDT':{sym:'✕',bg:'#23292F'},'DOGEUSDT':{sym:'Ð',bg:'#C2A633'},'LTCUSDT':{sym:'Ł',bg:'#345D9D'}
+  'AUDUSDT':{sym:'A$',bg:'#00843D'},'USDCAD':{sym:'C$',bg:'#FF0000'},
+  'BTCUSDT':{sym:'₿',bg:'#F7931A'},'ETHUSDT':{sym:'Ξ',bg:'#627EEA'},
+  'SOLUSDT':{sym:'◎',bg:'#9945FF'},'XRPUSDT':{sym:'✕',bg:'#23292F'},'DOGEUSDT':{sym:'Ð',bg:'#C2A633'},
+  'LTCUSDT':{sym:'Ł',bg:'#345D9D'},'BNBUSDT':{sym:'⬥',bg:'#F3BA2F'},'ADAUSDT':{sym:'₳',bg:'#0033AD'},
+  'DOTUSDT':{sym:'●',bg:'#E6007A'},'LINKUSDT':{sym:'⬢',bg:'#2A5ADA'},'POLUSDT':{sym:'⬡',bg:'#8247E5'},
+  'AVAXUSDT':{sym:'▲',bg:'#E84142'},'TRXUSDT':{sym:'◈',bg:'#EF0027'}
 };
 
 const BROKER_PAIRS = {
-  'Quotex':[{v:'EURUSDT',n:'EUR/USDT'},{v:'GBPUSDT',n:'GBP/USDT'},{v:'AUDUSDT',n:'AUD/USDT'},{v:'BTCUSDT',n:'BTC/USDT'},{v:'ETHUSDT',n:'ETH/USDT'},{v:'SOLUSDT',n:'SOL/USDT'},{v:'XRPUSDT',n:'XRP/USDT'},{v:'DOGEUSDT',n:'DOGE/USDT'}],
-  'Pocket Option':[{v:'EURUSDT',n:'EUR/USDT'},{v:'GBPUSDT',n:'GBP/USDT'},{v:'AUDUSDT',n:'AUD/USDT'},{v:'BTCUSDT',n:'BTC/USDT'},{v:'ETHUSDT',n:'ETH/USDT'},{v:'SOLUSDT',n:'SOL/USDT'},{v:'XRPUSDT',n:'XRP/USDT'},{v:'DOGEUSDT',n:'DOGE/USDT'}],
-  'Pocket Broker':[{v:'BTCUSDT',n:'BTC/USDT'},{v:'ETHUSDT',n:'ETH/USDT'}],
-  'XM':[{v:'EURUSDT',n:'EUR/USDT'},{v:'GBPUSDT',n:'GBP/USDT'},{v:'USDJPY',n:'USD/JPY'},{v:'AUDUSDT',n:'AUD/USDT'},{v:'USDCAD',n:'USD/CAD'},{v:'USDCHF',n:'USD/CHF'},{v:'NZDUSDT',n:'NZD/USDT'},{v:'EURGBP',n:'EUR/GBP'},{v:'EURJPY',n:'EUR/JPY'},{v:'GBPJPY',n:'GBP/JPY'},{v:'BTCUSDT',n:'BTC/USDT'},{v:'ETHUSDT',n:'ETH/USDT'},{v:'SOLUSDT',n:'SOL/USDT'},{v:'XRPUSDT',n:'XRP/USDT'},{v:'DOGEUSDT',n:'DOGE/USDT'},{v:'LTCUSDT',n:'LTC/USDT'}]
+  'Quotex':[
+    {v:'EURUSDT',n:'EUR/USDT',ok:true},{v:'GBPUSDT',n:'GBP/USDT',ok:true},
+    {v:'AUDUSDT',n:'AUD/USDT',ok:true},{v:'BTCUSDT',n:'BTC/USDT',ok:true},
+    {v:'ETHUSDT',n:'ETH/USDT',ok:true},{v:'SOLUSDT',n:'SOL/USDT',ok:true},
+    {v:'XRPUSDT',n:'XRP/USDT',ok:true},{v:'DOGEUSDT',n:'DOGE/USDT',ok:true}
+  ],
+  'Pocket Option':[
+    {v:'EURUSDT',n:'EUR/USDT',ok:true},{v:'GBPUSDT',n:'GBP/USDT',ok:true},
+    {v:'AUDUSDT',n:'AUD/USDT',ok:true},{v:'BTCUSDT',n:'BTC/USDT',ok:true},
+    {v:'ETHUSDT',n:'ETH/USDT',ok:true},{v:'SOLUSDT',n:'SOL/USDT',ok:true},
+    {v:'XRPUSDT',n:'XRP/USDT',ok:true},{v:'DOGEUSDT',n:'DOGE/USDT',ok:true}
+  ],
+  'Pocket Broker':[
+    {v:'BTCUSDT',n:'BTC/USDT',ok:true},{v:'ETHUSDT',n:'ETH/USDT',ok:true}
+  ],
+  'XM':[
+    {v:'EURUSDT',n:'EUR/USDT',ok:true},
+    {v:'GBPUSDT',n:'GBP/USDT',ok:true},
+    {v:'USDJPY',n:'USD/JPY',ok:false},
+    {v:'AUDUSDT',n:'AUD/USDT',ok:true},
+    {v:'USDCAD',n:'USD/CAD',ok:false},
+    {v:'BTCUSDT',n:'BTC/USDT',ok:true},
+    {v:'ETHUSDT',n:'ETH/USDT',ok:true},
+    {v:'SOLUSDT',n:'SOL/USDT',ok:true},
+    {v:'XRPUSDT',n:'XRP/USDT',ok:true},
+    {v:'DOGEUSDT',n:'DOGE/USDT',ok:true},
+    {v:'LTCUSDT',n:'LTC/USDT',ok:true},
+    {v:'BNBUSDT',n:'BNB/USDT',ok:true},
+    {v:'ADAUSDT',n:'ADA/USDT',ok:true},
+    {v:'DOTUSDT',n:'DOT/USDT',ok:true},
+    {v:'LINKUSDT',n:'LINK/USDT',ok:true},
+    {v:'POLUSDT',n:'POL/USDT',ok:true},
+    {v:'AVAXUSDT',n:'AVAX/USDT',ok:true},
+    {v:'TRXUSDT',n:'TRX/USDT',ok:true}
+  ]
 };
 
 let selectedBroker='Quotex', timerInterval=null, priceInterval=null;
@@ -375,13 +408,13 @@ function switchTab(tab){
 
 function updatePairCard(){
   const sel=document.getElementById('pair');const v=sel.value;if(!v)return;
-  const n=sel.options[sel.selectedIndex].text;
+  const n=sel.options[sel.selectedIndex].text.replace('✅ ','').replace('❌ ','');
   document.getElementById('pairTitle').textContent=n;
   loadPrice(v);loadChange(v);
 }
 
 async function loadPrice(sym){
-  try{const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol='+sym);const d=await r.json();const p=parseFloat(d.price);let s;if(p>1000)s=p.toFixed(2);else if(p>10)s=p.toFixed(3);else s=p.toFixed(4);document.getElementById('priceNum').textContent=s;}catch(e){}
+  try{const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol='+sym);const d=await r.json();const p=parseFloat(d.price);let s;if(p>1000)s=p.toFixed(2);else if(p>10)s=p.toFixed(3);else s=p.toFixed(4);document.getElementById('priceNum').textContent=s;}catch(e){document.getElementById('priceNum').textContent='--';}
 }
 
 async function loadChange(sym){
@@ -395,7 +428,12 @@ function startPriceRefresh(){
 
 function updatePairDropdown(b){
   const s=document.getElementById('pair');s.innerHTML='';
-  (BROKER_PAIRS[b]||[]).forEach(p=>{const o=document.createElement('option');o.value=p.v;o.textContent=p.n;s.appendChild(o);});
+  (BROKER_PAIRS[b]||[]).forEach(p=>{
+    const o=document.createElement('option');
+    o.value=p.v;
+    o.textContent = (p.ok ? '✅ ' : '❌ ') + p.n;
+    s.appendChild(o);
+  });
   updatePairCard();
 }
 
@@ -436,6 +474,7 @@ function openBoard(){
   loadBroker();renderWatchlist();startPriceRefresh();
   document.getElementById('linkDisplay').textContent=BOARD_URL;
   loadHistoryUI();
+  setRingProgress(100,'#58a6ff');
   setRingArrow('wait','#58a6ff');
 }
 
@@ -458,7 +497,7 @@ function getWatchlist(){try{return JSON.parse(localStorage.getItem(KEY_WATCH)||'
 function saveWatchlist(l){localStorage.setItem(KEY_WATCH,JSON.stringify(l));}
 
 function addToWatchlist(){
-  const s=document.getElementById('watchPairSelect');const v=s.value,n=s.options[s.selectedIndex].text;
+  const s=document.getElementById('watchPairSelect');const v=s.value;const n=s.options[s.selectedIndex].text.replace('✅ ','').replace('❌ ','');
   let l=getWatchlist();if(l.find(x=>x.v===v)){showToast('⚠️ Hai');return;}
   l.push({v:v,n:n});saveWatchlist(l);renderWatchlist();showToast('✅ '+n);
 }
@@ -520,13 +559,15 @@ function loadHistoryUI(){try{const h=JSON.parse(localStorage.getItem(KEY_HIST)||
 function renderHistory(h){const list=document.getElementById('historyList');if(!h||h.length===0){list.innerHTML='Abhi koi signal nahi';return;}list.innerHTML=h.map(x=>{const cls=x.sig==='BUY'?'h-buy':x.sig==='SELL'?'h-sell':'h-wait';return '<div class="histItem">'+x.time+' — '+x.pair+' — <span class="'+cls+'">'+x.sig+'</span> — '+x.conf+'%</div>';}).join('');}
 function addHistory(sig,pair,conf){let h=[];try{h=JSON.parse(localStorage.getItem(KEY_HIST)||'[]');}catch(e){}const time=new Date().toLocaleTimeString('en-PK',{hour:'2-digit',minute:'2-digit'});h.unshift({sig:sig,pair:pair,conf:conf,time:time});if(h.length>10)h.pop();localStorage.setItem(KEY_HIST,JSON.stringify(h));renderHistory(h);}
 
+// ⭐ FIXED - circumference = 2 * π * 85 = 534.07
 function setRingProgress(pct,color){
-  const c=534;
-  const off=c-(c*pct/100);
-  const r=document.getElementById('ringFg');
-  if(!r)return;
-  r.style.stroke=color;
-  r.style.strokeDashoffset=off;
+  const C = 534.07;
+  const off = C - (C * pct / 100);
+  const r = document.getElementById('ringFg');
+  if(!r) return;
+  r.style.stroke = color;
+  r.style.strokeDasharray = C;
+  r.style.strokeDashoffset = off;
 }
 
 function setRingArrow(txt,color){
@@ -560,7 +601,7 @@ async function analyze(){
   const pair=document.getElementById('pair').value;if(!pair){alert('Pair select karein');return;}
   const tf=document.getElementById('tf').value;
   const tfName=document.getElementById('tf').options[document.getElementById('tf').selectedIndex].text;
-  const pairName=document.getElementById('pair').options[document.getElementById('pair').selectedIndex].text;
+  const pairName=document.getElementById('pair').options[document.getElementById('pair').selectedIndex].text.replace('✅ ','').replace('❌ ','');
   const bTF=getTFBinance(tf);
 
   if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
@@ -572,11 +613,14 @@ async function analyze(){
   document.getElementById('tfLabel').textContent='Timeframe: '+tfName;
 
   btn.classList.add('loading');btn.textContent='⏳ Analyzing...';
-  setRingProgress(10,'#58a6ff');setRingArrow('wait','#58a6ff');
+  setRingProgress(0,'#58a6ff');
+  setRingArrow('wait','#58a6ff');
 
   try{
-    await new Promise(r=>setTimeout(r,600));
-    setRingProgress(40,'#58a6ff');
+    await new Promise(r=>setTimeout(r,400));
+    setRingProgress(30,'#58a6ff');
+    await new Promise(r=>setTimeout(r,400));
+    setRingProgress(60,'#58a6ff');
 
     const candles=await getData(pair,bTF,100);
     const closes=candles.map(c=>c.close);
@@ -584,7 +628,7 @@ async function analyze(){
     const lows=candles.map(c=>c.low);
     const price=closes[closes.length-1];
 
-    setRingProgress(70,'#58a6ff');
+    setRingProgress(85,'#58a6ff');
 
     let trend='NEUTRAL';
     try{const tr=await getData(pair,bTF,250);const tc=tr.map(c=>c.close);if(tc.length>=200){const e200=ema(tc,200);trend=price>e200?'BUY':'SELL';}}catch(e){}
@@ -624,6 +668,7 @@ async function analyze(){
     if(bv>=3&&bv>sv2&&tBuy){signal='BUY';conf=act>0?Math.round((bv/act)*100):0;}
     else if(sv2>=3&&sv2>bv&&tSell){signal='SELL';conf=act>0?Math.round((sv2/act)*100):0;}
 
+    // ⭐ POORA RING BHARE (100%)
     setRingProgress(100,signal==='BUY'?'#3fb950':signal==='SELL'?'#f85149':'#d29922');
     setRingArrow(signal==='BUY'?'↗':signal==='SELL'?'↘':'wait',signal==='BUY'?'#3fb950':signal==='SELL'?'#f85149':'#d29922');
 
@@ -665,6 +710,7 @@ async function analyze(){
   }catch(e){
     btn.classList.remove('loading');btn.className='analyzeBtn wait';
     btn.textContent='🔍 Analyze';
+    setRingProgress(100,'#f85149');
     setRingArrow('error','#f85149');
     document.getElementById('signalBig').style.display='block';
     document.getElementById('signalBig').textContent='ERROR';

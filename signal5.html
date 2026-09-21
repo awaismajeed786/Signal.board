@@ -167,7 +167,8 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
     <div class="hLogo">
       <div class="moonIcon">
         <svg viewBox="0 0 50 50" width="50" height="50">
-          <path d="M 32 8 A 18 18 0 1 0 32 42 A 14 14 0 1 1 32 8 Z" fill="#ffffff" filter="drop-shadow(0 0 5px rgba(123,192,255,0.8))"/>
+          <circle cx="22" cy="25" r="15" fill="#ffffff" filter="drop-shadow(0 0 5px rgba(123,192,255,0.8))"/>
+          <circle cx="30" cy="22" r="13" fill="#131b2e"/>
         </svg>
       </div>
       <div class="hText">
@@ -248,20 +249,22 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
               <polygon id="arrowHead" points="76,72 58,66 80,55" fill="#ffffff"/>
             </svg>
             <svg id="brainSvg" width="140" height="140" viewBox="0 0 140 140" fill="none" style="display:block; position:absolute;">
-              <!-- Chand chhota + MOON saath -->
-              <path d="M 40 25 A 8 8 0 1 0 40 41 A 6.5 6.5 0 1 1 40 25 Z" fill="#ffffff" filter="drop-shadow(0 0 4px rgba(255,255,255,0.8))"/>
-              <text x="52" y="38" fill="#7bc0ff" font-size="15" font-weight="900" font-family="Arial" letter-spacing="2">MOON</text>
-              <!-- Brain center mein chhota -->
-              <path d="M 70 55 C 61 55 55 60 52 65 C 47 63 41 66 40 71 C 35 73 32 78 33 83 C 30 86 30 91 33 94 C 32 99 37 104 43 104 C 44 109 50 113 55 111 C 58 114 63 116 68 116 C 71 116 75 115 78 112 C 83 115 89 112 91 108 C 96 108 100 103 99 97 C 103 95 103 90 99 87 C 100 82 96 78 92 76 C 91 71 85 68 80 69 C 78 64 74 55 70 55 Z" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
-              <line x1="70" y1="55" x2="70" y2="116" stroke="#ffffff" stroke-width="1.6" opacity="0.65"/>
-              <path d="M 58 63 C 62 67 64 72 62 77" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 49 71 C 53 74 55 78 54 82" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 41 82 C 46 82 49 85 49 89" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 43 94 C 48 92 52 95 53 99" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 82 63 C 78 67 76 72 78 77" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 91 71 C 87 74 85 78 86 82" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 99 82 C 94 82 91 85 91 89" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 97 94 C 92 92 88 95 87 99" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <!-- Chand - do circles se (white bada + dark chhota) -->
+              <circle cx="35" cy="35" r="16" fill="#ffffff" filter="drop-shadow(0 0 6px rgba(255,255,255,0.9))"/>
+              <circle cx="43" cy="32" r="14" fill="#0d1424"/>
+              <!-- MOON text -->
+              <text x="58" y="42" fill="#7bc0ff" font-size="18" font-weight="900" font-family="Arial" letter-spacing="2">MOON</text>
+              <!-- Brain -->
+              <path d="M 70 68 C 61 68 55 73 52 79 C 47 77 41 80 40 86 C 35 88 32 93 33 98 C 30 101 30 106 33 109 C 32 114 37 119 43 119 C 44 124 50 128 55 126 C 58 129 63 131 68 131 C 71 131 75 130 78 127 C 83 130 89 127 91 123 C 96 123 100 118 99 112 C 103 110 103 105 99 102 C 100 97 96 93 92 91 C 91 86 85 83 80 84 C 78 79 74 68 70 68 Z" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+              <line x1="70" y1="68" x2="70" y2="131" stroke="#ffffff" stroke-width="1.6" opacity="0.65"/>
+              <path d="M 58 76 C 62 80 64 85 62 90" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 49 84 C 53 87 55 91 54 95" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 41 96 C 46 96 49 99 49 103" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 43 108 C 48 106 52 109 53 113" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 82 76 C 78 80 76 85 78 90" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 91 84 C 87 87 85 91 86 95" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 99 96 C 94 96 91 99 91 103" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 97 108 C 92 106 88 109 87 113" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
             </svg>
           </div>
         </div>

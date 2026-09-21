@@ -10,23 +10,44 @@
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Arial,sans-serif; -webkit-tap-highlight-color:transparent; }
 body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 
-/* ================= INTRO / SPLASH SCREEN (CHAND AUR SITARA) ================= */
-#introScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e1a; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:10005; transition: opacity 1s ease; }
-.introLogo { animation: zoomIn 3.5s ease-out forwards; display: flex; justify-content: center; align-items: center; }
-.introText { color: #fff; font-size: 36px; font-weight: 900; margin-top: 25px; letter-spacing: 5px; opacity: 0; animation: fadeInUp 2.5s ease-out 1.5s forwards; text-shadow: 0 0 15px rgba(255,255,255,0.4); }
-.introSub { color: #f5c542; font-size: 15px; font-weight: 700; letter-spacing: 8px; margin-top: 8px; opacity: 0; animation: fadeInUp 2.5s ease-out 2.5s forwards; text-shadow: 0 0 10px rgba(245,197,66,0.6); }
-@keyframes zoomIn { 0% { transform: scale(0.1); opacity: 0; } 60% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
-@keyframes fadeInUp { 0% { transform: translateY(30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
-.introHide { opacity: 0; pointer-events: none; }
-/* ========================================================================== */
+#installScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e1a; display:none; flex-direction:column; justify-content:center; align-items:center; padding:30px; z-index:10010; text-align:center; }
+#installScreen .instLogo { margin-bottom: 25px; animation: pulseGlow 2s ease-in-out infinite; }
+#installScreen h1 { color: #fff; font-size: 32px; font-weight: 900; letter-spacing: 4px; margin-bottom: 8px; text-shadow: 0 0 20px rgba(63,185,80,0.5); }
+#installScreen .sub { color: #f5c542; font-size: 13px; font-weight: 700; letter-spacing: 6px; margin-bottom: 40px; }
+#installScreen .instBtn { width: 100%; max-width: 320px; padding: 18px; font-size: 18px; font-weight: 800; border: none; border-radius: 14px; background: linear-gradient(135deg,#2ea043,#3fb950); color: #fff; box-shadow: 0 6px 25px rgba(63,185,80,0.5); cursor: pointer; margin-bottom: 15px; }
+#installScreen .instBtn:active { transform: scale(0.97); }
+#installScreen .instHint { color: #8b949e; font-size: 12px; line-height: 1.6; max-width: 320px; margin-top: 20px; padding: 15px; background: #131b2e; border-radius: 10px; border: 1px solid #1e2a44; }
+@keyframes pulseGlow { 0%,100% { filter: drop-shadow(0 0 15px rgba(63,185,80,0.6)); } 50% { filter: drop-shadow(0 0 35px rgba(63,185,80,1)); } }
 
-#disclaimerScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e1a; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px; z-index:10000; }
+#introScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e1a; display:none; justify-content:center; align-items:center; z-index:10005; transition: opacity 1.2s ease; overflow:hidden; }
+.introWrap { position:relative; width: 260px; height: 260px; display:flex; justify-content:center; align-items:center; }
+.moonSvg { position:absolute; animation: moonRise 3s ease-out forwards; }
+.introText { position:absolute; color:#fff; font-size:34px; font-weight:900; letter-spacing:5px; opacity:0; text-shadow: 0 0 25px rgba(255,255,255,0.9), 0 0 45px rgba(123,192,255,0.5); animation: emergeText 2s ease-out 3s forwards; white-space:nowrap; z-index:2; }
+.introSub { position:absolute; color:#f5c542; font-size:14px; font-weight:700; letter-spacing:8px; opacity:0; text-shadow: 0 0 15px rgba(245,197,66,1), 0 0 30px rgba(245,197,66,0.5); animation: emergeSub 2s ease-out 4.5s forwards; white-space:nowrap; z-index:2; }
+@keyframes moonRise { 
+   0% { transform: translateY(100vh) rotate(-180deg) scale(0.2); opacity: 0; } 
+   60% { transform: translateY(0) rotate(0deg) scale(1.1); opacity: 1; } 
+   100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
+}
+@keyframes emergeText { 
+   0% { transform: scale(0); opacity: 0; filter: blur(15px); } 
+   60% { transform: scale(1.2) translateY(-80px); opacity: 1; filter: blur(0); } 
+   100% { transform: scale(1) translateY(-80px); opacity: 1; filter: blur(0); } 
+}
+@keyframes emergeSub { 
+   0% { transform: scale(0); opacity: 0; filter: blur(15px); } 
+   60% { transform: scale(1.2) translateY(85px); opacity: 1; filter: blur(0); } 
+   100% { transform: scale(1) translateY(85px); opacity: 1; filter: blur(0); } 
+}
+.introHide { opacity: 0; pointer-events: none; }
+
+#disclaimerScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e1a; display:none; flex-direction:column; justify-content:center; align-items:center; padding:20px; z-index:10000; }
 #disclaimerScreen h2 { color:#f85149; margin-bottom:15px; text-align:center; font-size:20px; }
 .discBox { background:#131b2e; border:1px solid #1e2a44; border-radius:12px; padding:16px; max-width:400px; color:#c9d1d9; font-size:12px; line-height:1.6; margin-bottom:20px; max-height:55vh; overflow-y:auto; text-align:left; }
 .discBox p { margin-bottom: 10px; }
 .discBox b { color: #f85149; }
 #disclaimerScreen button { width:100%; max-width:400px; padding:15px; border-radius:10px; border:none; background:#238636; color:#fff; font-size:16px; font-weight:bold; cursor:pointer; }
-#loginScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e1a; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px; z-index:9999; }
+#loginScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e1a; display:none; flex-direction:column; justify-content:center; align-items:center; padding:20px; z-index:9999; }
 #loginScreen h2 { color:#58a6ff; margin-bottom:20px; font-size:22px; text-align:center; }
 #loginScreen input { width:100%; max-width:320px; padding:14px; margin:8px 0; border-radius:10px; border:1px solid #1e2a44; background:#131b2e; color:#fff; font-size:16px; text-align:center; }
 #loginScreen button { width:100%; max-width:320px; padding:14px; margin-top:15px; border-radius:10px; border:none; background:#238636; color:#fff; font-size:16px; font-weight:bold; cursor:pointer; }
@@ -210,20 +231,31 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 </head>
 <body>
 
-<!-- ================= INTRO SPLASH SCREEN (CHAND AUR SITARA) ================= -->
-<div id="introScreen">
-  <div class="introLogo">
-    <svg viewBox="0 0 100 100" width="180" height="180">
-      <!-- Crescent Moon (Chand) -->
+<div id="installScreen">
+  <div class="instLogo">
+    <svg viewBox="0 0 100 100" width="140" height="140">
       <path d="M 50 10 A 40 40 0 1 0 90 50 A 30 30 0 1 1 50 10 Z" fill="#ffffff" filter="drop-shadow(0 0 12px rgba(255,255,255,0.9))"/>
-      <!-- Golden Star (Sitara) -->
       <path d="M 78 18 L 81 26 L 90 26 L 83 32 L 86 41 L 78 35 L 70 41 L 73 32 L 66 26 L 75 26 Z" fill="#f5c542" filter="drop-shadow(0 0 10px rgba(245,197,66,1))"/>
     </svg>
   </div>
-  <div class="introText">MOON AI</div>
-  <div class="introSub">TRADING BOARD</div>
+  <h1>MOON AI</h1>
+  <div class="sub">TRADING BOARD</div>
+  <button class="instBtn" onclick="installApp()" id="installBtn">📲 Install App</button>
+  <div class="instHint" id="installHint">
+    Agar button kaam na kare, toh upar right corner ke <b>3 dots (⋮)</b> par tap karein aur <b>"Install app"</b> ya <b>"Add to Home screen"</b> select karein.
+  </div>
 </div>
-<!-- ========================================================================== -->
+
+<div id="introScreen">
+  <div class="introWrap">
+    <svg class="moonSvg" viewBox="0 0 100 100" width="180" height="180">
+      <path d="M 50 10 A 40 40 0 1 0 90 50 A 30 30 0 1 1 50 10 Z" fill="#ffffff" filter="drop-shadow(0 0 12px rgba(255,255,255,0.9))"/>
+      <path d="M 78 18 L 81 26 L 90 26 L 83 32 L 86 41 L 78 35 L 70 41 L 73 32 L 66 26 L 75 26 Z" fill="#f5c542" filter="drop-shadow(0 0 10px rgba(245,197,66,1))"/>
+    </svg>
+    <div class="introText">MOON AI</div>
+    <div class="introSub">TRADING BOARD</div>
+  </div>
+</div>
 
 <div id="disclaimerScreen">
   <h2>🛑 ZAROORI EHTIYAT (DISCLAIMER)</h2>
@@ -252,9 +284,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
   <div class="appHeader">
     <div class="hLogo">
       <div class="moonIcon">
-        <svg viewBox="0 0 50 50" width="50" height="50">
-          <path d="M 32 8 A 18 18 0 1 0 32 42 A 14 14 0 1 1 32 8 Z" fill="#ffffff" filter="drop-shadow(0 0 5px rgba(123,192,255,0.8))"/>
-        </svg>
+        <img src="icon-512.png" style="width:45px; height:45px; border-radius:10px; object-fit:contain;">
       </div>
       <div class="hText">
         <div class="t1">Moon AI</div>
@@ -496,6 +526,27 @@ const KEY_PASS='sb_password', KEY_HINT='sb_hint', KEY_BROKER='sb_broker', KEY_WA
 const KEY_WA_NUM='sb_wa_num', KEY_WA_DAY='sb_wa_day', KEY_WA_TIME='sb_wa_time', KEY_WA_LAST='sb_wa_last';
 const BOARD_URL='https://awaismajeed786.github.io/Signal.board/signal5.html';
 const HISTORY_DAYS = 90;
+
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted install');
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    alert('Install option khud Chrome menu mein hai:\n\n1. Upar 3 dots (⋮) par tap karein\n2. "Install app" ya "Add to Home screen" select karein');
+  }
+}
 
 const PAIR_DATA = {
   'EURUSDT':{sym:'€',bg:'#003399'},'GBPUSDT':{sym:'£',bg:'#C8102E'},'USDJPY':{sym:'¥',bg:'#BC002D'},
@@ -1223,21 +1274,30 @@ function acceptDisclaimer() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-   // Intro Screen Logic (5.5 second baad gayab hoga)
-   setTimeout(() => {
-      const intro = document.getElementById('introScreen');
-      if(intro) {
-         intro.classList.add('introHide');
-         setTimeout(() => intro.style.display = 'none', 1000); // 1 second fade out
-      }
-   }, 5500); // 5.5 seconds
+   const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-   if(localStorage.getItem('disclaimer_accepted') === 'yes') {
-       document.getElementById('disclaimerScreen').style.display = 'none';
-       document.getElementById('loginScreen').style.display = 'flex';
-       checkLogin();
+   if(isStandalone) {
+       document.getElementById('introScreen').style.display = 'flex';
+       setTimeout(() => {
+          const intro = document.getElementById('introScreen');
+          if(intro) {
+             intro.classList.add('introHide');
+             setTimeout(() => intro.style.display = 'none', 1200);
+          }
+          if(localStorage.getItem('disclaimer_accepted') === 'yes') {
+              document.getElementById('disclaimerScreen').style.display = 'none';
+              document.getElementById('loginScreen').style.display = 'flex';
+              checkLogin();
+          } else {
+              document.getElementById('disclaimerScreen').style.display = 'flex';
+              document.getElementById('loginScreen').style.display = 'none';
+          }
+       }, 10000);
+
    } else {
-       document.getElementById('disclaimerScreen').style.display = 'flex';
+       document.getElementById('installScreen').style.display = 'flex';
+       document.getElementById('introScreen').style.display = 'none';
+       document.getElementById('disclaimerScreen').style.display = 'none';
        document.getElementById('loginScreen').style.display = 'none';
    }
 });

@@ -57,7 +57,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 #mainBoard { display:none; }
 .appHeader { max-width:520px; margin:0 auto; padding:12px 16px; background:#131b2e; border-bottom:1px solid #1e2a44; display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .hLogo { display:flex; align-items:center; gap:6px; }
-.moonIcon { width:42px; height:42px; position:relative; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.moonIcon { width:45px; height:45px; position:relative; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
 .hText { text-align:left; line-height:1.15; }
 .hText .t1 { font-size:15px; font-weight:700; color:#fff; }
 .hText .t2 { font-size:11px; color:#7bc0ff; font-weight:500; }
@@ -222,6 +222,14 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .profileBox .err { color:#f85149; font-size:12px; margin-top:8px; }
 .profileBox .ok { color:#3fb950; font-size:12px; margin-top:8px; }
 .linkBox { background:#0a0e1a; border:1px solid #1e2a44; border-radius:8px; padding:10px; font-size:11px; color:#58a6ff; word-break:break-all; margin-top:8px; }
+
+.switch { position:relative; display:inline-block; width:52px; height:28px; flex-shrink:0; }
+.switch input { opacity:0; width:0; height:0; }
+.slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#30363d; transition:.3s; border-radius:28px; }
+.slider:before { position:absolute; content:""; height:22px; width:22px; left:3px; bottom:3px; background:#fff; transition:.3s; border-radius:50%; box-shadow:0 2px 4px rgba(0,0,0,0.3); }
+.switch input:checked + .slider { background:#238636; box-shadow:0 0 10px rgba(35,134,54,0.5); }
+.switch input:checked + .slider:before { transform:translateX(24px); }
+
 #toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:#238636; color:#fff; padding:11px 22px; border-radius:10px; font-size:13px; z-index:9999; display:none; }
 .note { font-size:11px; color:#8b949e; padding:10px; text-align:center; }
 .pairStatus { display:inline-block; margin-left:6px; font-size:14px; font-weight:900; vertical-align:middle; }
@@ -234,8 +242,9 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 <div id="installScreen">
   <div class="instLogo">
     <svg viewBox="0 0 100 100" width="140" height="140">
-      <path d="M 50 10 A 40 40 0 1 0 90 50 A 30 30 0 1 1 50 10 Z" fill="#ffffff" filter="drop-shadow(0 0 12px rgba(255,255,255,0.9))"/>
-      <path d="M 78 18 L 81 26 L 90 26 L 83 32 L 86 41 L 78 35 L 70 41 L 73 32 L 66 26 L 75 26 Z" fill="#f5c542" filter="drop-shadow(0 0 10px rgba(245,197,66,1))"/>
+      <circle cx="55" cy="50" r="42" fill="#ffffff" filter="drop-shadow(0 0 12px rgba(255,255,255,0.9))"/>
+      <circle cx="72" cy="42" r="36" fill="#0a0e1a"/>
+      <path d="M 80 8 L 83 17 L 92 17 L 85 23 L 88 32 L 80 26 L 72 32 L 75 23 L 68 17 L 77 17 Z" fill="#f5c542" filter="drop-shadow(0 0 10px rgba(245,197,66,1))"/>
     </svg>
   </div>
   <h1>MOON AI</h1>
@@ -249,8 +258,9 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 <div id="introScreen">
   <div class="introWrap">
     <svg class="moonSvg" viewBox="0 0 100 100" width="180" height="180">
-      <path d="M 50 10 A 40 40 0 1 0 90 50 A 30 30 0 1 1 50 10 Z" fill="#ffffff" filter="drop-shadow(0 0 12px rgba(255,255,255,0.9))"/>
-      <path d="M 78 18 L 81 26 L 90 26 L 83 32 L 86 41 L 78 35 L 70 41 L 73 32 L 66 26 L 75 26 Z" fill="#f5c542" filter="drop-shadow(0 0 10px rgba(245,197,66,1))"/>
+      <circle cx="55" cy="50" r="42" fill="#ffffff" filter="drop-shadow(0 0 12px rgba(255,255,255,0.9))"/>
+      <circle cx="72" cy="42" r="36" fill="#0a0e1a"/>
+      <path d="M 80 8 L 83 17 L 92 17 L 85 23 L 88 32 L 80 26 L 72 32 L 75 23 L 68 17 L 77 17 Z" fill="#f5c542" filter="drop-shadow(0 0 10px rgba(245,197,66,1))"/>
     </svg>
     <div class="introText">MOON AI</div>
     <div class="introSub">TRADING BOARD</div>
@@ -284,10 +294,10 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
   <div class="appHeader">
     <div class="hLogo">
       <div class="moonIcon">
-        <!-- CHAND + GOLDEN SITARA (Upar, koi green arrow nahi) -->
         <svg viewBox="0 0 100 100" width="42" height="42">
-          <path d="M 55 20 A 30 30 0 1 0 55 80 A 22 22 0 1 1 55 20 Z" fill="#ffffff" filter="drop-shadow(0 0 3px rgba(255,255,255,0.8))"/>
-          <path d="M 78 12 L 80 19 L 88 19 L 82 24 L 84 31 L 78 26 L 72 31 L 74 24 L 68 19 L 76 19 Z" fill="#f5c542" filter="drop-shadow(0 0 3px rgba(245,197,66,1))"/>
+          <circle cx="55" cy="50" r="40" fill="#ffffff" filter="drop-shadow(0 0 4px rgba(255,255,255,0.9))"/>
+          <circle cx="70" cy="44" r="34" fill="#0a0e1a"/>
+          <path d="M 78 10 L 81 18 L 89 18 L 83 23 L 85 31 L 78 26 L 71 31 L 73 23 L 67 18 L 75 18 Z" fill="#f5c542" filter="drop-shadow(0 0 3px rgba(245,197,66,1))"/>
         </svg>
       </div>
       <div class="hText">
@@ -367,7 +377,6 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
               <polyline id="arrowLine" points="22,22 42,44 52,32 76,72" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
               <polygon id="arrowHead" points="76,72 58,66 80,55" fill="#ffffff"/>
             </svg>
-            <!-- AAPKI APNI IMAGE (icon-192.png) -->
             <img id="brainSvg" src="icon-192.png" style="display:block; position:absolute; width:140px; height:140px; object-fit:contain; border-radius:50%;">
           </div>
         </div>
@@ -436,13 +445,30 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 
     <div class="page" id="profilePage">
       <h2>👤 Profile</h2>
+
+      <!-- ⭐ COMBINED PASSWORD BOX -->
       <div class="profileBox">
-        <h3>🔐 Password Change</h3>
-        <input type="password" id="oldPass" placeholder="Purana password">
-        <input type="password" id="newPass" placeholder="Naya password">
-        <input type="text" id="newHint" placeholder="Naya hint (optional)">
-        <button class="btn-green" onclick="changePassword()">Password Change Karein</button>
-        <div class="err" id="settingsError"></div>
+        <h3>🔐 Password Settings</h3>
+        
+        <!-- Toggle Switch -->
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #1e2a44; margin-bottom:12px;">
+          <span style="color:#fff; font-size:14px; font-weight:600;">Password ON / OFF</span>
+          <label class="switch">
+            <input type="checkbox" id="passToggle" onchange="togglePasswordFeature()">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div style="color:#8b949e; font-size:11px; margin-bottom:14px; line-height:1.5;" id="passStatusText">App khulte waqt password mangega</div>
+        
+        <!-- Change Password Section (sirf tab dikhe jab password ON ho) -->
+        <div id="passChangeSection">
+          <div style="color:#58a6ff; font-size:12px; font-weight:700; margin-bottom:8px;">Password Change Karein</div>
+          <input type="password" id="oldPass" placeholder="Purana password">
+          <input type="password" id="newPass" placeholder="Naya password">
+          <input type="text" id="newHint" placeholder="Naya hint (optional)">
+          <button class="btn-green" onclick="changePassword()">Password Change Karein</button>
+          <div class="err" id="settingsError"></div>
+        </div>
       </div>
 
       <div class="profileBox">
@@ -516,6 +542,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 <script>
 const KEY_PASS='sb_password', KEY_HINT='sb_hint', KEY_BROKER='sb_broker', KEY_WATCH='sb_watchlist', KEY_HIST='sb_history';
 const KEY_WA_NUM='sb_wa_num', KEY_WA_DAY='sb_wa_day', KEY_WA_TIME='sb_wa_time', KEY_WA_LAST='sb_wa_last';
+const KEY_PASS_ENABLED='sb_pass_enabled';
 const BOARD_URL='https://awaismajeed786.github.io/Signal.board/signal5.html';
 const HISTORY_DAYS = 90;
 
@@ -589,7 +616,7 @@ function switchTab(tab){
   document.querySelectorAll('.navItem').forEach(n=>n.classList.remove('active'));
   if(tab==='signals'){document.getElementById('signalPage').classList.add('active');document.getElementById('nav-signals').classList.add('active');}
   else if(tab==='watch'){document.getElementById('watchPage').classList.add('active');document.getElementById('nav-watch').classList.add('active');renderWatchlist();}
-  else{document.getElementById('profilePage').classList.add('active');document.getElementById('nav-profile').classList.add('active');document.getElementById('linkDisplay').textContent=BOARD_URL;loadWaSettings();}
+  else{document.getElementById('profilePage').classList.add('active');document.getElementById('nav-profile').classList.add('active');document.getElementById('linkDisplay').textContent=BOARD_URL;loadWaSettings();loadPasswordSetting();}
 }
 
 function toggleSel(){ document.getElementById('customSelect').classList.toggle('open'); }
@@ -651,7 +678,59 @@ function selectBroker(n){
 
 function loadBroker(){const s=localStorage.getItem(KEY_BROKER);if(s)selectBroker(s);else selectBroker('Quotex');}
 
+function loadPasswordSetting() {
+  const enabled = localStorage.getItem(KEY_PASS_ENABLED);
+  const toggle = document.getElementById('passToggle');
+  const statusText = document.getElementById('passStatusText');
+  const changeSection = document.getElementById('passChangeSection');
+  if(!toggle || !statusText) return;
+  if(enabled === 'no') {
+    toggle.checked = false;
+    statusText.textContent = 'Password OFF — App seedha khulega bina password';
+    statusText.style.color = '#f85149';
+    if(changeSection) changeSection.style.display = 'none';
+  } else {
+    toggle.checked = true;
+    statusText.textContent = 'Password ON — App khulte waqt password mangega';
+    statusText.style.color = '#3fb950';
+    if(changeSection) changeSection.style.display = 'block';
+  }
+}
+
+function togglePasswordFeature() {
+  const toggle = document.getElementById('passToggle');
+  const statusText = document.getElementById('passStatusText');
+  const changeSection = document.getElementById('passChangeSection');
+  if(toggle.checked) {
+    localStorage.setItem(KEY_PASS_ENABLED, 'yes');
+    statusText.textContent = 'Password ON — App khulte waqt password mangega';
+    statusText.style.color = '#3fb950';
+    if(changeSection) changeSection.style.display = 'block';
+    showToast('🔐 Password ON ho gaya');
+  } else {
+    localStorage.setItem(KEY_PASS_ENABLED, 'no');
+    statusText.textContent = 'Password OFF — App seedha khulega bina password';
+    statusText.style.color = '#f85149';
+    if(changeSection) changeSection.style.display = 'none';
+    sessionStorage.setItem('sb_session', 'active');
+    showToast('🔓 Password OFF ho gaya');
+  }
+}
+
 function checkLogin(){
+  if(sessionStorage.getItem('sb_session') === 'active') {
+      document.getElementById('disclaimerScreen').style.display = 'none';
+      document.getElementById('loginScreen').style.display = 'none';
+      openBoard();
+      return;
+  }
+  if(localStorage.getItem(KEY_PASS_ENABLED) === 'no') {
+      sessionStorage.setItem('sb_session', 'active');
+      document.getElementById('disclaimerScreen').style.display = 'none';
+      document.getElementById('loginScreen').style.display = 'none';
+      openBoard();
+      return;
+  }
   const sp=localStorage.getItem(KEY_PASS);
   if(!sp){document.getElementById('loginTitle').textContent='🔐 Password Set Karein';document.getElementById('passConfirm').style.display='block';document.getElementById('hintInput').style.display='block';document.getElementById('loginBtn').textContent='Set Karein';document.getElementById('resetLink').style.display='none';}
   else{document.getElementById('loginTitle').textContent='🔐 Password Daalein';document.getElementById('passConfirm').style.display='none';document.getElementById('hintInput').style.display='none';document.getElementById('loginBtn').textContent='Kholein';document.getElementById('resetLink').style.display='block';const h=localStorage.getItem(KEY_HINT);if(h)document.getElementById('hintShow').textContent='💡 Hint: '+h;}
@@ -663,9 +742,11 @@ function handleLogin(){
     const c=document.getElementById('passConfirm').value;const h=document.getElementById('hintInput').value;
     if(pass.length<3){e.textContent='3+ characters';return;}
     if(pass!==c){e.textContent='Match nahi';return;}
-    localStorage.setItem(KEY_PASS,pass);if(h)localStorage.setItem(KEY_HINT,h);e.textContent='';openBoard();
+    localStorage.setItem(KEY_PASS,pass);if(h)localStorage.setItem(KEY_HINT,h);
+    sessionStorage.setItem('sb_session','active');
+    e.textContent='';openBoard();
   }else{
-    if(pass===sp){e.textContent='';openBoard();}else e.textContent='❌ Galat password';
+    if(pass===sp){sessionStorage.setItem('sb_session','active');e.textContent='';openBoard();}else e.textContent='❌ Galat password';
   }
 }
 
@@ -686,7 +767,7 @@ function openBoard(){
   setTimeout(checkAutoWaSend, 2000);
 }
 
-function resetPassword(){if(confirm('Reset?')){localStorage.removeItem(KEY_PASS);localStorage.removeItem(KEY_HINT);location.reload();}}
+function resetPassword(){if(confirm('Reset?')){sessionStorage.removeItem('sb_session');localStorage.removeItem(KEY_PASS);localStorage.removeItem(KEY_HINT);location.reload();}}
 
 function changePassword(){
   const o=document.getElementById('oldPass').value,n=document.getElementById('newPass').value,h=document.getElementById('newHint').value;
@@ -1276,6 +1357,17 @@ window.addEventListener('DOMContentLoaded', () => {
    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
    if(isStandalone) {
+       if(sessionStorage.getItem('sb_session') === 'active') {
+           if(localStorage.getItem('disclaimer_accepted') === 'yes') {
+               document.getElementById('introScreen').style.display = 'none';
+               openBoard();
+           } else {
+               document.getElementById('introScreen').style.display = 'none';
+               document.getElementById('disclaimerScreen').style.display = 'flex';
+           }
+           return;
+       }
+       
        document.getElementById('introScreen').style.display = 'flex';
        setTimeout(() => {
           const intro = document.getElementById('introScreen');

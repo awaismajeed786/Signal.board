@@ -4,19 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Moon AI Trading Board</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a0e1a">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Arial,sans-serif; -webkit-tap-highlight-color:transparent; }
 body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
-
-/* ================= DISCLAIMER CSS (NAYA ADDED) ================= */
 #disclaimerScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e1a; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px; z-index:10000; }
 #disclaimerScreen h2 { color:#f85149; margin-bottom:15px; text-align:center; font-size:20px; }
 .discBox { background:#131b2e; border:1px solid #1e2a44; border-radius:12px; padding:16px; max-width:400px; color:#c9d1d9; font-size:12px; line-height:1.6; margin-bottom:20px; max-height:55vh; overflow-y:auto; text-align:left; }
 .discBox p { margin-bottom: 10px; }
 .discBox b { color: #f85149; }
 #disclaimerScreen button { width:100%; max-width:400px; padding:15px; border-radius:10px; border:none; background:#238636; color:#fff; font-size:16px; font-weight:bold; cursor:pointer; }
-/* ============================================================== */
-
 #loginScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e1a; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px; z-index:9999; }
 #loginScreen h2 { color:#58a6ff; margin-bottom:20px; font-size:22px; text-align:center; }
 #loginScreen input { width:100%; max-width:320px; padding:14px; margin:8px 0; border-radius:10px; border:1px solid #1e2a44; background:#131b2e; color:#fff; font-size:16px; text-align:center; }
@@ -201,23 +199,17 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 </head>
 <body>
 
-<!-- ================= DISCLAIMER HTML (NAYA ADDED) ================= -->
 <div id="disclaimerScreen">
   <h2>🛑 ZAROORI EHTIYAT (DISCLAIMER)</h2>
   <div class="discBox">
     <p><b>1. Maqsad:</b> Yeh app ("Moon AI Trading Board") sirf educational, learning aur market analysis ke maqsad ke liye banaya gaya hai. Isme diye gaye signals ya analysis koi financial advice nahi hain.</p>
-    
     <p><b>2. Risk Ka Elaan:</b> Trading aur investing mein bohat zyada risk hota hai. Market mein paisa upar bhi jata hai aur neeche bhi. Aap apna paisa apni marzi aur apne risk par lagayenge. Kisi bhi trade mein profit ya loss ka pura risk aapka khud ka hoga.</p>
-    
     <p><b>3. Koi Guarantee Nahi:</b> Hum kisi bhi trade ke profit ki koi guarantee nahi dete. Yeh app koi jaadu nahi hai, yeh sirf market ke indicators par based analysis deti hai.</p>
-    
     <p><b>4. Zimmedari Se Inkaar (Non-Liability):</b> Agar aap is app ke signals ko follow karke trade karte hain aur aapko koi nuksan (loss) hota hai, toh iski poori zimmedari aapki khud ki hogi. <b>App ka developer, owner, ya koi bhi team member aapke kisi bhi financial nuksan, loss, ya profit ke liye hargiz zimmedar nahi hoga.</b></p>
-    
     <p><b>5. Ittefaq:</b> App ko use karne ka matlab hai ke aap in sab baton se poori tarah se ittefaq karte hain aur apni marzi se is app ko use kar rahe hain.</p>
   </div>
   <button onclick="acceptDisclaimer()">✔️ Main Samajh Gaya, I Agree</button>
 </div>
-<!-- =============================================================== -->
 
 <div id="loginScreen">
   <h2 id="loginTitle">🔐 Password Set Karein</h2>
@@ -506,24 +498,15 @@ const BROKER_PAIRS = {
     {v:'BTCUSDT',n:'BTC/USDT',ok:true},{v:'ETHUSDT',n:'ETH/USDT',ok:true}
   ],
   'XM':[
-    {v:'EURUSDT',n:'EUR/USDT',ok:true},
-    {v:'GBPUSDT',n:'GBP/USDT',ok:true},
-    {v:'USDJPY',n:'USD/JPY',ok:false},
-    {v:'AUDUSDT',n:'AUD/USDT',ok:true},
-    {v:'USDCAD',n:'USD/CAD',ok:false},
-    {v:'BTCUSDT',n:'BTC/USDT',ok:true},
-    {v:'ETHUSDT',n:'ETH/USDT',ok:true},
-    {v:'SOLUSDT',n:'SOL/USDT',ok:true},
-    {v:'XRPUSDT',n:'XRP/USDT',ok:true},
-    {v:'DOGEUSDT',n:'DOGE/USDT',ok:true},
-    {v:'LTCUSDT',n:'LTC/USDT',ok:true},
-    {v:'BNBUSDT',n:'BNB/USDT',ok:true},
-    {v:'ADAUSDT',n:'ADA/USDT',ok:true},
-    {v:'DOTUSDT',n:'DOT/USDT',ok:true},
-    {v:'LINKUSDT',n:'LINK/USDT',ok:true},
-    {v:'POLUSDT',n:'POL/USDT',ok:true},
-    {v:'AVAXUSDT',n:'AVAX/USDT',ok:true},
-    {v:'TRXUSDT',n:'TRX/USDT',ok:true}
+    {v:'EURUSDT',n:'EUR/USDT',ok:true},{v:'GBPUSDT',n:'GBP/USDT',ok:true},
+    {v:'USDJPY',n:'USD/JPY',ok:false},{v:'AUDUSDT',n:'AUD/USDT',ok:true},
+    {v:'USDCAD',n:'USD/CAD',ok:false},{v:'BTCUSDT',n:'BTC/USDT',ok:true},
+    {v:'ETHUSDT',n:'ETH/USDT',ok:true},{v:'SOLUSDT',n:'SOL/USDT',ok:true},
+    {v:'XRPUSDT',n:'XRP/USDT',ok:true},{v:'DOGEUSDT',n:'DOGE/USDT',ok:true},
+    {v:'LTCUSDT',n:'LTC/USDT',ok:true},{v:'BNBUSDT',n:'BNB/USDT',ok:true},
+    {v:'ADAUSDT',n:'ADA/USDT',ok:true},{v:'DOTUSDT',n:'DOT/USDT',ok:true},
+    {v:'LINKUSDT',n:'LINK/USDT',ok:true},{v:'POLUSDT',n:'POL/USDT',ok:true},
+    {v:'AVAXUSDT',n:'AVAX/USDT',ok:true},{v:'TRXUSDT',n:'TRX/USDT',ok:true}
   ]
 };
 
@@ -669,7 +652,6 @@ function renderWatchlist(){
   b.innerHTML=l.map(x=>{const d=PAIR_DATA[x.v]||{sym:'?',bg:'#30363d'};return '<div class="watchItem"><div class="left"><div class="lg" style="background:'+d.bg+';">'+d.sym+'</div><div class="nm">'+x.n+'</div></div><div class="del" onclick="removeFromWatchlist(\''+x.v+'\')">✖</div></div>';}).join('');
 }
 
-/* ============ HISTORY 90 DAYS WITH WEEK/DAY TABLES ============ */
 function getTFMs(tf){
   const m = {'30s':30000,'60s':60000,'1m':60000,'3m':180000,'5m':300000,'15m':900000,'30m':1800000,'1h':3600000,'4h':14400000};
   return m[tf] || 60000;
@@ -865,7 +847,6 @@ function renderHistory(){
   }).join('');
 }
 
-/* ============ WHATSAPP WEEKLY REPORT ============ */
 function loadWaSettings(){
   const num = localStorage.getItem(KEY_WA_NUM) || '';
   const day = localStorage.getItem(KEY_WA_DAY) || '5';
@@ -892,10 +873,9 @@ function saveWaSettings(){
   showToast('✅ WhatsApp settings saved');
 }
 
-// ⭐ Friday to Friday week - last Friday se aaj Friday tak
 function getLastFridayStart(){
   const now = new Date();
-  const day = now.getDay(); // 0=Sun, 5=Fri
+  const day = now.getDay();
   const diff = (day - 5 + 7) % 7;
   const fri = new Date(now);
   fri.setDate(now.getDate() - diff);
@@ -909,27 +889,21 @@ function getPreviousFridayStart(){
   return prev;
 }
 
-// ⭐ Weekly report text banayein
 function buildWeeklyReport(){
   const h = getHistory();
-  const weekStart = getPreviousFridayStart(); // Pichhla Friday
-  const weekEnd = getLastFridayStart(); // Yeh Friday
+  const weekStart = getPreviousFridayStart();
+  const weekEnd = getLastFridayStart();
   const weekStartTs = weekStart.getTime();
   const weekEndTs = weekEnd.getTime();
-  
   const weekSignals = h.filter(x => x.timestamp >= weekStartTs && x.timestamp < weekEndTs);
-  
   const fmtFull = (d) => d.toLocaleDateString('en-PK', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
-  
   let msg = '';
   msg += '📊 *MOON AI — WEEKLY SIGNAL REPORT*\n';
   msg += '📅 _' + fmtFull(weekStart) + ' se ' + fmtFull(weekEnd) + '_\n\n';
-  
   if(weekSignals.length === 0){
     msg += '⚠️ Is hafte koi signal nahi aaya.\n';
     return msg;
   }
-  
   const total = weekSignals.length;
   const correct = weekSignals.filter(x=>x.correct===true).length;
   const wrong = weekSignals.filter(x=>x.correct===false).length;
@@ -938,7 +912,6 @@ function buildWeeklyReport(){
   const sells = weekSignals.filter(x=>x.sig==='SELL').length;
   const completed = correct + wrong;
   const wp = completed > 0 ? Math.round((correct/completed)*100) : 0;
-  
   msg += '━━━━━━━━━━━━━━━\n';
   msg += '📈 *TOTAL WEEKLY STATS*\n';
   msg += '━━━━━━━━━━━━━━━\n';
@@ -949,12 +922,9 @@ function buildWeeklyReport(){
   msg += '❌ Wrong: *' + wrong + '*\n';
   msg += '⏳ Pending: *' + pending + '*\n';
   msg += '🎯 Win Rate: *' + wp + '%*\n\n';
-  
-  // Day by day
   msg += '━━━━━━━━━━━━━━━\n';
   msg += '📅 *DAILY BREAKDOWN*\n';
   msg += '━━━━━━━━━━━━━━━\n\n';
-  
   const daysMap = {};
   weekSignals.forEach(s => {
     const dk = getDayKey(s.timestamp);
@@ -962,7 +932,6 @@ function buildWeeklyReport(){
     daysMap[dk].push(s);
   });
   const sortedDays = Object.keys(daysMap).sort((a,b)=>parseInt(a)-parseInt(b));
-  
   sortedDays.forEach(dk => {
     const ds = daysMap[dk];
     const dObj = new Date(parseInt(dk));
@@ -975,19 +944,15 @@ function buildWeeklyReport(){
     const s2 = ds.filter(x=>x.sig==='SELL').length;
     const comp = c + w;
     const dwp = comp > 0 ? Math.round((c/comp)*100) : 0;
-    
     msg += '🕐 *' + dayName + '* (' + dayDate + ')\n';
     msg += '   Total: ' + ds.length + ' | 🟢 ' + b + ' 🔴 ' + s2 + '\n';
     msg += '   ✓ ' + c + '  ✗ ' + w + '  ⏳ ' + p + '  |  Win: *' + dwp + '%*\n\n';
   });
-  
   msg += '━━━━━━━━━━━━━━━\n';
   msg += '_Moon AI Trading Board_\n';
-  
   return msg;
 }
 
-// ⭐ Auto WhatsApp kholna
 function sendWeeklyReport(){
   const num = localStorage.getItem(KEY_WA_NUM);
   if(!num){ showToast('⚠️ Pehle WhatsApp number save karein'); return false; }
@@ -1007,7 +972,6 @@ function sendWeeklyReportManual(){
   sendWeeklyReport();
 }
 
-// ⭐ Auto-check: agar aaj configured din hai to report bhejein
 function checkAutoWaSend(){
   const num = localStorage.getItem(KEY_WA_NUM);
   if(!num) return;
@@ -1016,11 +980,9 @@ function checkAutoWaSend(){
   const last = localStorage.getItem(KEY_WA_LAST) || '';
   const now = new Date();
   const today = now.toDateString();
-  
   if(now.getDay() !== day) return;
   if(now.getHours() < hour) return;
   if(last === today) return;
-  
   setTimeout(() => {
     const ok = sendWeeklyReport();
     if(ok){
@@ -1029,7 +991,6 @@ function checkAutoWaSend(){
   }, 1500);
 }
 
-/* ============ TIMER ============ */
 function getTFSeconds(tf){const m={'30s':30,'60s':60,'1m':60,'3m':180,'5m':300,'15m':900,'30m':1800,'1h':3600,'4h':14400};return m[tf]||60;}
 function getTFBinance(tf){const m={'30s':'1m','60s':'1m','1m':'1m','3m':'3m','5m':'5m','15m':'15m','30m':'30m','1h':'1h','4h':'4h'};return m[tf]||'1m';}
 
@@ -1061,7 +1022,6 @@ function startTimer(tf,tfName){
   upd();timerInterval=setInterval(upd,1000);
 }
 
-/* ============ ANALYSIS ============ */
 async function getData(sym,tf,lim){
   const u='https://api.binance.com/api/v3/klines?symbol='+sym+'&interval='+tf+'&limit='+(lim||100);
   const r=await fetch(u);const d=await r.json();
@@ -1229,7 +1189,6 @@ document.getElementById('tf').addEventListener('change',function(){
   document.getElementById('tfLabel').textContent='Timeframe: '+this.options[this.selectedIndex].text;
 });
 
-/* ================= DISCLAIMER JS LOGIC (NAYA ADDED) ================= */
 function acceptDisclaimer() {
   localStorage.setItem('disclaimer_accepted', 'yes');
   document.getElementById('disclaimerScreen').style.display = 'none';
@@ -1237,21 +1196,16 @@ function acceptDisclaimer() {
   checkLogin();
 }
 
-// Jab app pehli baar load ho
 window.addEventListener('DOMContentLoaded', () => {
    if(localStorage.getItem('disclaimer_accepted') === 'yes') {
-       // Agar user pehle I Agree daba chuka hai, toh seedha login screen dikhaye
        document.getElementById('disclaimerScreen').style.display = 'none';
        document.getElementById('loginScreen').style.display = 'flex';
        checkLogin();
    } else {
-       // Agar pehli baar aaya hai, toh pehle Disclaimer dikhaye
        document.getElementById('disclaimerScreen').style.display = 'flex';
        document.getElementById('loginScreen').style.display = 'none';
    }
 });
-/* =================================================================== */
-
 </script>
 </body>
 </html>

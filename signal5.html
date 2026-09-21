@@ -28,15 +28,15 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .bnbTag { display:flex; align-items:center; gap:4px; font-size:11px; color:#f0b90b; font-weight:700; }
 .bnbIcon { width:18px; height:18px; }
 .container { max-width:520px; margin:0 auto; padding:14px; }
-.pairRow { display:flex; align-items:center; justify-content:space-between; padding:8px 4px; border-bottom:1px solid #1e2a44; margin-bottom:10px; }
-.pairLeft { display:flex; align-items:center; gap:8px; }
-.bnbIcon2 { width:18px; height:18px; }
-.pairTitle { font-size:15px; font-weight:700; color:#fff; }
+.pairRow { display:flex; align-items:center; justify-content:space-between; padding:6px 2px; border-bottom:1px solid #1e2a44; margin-bottom:8px; }
+.pairLeft { display:flex; align-items:center; gap:6px; }
+.bnbIcon2 { width:14px; height:14px; }
+.pairTitle { font-size:13px; font-weight:700; color:#fff; }
 .pairRight { text-align:right; }
-.priceLbl { font-size:9px; color:#8b949e; font-weight:600; display:flex; align-items:center; gap:3px; justify-content:flex-end; }
-.priceDot { width:5px; height:5px; border-radius:50%; background:#3fb950; }
-.priceNum { font-size:15px; font-weight:700; color:#fff; margin-top:1px; }
-.priceChange { font-size:10px; color:#3fb950; font-weight:600; margin-top:1px; }
+.priceLbl { font-size:8px; color:#8b949e; font-weight:600; display:flex; align-items:center; gap:2px; justify-content:flex-end; }
+.priceDot { width:4px; height:4px; border-radius:50%; background:#3fb950; }
+.priceNum { font-size:13px; font-weight:700; color:#fff; margin-top:0; line-height:1.1; }
+.priceChange { font-size:9px; color:#3fb950; font-weight:600; margin-top:0; line-height:1.1; }
 .brokerBox { margin-bottom:14px; padding:10px; background:#131b2e; border-radius:12px; border:1px solid #1e2a44; }
 .brokerLabel { color:#8b949e; font-size:11px; margin-bottom:8px; text-align:center; }
 .brokerBtns { display:flex; gap:6px; flex-wrap:wrap; }
@@ -222,19 +222,20 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
               <polyline id="arrowLine" points="22,22 42,44 52,32 76,72" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
               <polygon id="arrowHead" points="76,72 58,66 80,55" fill="#ffffff"/>
             </svg>
-            <svg id="brainSvg" width="120" height="120" viewBox="0 0 120 120" fill="none" style="display:none;">
-              <text x="60" y="20" text-anchor="middle" fill="#7bc0ff" font-size="18" font-weight="900" font-family="Arial" letter-spacing="2">MOON</text>
-              <path d="M 42 32 A 8 8 0 1 0 42 48 A 6 6 0 1 1 42 32 Z" fill="#ffffff"/>
-              <path d="M 60 40 C 52 40 46 45 44 51 C 38 49 32 52 31 58 C 26 59 22 64 23 70 C 19 73 19 80 23 83 C 22 89 27 95 34 95 C 35 101 42 105 48 103 C 51 107 55 109 60 109 C 65 109 69 107 72 103 C 78 105 85 101 86 95 C 93 95 98 89 97 83 C 101 80 101 73 97 70 C 98 64 94 59 89 58 C 88 52 82 49 76 51 C 74 45 68 40 60 40 Z" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
-              <path d="M 60 40 L 60 109" stroke="#ffffff" stroke-width="1.8" opacity="0.65"/>
-              <path d="M 48 50 C 52 55 54 60 52 65" stroke="#ffffff" stroke-width="1.5" opacity="0.7" fill="none" stroke-linecap="round"/>
-              <path d="M 37 59 C 42 63 45 68 44 73" stroke="#ffffff" stroke-width="1.5" opacity="0.7" fill="none" stroke-linecap="round"/>
-              <path d="M 28 71 C 34 71 38 75 38 80" stroke="#ffffff" stroke-width="1.5" opacity="0.7" fill="none" stroke-linecap="round"/>
-              <path d="M 30 87 C 36 85 41 88 43 93" stroke="#ffffff" stroke-width="1.5" opacity="0.7" fill="none" stroke-linecap="round"/>
-              <path d="M 72 50 C 68 55 66 60 68 65" stroke="#ffffff" stroke-width="1.5" opacity="0.7" fill="none" stroke-linecap="round"/>
-              <path d="M 83 59 C 78 63 75 68 76 73" stroke="#ffffff" stroke-width="1.5" opacity="0.7" fill="none" stroke-linecap="round"/>
-              <path d="M 92 71 C 86 71 82 75 82 80" stroke="#ffffff" stroke-width="1.5" opacity="0.7" fill="none" stroke-linecap="round"/>
-              <path d="M 90 87 C 84 85 79 88 77 93" stroke="#ffffff" stroke-width="1.5" opacity="0.7" fill="none" stroke-linecap="round"/>
+            <svg id="brainSvg" width="140" height="140" viewBox="0 0 140 140" fill="none" style="display:block;">
+              <text x="70" y="22" text-anchor="middle" fill="#7bc0ff" font-size="20" font-weight="900" font-family="Arial" letter-spacing="3">MOON</text>
+              <path d="M 50 32 A 9 9 0 1 0 50 50 A 7 7 0 1 1 50 32 Z" fill="#ffffff" filter="drop-shadow(0 0 5px #7bc0ff)"/>
+              <polygon points="52,38 53.2,41.5 56.8,41.8 54,44 55,47.5 52,45.4 49,47.5 50,44 47.2,41.8 50.8,41.5" fill="#f5c542"/>
+              <path d="M 70 55 C 61 55 54 60 52 67 C 45 65 38 68 37 75 C 31 76 26 82 27 89 C 22 92 22 100 27 103 C 26 110 32 117 40 117 C 41 124 49 129 56 127 C 59 131 64 134 70 134 C 76 134 81 131 84 127 C 91 129 99 124 100 117 C 108 117 114 110 113 103 C 118 100 118 92 113 89 C 114 82 109 76 103 75 C 102 68 95 65 88 67 C 86 60 79 55 70 55 Z" stroke="#ffffff" stroke-width="2.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+              <path d="M 70 55 L 70 134" stroke="#ffffff" stroke-width="2" opacity="0.65"/>
+              <path d="M 56 67 C 61 73 63 79 61 85" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 43 78 C 49 83 52 89 51 95" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 33 92 C 40 92 45 97 45 103" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 35 111 C 42 108 48 112 50 118" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 84 67 C 79 73 77 79 79 85" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 97 78 C 91 83 88 89 89 95" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 107 92 C 100 92 95 97 95 103" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 105 111 C 98 108 92 112 90 118" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
             </svg>
           </div>
         </div>

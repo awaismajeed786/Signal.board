@@ -44,6 +44,21 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .brokerBtn.active { border-color:#2ea043; background:#0d2818; color:#3fb950; box-shadow:0 0 12px rgba(46,160,67,0.35); }
 .selRow { display:flex; gap:8px; margin-bottom:12px; }
 .selRow select { flex:1; padding:12px 10px; border-radius:10px; border:1px solid #1e2a44; background:#131b2e; color:#fff; font-size:13px; font-weight:600; }
+
+.customSelect { position:relative; flex:1; }
+.customSelect .selBox { padding:12px 10px; border-radius:10px; border:1px solid #1e2a44; background:#131b2e; color:#fff; font-size:13px; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
+.customSelect .selBox .arrow { color:#8b949e; font-size:11px; }
+.customSelect .selBox .selText { display:flex; align-items:center; gap:6px; }
+.customSelect .selList { position:absolute; top:100%; left:0; right:0; background:#131b2e; border:1px solid #1e2a44; border-radius:10px; margin-top:4px; max-height:280px; overflow-y:auto; z-index:100; display:none; box-shadow:0 8px 25px rgba(0,0,0,0.6); }
+.customSelect.open .selList { display:block; }
+.customSelect .selList .opt { padding:11px 12px; font-size:13px; font-weight:600; cursor:pointer; border-bottom:1px solid #1e2a44; display:flex; align-items:center; gap:8px; }
+.customSelect .selList .opt:last-child { border:none; }
+.customSelect .selList .opt:active { background:#0a0e1a; }
+.opt-ok { color:#3fb950; font-weight:900; font-size:15px; }
+.opt-no { color:#f85149; font-weight:900; font-size:15px; }
+.opt-name-ok { color:#fff; }
+.opt-name-no { color:#f85149; }
+
 .analyzeSection { background:#0d1424; border:1px solid #1e2a44; border-radius:16px; padding:20px 16px; margin-bottom:14px; text-align:center; }
 .analyzeTitle { color:#fff; font-size:15px; font-weight:700; margin-bottom:4px; }
 .analyzeSub { color:#8b949e; font-size:12px; margin-bottom:16px; }
@@ -130,6 +145,9 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .linkBox { background:#0a0e1a; border:1px solid #1e2a44; border-radius:8px; padding:10px; font-size:11px; color:#58a6ff; word-break:break-all; margin-top:8px; }
 #toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:#238636; color:#fff; padding:11px 22px; border-radius:10px; font-size:13px; z-index:9999; display:none; }
 .note { font-size:11px; color:#8b949e; padding:10px; text-align:center; }
+.pairStatus { display:inline-block; margin-left:6px; font-size:14px; font-weight:900; vertical-align:middle; }
+.status-ok { color:#3fb950; }
+.status-no { color:#f85149; }
 </style>
 </head>
 <body>
@@ -174,6 +192,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
         <div class="pairLeft">
           <svg class="bnbIcon2" viewBox="0 0 24 24" fill="#f0b90b"><path d="M12 0L8.5 3.5 12 7l3.5-3.5L12 0zM3.5 8.5L0 12l3.5 3.5L7 12 3.5 8.5zm8.5 0L8.5 12 12 15.5 15.5 12 12 8.5zm8.5 0L17 12l3.5 3.5L24 12l-3.5-3.5zM12 17l-3.5 3.5L12 24l3.5-3.5L12 17z"/></svg>
           <div class="pairTitle" id="pairTitle">EUR/USDT</div>
+          <span class="pairStatus status-ok" id="pairStatus">✓</span>
         </div>
         <div class="pairRight">
           <div class="priceLbl"><span class="priceDot"></span> Live Price</div>
@@ -193,7 +212,13 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
       </div>
 
       <div class="selRow">
-        <select id="pair" onchange="updatePairCard()"></select>
+        <div class="customSelect" id="customSelect">
+          <div class="selBox" onclick="toggleSel()">
+            <span class="selText" id="selText">✓ EUR/USDT</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="selList" id="selList"></div>
+        </div>
         <select id="tf">
           <option value="30s">30 SEC</option>
           <option value="60s">60 SEC</option>
@@ -279,7 +304,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
         <div id="historyList">Abhi koi signal nahi</div>
       </div>
 
-      <div class="note">⚠️ ✅ = Working pair &nbsp; | &nbsp; ❌ = Not working</div>
+      <div class="note">⚠️ <span style="color:#3fb950">✓ Green</span> = Working &nbsp; | &nbsp; <span style="color:#f85149">✗ Red</span> = Not working</div>
     </div>
 
     <div class="page" id="watchPage">
@@ -394,7 +419,7 @@ const BROKER_PAIRS = {
   ]
 };
 
-let selectedBroker='Quotex', timerInterval=null, priceInterval=null;
+let selectedBroker='Quotex', selectedPair='EURUSDT', timerInterval=null, priceInterval=null;
 
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
 
@@ -406,11 +431,35 @@ function switchTab(tab){
   else{document.getElementById('profilePage').classList.add('active');document.getElementById('nav-profile').classList.add('active');document.getElementById('linkDisplay').textContent=BOARD_URL;}
 }
 
+function toggleSel(){
+  const c = document.getElementById('customSelect');
+  c.classList.toggle('open');
+}
+
+function pickPair(v){
+  selectedPair = v;
+  document.getElementById('customSelect').classList.remove('open');
+  updatePairCard();
+}
+
 function updatePairCard(){
-  const sel=document.getElementById('pair');const v=sel.value;if(!v)return;
-  const n=sel.options[sel.selectedIndex].text.replace('✅ ','').replace('❌ ','');
-  document.getElementById('pairTitle').textContent=n;
-  loadPrice(v);loadChange(v);
+  if(!selectedPair) return;
+  const data = BROKER_PAIRS[selectedBroker] || [];
+  const pairInfo = data.find(p => p.v === selectedPair);
+  if(!pairInfo) return;
+  
+  const ok = pairInfo.ok;
+  const cleanName = pairInfo.n;
+  
+  document.getElementById('pairTitle').textContent = cleanName;
+  const statusEl = document.getElementById('pairStatus');
+  statusEl.textContent = ok ? '✓' : '✗';
+  statusEl.className = 'pairStatus ' + (ok ? 'status-ok' : 'status-no');
+  
+  const selText = document.getElementById('selText');
+  selText.innerHTML = '<span class="' + (ok ? 'opt-ok' : 'opt-no') + '">' + (ok ? '✓' : '✗') + '</span> <span class="' + (ok ? 'opt-name-ok' : 'opt-name-no') + '">' + cleanName + '</span>';
+  
+  loadPrice(selectedPair);loadChange(selectedPair);
 }
 
 async function loadPrice(sym){
@@ -423,17 +472,22 @@ async function loadChange(sym){
 
 function startPriceRefresh(){
   if(priceInterval)clearInterval(priceInterval);
-  priceInterval=setInterval(()=>{const s=document.getElementById('pair');if(s&&s.value){loadPrice(s.value);loadChange(s.value);}},5000);
+  priceInterval=setInterval(()=>{if(selectedPair){loadPrice(selectedPair);loadChange(selectedPair);}},5000);
 }
 
 function updatePairDropdown(b){
-  const s=document.getElementById('pair');s.innerHTML='';
+  const list = document.getElementById('selList');
+  list.innerHTML = '';
   (BROKER_PAIRS[b]||[]).forEach(p=>{
-    const o=document.createElement('option');
-    o.value=p.v;
-    o.textContent = (p.ok ? '✅ ' : '❌ ') + p.n;
-    s.appendChild(o);
+    const div = document.createElement('div');
+    div.className = 'opt';
+    div.innerHTML = '<span class="' + (p.ok ? 'opt-ok' : 'opt-no') + '">' + (p.ok ? '✓' : '✗') + '</span> <span class="' + (p.ok ? 'opt-name-ok' : 'opt-name-no') + '">' + p.n + '</span>';
+    div.onclick = () => pickPair(p.v);
+    list.appendChild(div);
   });
+  if((BROKER_PAIRS[b]||[]).length > 0){
+    selectedPair = BROKER_PAIRS[b][0].v;
+  }
   updatePairCard();
 }
 
@@ -476,6 +530,11 @@ function openBoard(){
   loadHistoryUI();
   setRingProgress(100,'#58a6ff');
   setRingArrow('wait','#58a6ff');
+  
+  document.addEventListener('click', function(e){
+    const c = document.getElementById('customSelect');
+    if(c && !c.contains(e.target)) c.classList.remove('open');
+  });
 }
 
 function resetPassword(){if(confirm('Reset?')){localStorage.removeItem(KEY_PASS);localStorage.removeItem(KEY_HINT);location.reload();}}
@@ -497,7 +556,7 @@ function getWatchlist(){try{return JSON.parse(localStorage.getItem(KEY_WATCH)||'
 function saveWatchlist(l){localStorage.setItem(KEY_WATCH,JSON.stringify(l));}
 
 function addToWatchlist(){
-  const s=document.getElementById('watchPairSelect');const v=s.value;const n=s.options[s.selectedIndex].text.replace('✅ ','').replace('❌ ','');
+  const s=document.getElementById('watchPairSelect');const v=s.value;const n=s.options[s.selectedIndex].text.replace('✓ ','').replace('✗ ','');
   let l=getWatchlist();if(l.find(x=>x.v===v)){showToast('⚠️ Hai');return;}
   l.push({v:v,n:n});saveWatchlist(l);renderWatchlist();showToast('✅ '+n);
 }
@@ -559,7 +618,6 @@ function loadHistoryUI(){try{const h=JSON.parse(localStorage.getItem(KEY_HIST)||
 function renderHistory(h){const list=document.getElementById('historyList');if(!h||h.length===0){list.innerHTML='Abhi koi signal nahi';return;}list.innerHTML=h.map(x=>{const cls=x.sig==='BUY'?'h-buy':x.sig==='SELL'?'h-sell':'h-wait';return '<div class="histItem">'+x.time+' — '+x.pair+' — <span class="'+cls+'">'+x.sig+'</span> — '+x.conf+'%</div>';}).join('');}
 function addHistory(sig,pair,conf){let h=[];try{h=JSON.parse(localStorage.getItem(KEY_HIST)||'[]');}catch(e){}const time=new Date().toLocaleTimeString('en-PK',{hour:'2-digit',minute:'2-digit'});h.unshift({sig:sig,pair:pair,conf:conf,time:time});if(h.length>10)h.pop();localStorage.setItem(KEY_HIST,JSON.stringify(h));renderHistory(h);}
 
-// ⭐ FIXED - circumference = 2 * π * 85 = 534.07
 function setRingProgress(pct,color){
   const C = 534.07;
   const off = C - (C * pct / 100);
@@ -598,10 +656,10 @@ function setRingArrow(txt,color){
 
 async function analyze(){
   const btn=document.getElementById('bigBtn');
-  const pair=document.getElementById('pair').value;if(!pair){alert('Pair select karein');return;}
+  const pair=selectedPair;if(!pair){alert('Pair select karein');return;}
   const tf=document.getElementById('tf').value;
   const tfName=document.getElementById('tf').options[document.getElementById('tf').selectedIndex].text;
-  const pairName=document.getElementById('pair').options[document.getElementById('pair').selectedIndex].text.replace('✅ ','').replace('❌ ','');
+  const pairName=document.getElementById('pairTitle').textContent;
   const bTF=getTFBinance(tf);
 
   if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
@@ -668,7 +726,6 @@ async function analyze(){
     if(bv>=3&&bv>sv2&&tBuy){signal='BUY';conf=act>0?Math.round((bv/act)*100):0;}
     else if(sv2>=3&&sv2>bv&&tSell){signal='SELL';conf=act>0?Math.round((sv2/act)*100):0;}
 
-    // ⭐ POORA RING BHARE (100%)
     setRingProgress(100,signal==='BUY'?'#3fb950':signal==='SELL'?'#f85149':'#d29922');
     setRingArrow(signal==='BUY'?'↗':signal==='SELL'?'↘':'wait',signal==='BUY'?'#3fb950':signal==='SELL'?'#f85149':'#d29922');
 

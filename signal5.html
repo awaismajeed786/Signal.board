@@ -167,8 +167,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
     <div class="hLogo">
       <div class="moonIcon">
         <svg viewBox="0 0 50 50" width="50" height="50">
-          <circle cx="22" cy="25" r="15" fill="#ffffff" filter="drop-shadow(0 0 5px rgba(123,192,255,0.8))"/>
-          <circle cx="30" cy="22" r="13" fill="#131b2e"/>
+          <path d="M 32 8 A 18 18 0 1 0 32 42 A 14 14 0 1 1 32 8 Z" fill="#ffffff" filter="drop-shadow(0 0 5px rgba(123,192,255,0.8))"/>
         </svg>
       </div>
       <div class="hText">
@@ -248,23 +247,19 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
               <polyline id="arrowLine" points="22,22 42,44 52,32 76,72" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
               <polygon id="arrowHead" points="76,72 58,66 80,55" fill="#ffffff"/>
             </svg>
-            <svg id="brainSvg" width="140" height="140" viewBox="0 0 140 140" fill="none" style="display:block; position:absolute;">
-              <!-- Chand - do circles se (white bada + dark chhota) -->
-              <circle cx="35" cy="35" r="16" fill="#ffffff" filter="drop-shadow(0 0 6px rgba(255,255,255,0.9))"/>
-              <circle cx="43" cy="32" r="14" fill="#0d1424"/>
-              <!-- MOON text -->
-              <text x="58" y="42" fill="#7bc0ff" font-size="18" font-weight="900" font-family="Arial" letter-spacing="2">MOON</text>
-              <!-- Brain -->
-              <path d="M 70 68 C 61 68 55 73 52 79 C 47 77 41 80 40 86 C 35 88 32 93 33 98 C 30 101 30 106 33 109 C 32 114 37 119 43 119 C 44 124 50 128 55 126 C 58 129 63 131 68 131 C 71 131 75 130 78 127 C 83 130 89 127 91 123 C 96 123 100 118 99 112 C 103 110 103 105 99 102 C 100 97 96 93 92 91 C 91 86 85 83 80 84 C 78 79 74 68 70 68 Z" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
-              <line x1="70" y1="68" x2="70" y2="131" stroke="#ffffff" stroke-width="1.6" opacity="0.65"/>
-              <path d="M 58 76 C 62 80 64 85 62 90" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 49 84 C 53 87 55 91 54 95" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 41 96 C 46 96 49 99 49 103" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 43 108 C 48 106 52 109 53 113" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 82 76 C 78 80 76 85 78 90" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 91 84 C 87 87 85 91 86 95" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 99 96 C 94 96 91 99 91 103" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 97 108 C 92 106 88 109 87 113" stroke="#ffffff" stroke-width="1.3" opacity="0.75" fill="none" stroke-linecap="round"/>
+            <svg id="brainSvg" width="160" height="160" viewBox="0 0 160 160" fill="none" style="display:block; position:absolute;">
+              <path d="M 48 18 A 20 20 0 1 0 48 58 A 15 15 0 1 1 48 18 Z" fill="#ffffff" filter="drop-shadow(0 0 6px rgba(255,255,255,0.9))"/>
+              <text x="72" y="45" fill="#7bc0ff" font-size="19" font-weight="900" font-family="Arial" letter-spacing="2">MOON</text>
+              <path d="M 80 78 C 70 78 63 83 60 89 C 54 87 47 90 46 96 C 41 98 37 103 38 109 C 34 112 34 118 38 121 C 37 127 42 132 49 132 C 51 138 58 142 64 140 C 67 143 72 146 78 146 C 82 146 87 144 90 141 C 96 144 103 141 105 136 C 112 136 117 130 116 123 C 120 120 120 114 116 111 C 117 105 113 100 108 98 C 107 92 101 89 95 90 C 93 84 87 78 80 78 Z" stroke="#ffffff" stroke-width="2.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+              <line x1="80" y1="78" x2="80" y2="146" stroke="#ffffff" stroke-width="1.8" opacity="0.65"/>
+              <path d="M 67 88 C 72 93 74 98 72 104" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 57 96 C 62 100 65 105 64 110" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 48 108 C 54 108 58 112 58 117" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 50 122 C 56 119 61 123 62 128" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 93 88 C 88 93 86 98 88 104" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 103 96 C 98 100 95 105 96 110" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 112 108 C 106 108 102 112 102 117" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 110 122 C 104 119 99 123 98 128" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
             </svg>
           </div>
         </div>
@@ -435,34 +430,23 @@ function switchTab(tab){
   else{document.getElementById('profilePage').classList.add('active');document.getElementById('nav-profile').classList.add('active');document.getElementById('linkDisplay').textContent=BOARD_URL;}
 }
 
-function toggleSel(){
-  const c = document.getElementById('customSelect');
-  c.classList.toggle('open');
-}
+function toggleSel(){ document.getElementById('customSelect').classList.toggle('open'); }
 
-function pickPair(v){
-  selectedPair = v;
-  document.getElementById('customSelect').classList.remove('open');
-  updatePairCard();
-}
+function pickPair(v){ selectedPair=v; document.getElementById('customSelect').classList.remove('open'); updatePairCard(); }
 
 function updatePairCard(){
   if(!selectedPair) return;
   const data = BROKER_PAIRS[selectedBroker] || [];
   const pairInfo = data.find(p => p.v === selectedPair);
   if(!pairInfo) return;
-  
   const ok = pairInfo.ok;
   const cleanName = pairInfo.n;
-  
   document.getElementById('pairTitle').textContent = cleanName;
   const statusEl = document.getElementById('pairStatus');
   statusEl.textContent = ok ? '✓' : '✗';
   statusEl.className = 'pairStatus ' + (ok ? 'status-ok' : 'status-no');
-  
   const selText = document.getElementById('selText');
   selText.innerHTML = '<span class="' + (ok ? 'opt-ok' : 'opt-no') + '">' + (ok ? '✓' : '✗') + '</span> <span class="' + (ok ? 'opt-name-ok' : 'opt-name-no') + '">' + cleanName + '</span>';
-  
   loadPrice(selectedPair);loadChange(selectedPair);
 }
 
@@ -489,9 +473,7 @@ function updatePairDropdown(b){
     div.onclick = () => pickPair(p.v);
     list.appendChild(div);
   });
-  if((BROKER_PAIRS[b]||[]).length > 0){
-    selectedPair = BROKER_PAIRS[b][0].v;
-  }
+  if((BROKER_PAIRS[b]||[]).length > 0) selectedPair = BROKER_PAIRS[b][0].v;
   updatePairCard();
 }
 
@@ -534,7 +516,6 @@ function openBoard(){
   loadHistoryUI();
   setRingProgress(100,'#58a6ff');
   setRingArrow('wait','#58a6ff');
-  
   document.addEventListener('click', function(e){
     const c = document.getElementById('customSelect');
     if(c && !c.contains(e.target)) c.classList.remove('open');
@@ -781,7 +762,7 @@ async function analyze(){
 }
 
 document.getElementById('tf').addEventListener('change',function(){
-  document.getElementById('tfLabel').textContent='Timeframe: '+this.textContent;
+  document.getElementById('tfLabel').textContent='Timeframe: '+this.options[this.selectedIndex].text;
 });
 
 checkLogin();

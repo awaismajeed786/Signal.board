@@ -17,9 +17,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 #mainBoard { display:none; }
 .appHeader { max-width:520px; margin:0 auto; padding:14px 16px; background:#131b2e; border-bottom:1px solid #1e2a44; display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .hLogo { display:flex; align-items:center; gap:10px; }
-.moonIcon { width:42px; height:42px; position:relative; flex-shrink:0; }
-.moonShape { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, #7bc0ff, #2a5fc7); box-shadow:inset -11px -2px 0 0 #131b2e; position:absolute; bottom:0; left:0; }
-.moonStar { position:absolute; top:-1px; right:-1px; color:#fff; font-size:15px; text-shadow:0 0 6px #7bc0ff, 0 0 12px #7bc0ff; line-height:1; }
+.moonIcon { width:50px; height:50px; position:relative; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
 .hText { text-align:left; line-height:1.15; }
 .hText .t1 { font-size:15px; font-weight:700; color:#fff; }
 .hText .t2 { font-size:11px; color:#7bc0ff; font-weight:500; }
@@ -28,11 +26,11 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .liveDot { width:7px; height:7px; border-radius:50%; background:#3fb950; box-shadow:0 0 6px #3fb950; animation:pulseDot 1.5s infinite; }
 @keyframes pulseDot { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
 .bnbTag { display:flex; align-items:center; gap:4px; font-size:11px; color:#f0b90b; font-weight:700; }
+.bnbIcon { width:18px; height:18px; }
 .container { max-width:520px; margin:0 auto; padding:14px; }
 .pairRow { display:flex; align-items:center; justify-content:space-between; padding:12px 4px; border-bottom:1px solid #1e2a44; margin-bottom:14px; }
 .pairLeft { display:flex; align-items:center; gap:10px; }
-.backIcon { color:#8b949e; font-size:20px; cursor:pointer; }
-.bnbIcon { width:22px; height:22px; }
+.bnbIcon2 { width:22px; height:22px; }
 .pairTitle { font-size:18px; font-weight:800; color:#fff; }
 .pairRight { text-align:right; }
 .priceLbl { font-size:10px; color:#8b949e; font-weight:600; display:flex; align-items:center; gap:4px; justify-content:flex-end; }
@@ -49,11 +47,9 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .analyzeSection { background:#0d1424; border:1px solid #1e2a44; border-radius:16px; padding:20px 16px; margin-bottom:14px; text-align:center; }
 .analyzeTitle { color:#fff; font-size:15px; font-weight:700; margin-bottom:4px; }
 .analyzeSub { color:#8b949e; font-size:12px; margin-bottom:16px; }
-.ringWrap { width:180px; height:180px; margin:0 auto 16px; position:relative; }
+.ringWrap { width:200px; height:200px; margin:0 auto 16px; position:relative; }
 .ringSvg { width:100%; height:100%; transform:rotate(-90deg); }
-.ringBg { fill:none; stroke:#1e2a44; stroke-width:8; }
-.ringFg { fill:none; stroke-width:8; stroke-linecap:round; transition:all 0.6s; }
-.ringArrow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:60px; font-weight:900; text-shadow:0 0 20px currentColor; }
+.ringArrow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); display:flex; align-items:center; justify-content:center; filter:drop-shadow(0 0 8px currentColor); }
 .analysisBadge { display:inline-block; padding:5px 14px; border-radius:20px; font-size:10px; font-weight:700; margin-bottom:10px; }
 .badge-buy { background:rgba(63,185,80,0.15); color:#3fb950; border:1px solid rgba(63,185,80,0.4); }
 .badge-sell { background:rgba(248,81,73,0.15); color:#f85149; border:1px solid rgba(248,81,73,0.4); }
@@ -153,8 +149,10 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
   <div class="appHeader">
     <div class="hLogo">
       <div class="moonIcon">
-        <div class="moonShape"></div>
-        <div class="moonStar">★</div>
+        <svg viewBox="0 0 50 50" width="50" height="50">
+          <path d="M 33 5 A 22 22 0 1 0 33 45 A 17 17 0 1 1 33 5 Z" fill="#ffffff" filter="drop-shadow(0 0 4px rgba(123,192,255,0.8))"/>
+          <polygon points="34,17 35.5,22 40.5,22.5 36.5,25.5 38,30.5 34,27.5 30,30.5 31.5,25.5 27.5,22.5 32.5,22" fill="#f5c542" filter="drop-shadow(0 0 3px #f5c542)"/>
+        </svg>
       </div>
       <div class="hText">
         <div class="t1">Moon AI</div>
@@ -174,8 +172,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
     <div class="page active" id="signalPage">
       <div class="pairRow">
         <div class="pairLeft">
-          <span class="backIcon">←</span>
-          <svg class="bnbIcon" viewBox="0 0 24 24" fill="#f0b90b"><path d="M12 0L8.5 3.5 12 7l3.5-3.5L12 0zM3.5 8.5L0 12l3.5 3.5L7 12 3.5 8.5zm8.5 0L8.5 12 12 15.5 15.5 12 12 8.5zm8.5 0L17 12l3.5 3.5L24 12l-3.5-3.5zM12 17l-3.5 3.5L12 24l3.5-3.5L12 17z"/></svg>
+          <svg class="bnbIcon2" viewBox="0 0 24 24" fill="#f0b90b"><path d="M12 0L8.5 3.5 12 7l3.5-3.5L12 0zM3.5 8.5L0 12l3.5 3.5L7 12 3.5 8.5zm8.5 0L8.5 12 12 15.5 15.5 12 12 8.5zm8.5 0L17 12l3.5 3.5L24 12l-3.5-3.5zM12 17l-3.5 3.5L12 24l3.5-3.5L12 17z"/></svg>
           <div class="pairTitle" id="pairTitle">EUR/USDT</div>
         </div>
         <div class="pairRight">
@@ -216,10 +213,16 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 
         <div class="ringWrap">
           <svg class="ringSvg" viewBox="0 0 200 200">
-            <circle class="ringBg" cx="100" cy="100" r="85"></circle>
-            <circle class="ringFg" id="ringFg" cx="100" cy="100" r="85" stroke="#58a6ff" stroke-dasharray="534" stroke-dashoffset="534"></circle>
+            <circle cx="100" cy="100" r="92" fill="none" stroke="#1e2a44" stroke-width="1"></circle>
+            <circle class="ringFg" id="ringFg" cx="100" cy="100" r="85" stroke="#58a6ff" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="534 534" stroke-dashoffset="0"></circle>
+            <circle cx="100" cy="100" r="78" fill="none" stroke="#1e2a44" stroke-width="1"></circle>
           </svg>
-          <div class="ringArrow" id="ringArrow" style="color:#58a6ff;">⚡</div>
+          <div class="ringArrow" id="ringArrow">
+            <svg id="ringArrowSvg" width="90" height="90" viewBox="0 0 90 90" fill="none">
+              <polyline id="arrowLine" points="20,20 38,38 46,28 68,62" stroke="#58a6ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <polygon id="arrowHead" points="68,62 55,58 72,50" fill="#58a6ff"/>
+            </svg>
+          </div>
         </div>
 
         <div class="analysisBadge badge-wait" id="analysisBadge" style="display:none;">ANALYSIS COMPLETE</div>
@@ -329,22 +332,22 @@ const KEY_PASS='sb_password', KEY_HINT='sb_hint', KEY_BROKER='sb_broker', KEY_WA
 const BOARD_URL='https://awaismajeed786.github.io/Signal.board/signal5.html';
 
 const PAIR_DATA = {
-  'EURUSDT':{sym:'€',bg:'#003399',sub:'Euro / US Dollar'},
-  'GBPUSDT':{sym:'£',bg:'#C8102E',sub:'British Pound / USD'},
-  'USDJPY':{sym:'¥',bg:'#BC002D',sub:'US Dollar / Japanese Yen'},
-  'AUDUSDT':{sym:'A$',bg:'#00843D',sub:'Australian Dollar / USD'},
-  'USDCAD':{sym:'C$',bg:'#FF0000',sub:'US Dollar / Canadian Dollar'},
-  'USDCHF':{sym:'₣',bg:'#DA291C',sub:'US Dollar / Swiss Franc'},
-  'NZDUSDT':{sym:'NZ$',bg:'#000000',sub:'New Zealand Dollar / USD'},
-  'EURGBP':{sym:'€£',bg:'#003399',sub:'Euro / British Pound'},
-  'EURJPY':{sym:'€¥',bg:'#003399',sub:'Euro / Japanese Yen'},
-  'GBPJPY':{sym:'£¥',bg:'#C8102E',sub:'British Pound / Yen'},
-  'BTCUSDT':{sym:'₿',bg:'#F7931A',sub:'Bitcoin / USD'},
-  'ETHUSDT':{sym:'Ξ',bg:'#627EEA',sub:'Ethereum / USD'},
-  'SOLUSDT':{sym:'◎',bg:'#9945FF',sub:'Solana / USD'},
-  'XRPUSDT':{sym:'✕',bg:'#23292F',sub:'Ripple / USD'},
-  'DOGEUSDT':{sym:'Ð',bg:'#C2A633',sub:'Dogecoin / USD'},
-  'LTCUSDT':{sym:'Ł',bg:'#345D9D',sub:'Litecoin / USD'}
+  'EURUSDT':{sym:'€',bg:'#003399'},
+  'GBPUSDT':{sym:'£',bg:'#C8102E'},
+  'USDJPY':{sym:'¥',bg:'#BC002D'},
+  'AUDUSDT':{sym:'A$',bg:'#00843D'},
+  'USDCAD':{sym:'C$',bg:'#FF0000'},
+  'USDCHF':{sym:'₣',bg:'#DA291C'},
+  'NZDUSDT':{sym:'NZ$',bg:'#000000'},
+  'EURGBP':{sym:'€£',bg:'#003399'},
+  'EURJPY':{sym:'€¥',bg:'#003399'},
+  'GBPJPY':{sym:'£¥',bg:'#C8102E'},
+  'BTCUSDT':{sym:'₿',bg:'#F7931A'},
+  'ETHUSDT':{sym:'Ξ',bg:'#627EEA'},
+  'SOLUSDT':{sym:'◎',bg:'#9945FF'},
+  'XRPUSDT':{sym:'✕',bg:'#23292F'},
+  'DOGEUSDT':{sym:'Ð',bg:'#C2A633'},
+  'LTCUSDT':{sym:'Ł',bg:'#345D9D'}
 };
 
 const BROKER_PAIRS = {
@@ -512,8 +515,34 @@ function loadHistoryUI(){try{const h=JSON.parse(localStorage.getItem(KEY_HIST)||
 function renderHistory(h){const list=document.getElementById('historyList');if(!h||h.length===0){list.innerHTML='Abhi koi signal nahi';return;}list.innerHTML=h.map(x=>{const cls=x.sig==='BUY'?'h-buy':x.sig==='SELL'?'h-sell':'h-wait';return '<div class="histItem">'+x.time+' — '+x.pair+' — <span class="'+cls+'">'+x.sig+'</span> — '+x.conf+'%</div>';}).join('');}
 function addHistory(sig,pair,conf){let h=[];try{h=JSON.parse(localStorage.getItem(KEY_HIST)||'[]');}catch(e){}const time=new Date().toLocaleTimeString('en-PK',{hour:'2-digit',minute:'2-digit'});h.unshift({sig:sig,pair:pair,conf:conf,time:time});if(h.length>10)h.pop();localStorage.setItem(KEY_HIST,JSON.stringify(h));renderHistory(h);}
 
-function setRingProgress(pct,color){const c=534;const off=c-(c*pct/100);const r=document.getElementById('ringFg');r.style.stroke=color;r.style.strokeDashoffset=off;}
-function setRingArrow(txt,color){const a=document.getElementById('ringArrow');a.textContent=txt;a.style.color=color;}
+function setRingProgress(pct,color){
+  const c=534;
+  const off=c-(c*pct/100);
+  const r=document.getElementById('ringFg');
+  if(!r)return;
+  r.style.stroke=color;
+  r.style.strokeDashoffset=off;
+}
+
+function setRingArrow(txt,color){
+  const line=document.getElementById('arrowLine');
+  const head=document.getElementById('arrowHead');
+  const wrap=document.getElementById('ringArrow');
+  if(!line||!head||!wrap)return;
+  line.setAttribute('stroke',color);
+  head.setAttribute('fill',color);
+  wrap.style.color=color;
+  if(txt==='↗'){
+    line.setAttribute('points','20,70 38,52 46,62 68,28');
+    head.setAttribute('points','68,28 55,32 72,40');
+  }else if(txt==='↘'){
+    line.setAttribute('points','20,20 38,38 46,28 68,62');
+    head.setAttribute('points','68,62 55,58 72,50');
+  }else{
+    line.setAttribute('points','25,45 38,45 46,45 62,45');
+    head.setAttribute('points','62,45 55,40 55,50');
+  }
+}
 
 async function analyze(){
   const btn=document.getElementById('bigBtn');
@@ -532,7 +561,7 @@ async function analyze(){
   document.getElementById('tfLabel').textContent='Timeframe: '+tfName;
 
   btn.classList.add('loading');btn.textContent='⏳ Analyzing...';
-  setRingProgress(10,'#58a6ff');setRingArrow('⚡','#58a6ff');
+  setRingProgress(10,'#58a6ff');setRingArrow('⏸','#58a6ff');
 
   try{
     await new Promise(r=>setTimeout(r,600));
@@ -625,7 +654,7 @@ async function analyze(){
   }catch(e){
     btn.classList.remove('loading');btn.className='analyzeBtn wait';
     btn.textContent='🔍 Analyze';
-    setRingArrow('❌','#f85149');
+    setRingArrow('⏸','#d29922');
     document.getElementById('signalBig').style.display='block';
     document.getElementById('signalBig').textContent='ERROR';
     document.getElementById('signalBig').className='signalBig sig-sell';

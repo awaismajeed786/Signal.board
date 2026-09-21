@@ -98,6 +98,54 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .analyzeBtn:active { transform:scale(0.97); }
 .analyzeBtn.loading { background:linear-gradient(135deg,#d29922,#e3b341); }
 .detailsBox { background:#131b2e; border:1px solid #1e2a44; border-radius:12px; padding:14px; margin-top:14px; text-align:left; font-size:12px; color:#8b949e; line-height:1.8; }
+
+#historyBox { background:#131b2e; border:1px solid #1e2a44; border-radius:12px; padding:14px; margin-top:14px; text-align:left; font-size:12px; }
+.histHeader { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px; }
+.histHeader h3 { color:#58a6ff; font-size:14px; }
+.histHeaderBtns { display:flex; gap:6px; flex-wrap:wrap; }
+.histToggleBtn { padding:6px 12px; border-radius:8px; border:1px solid #30363d; background:#21262d; color:#58a6ff; font-size:11px; font-weight:700; cursor:pointer; }
+.histSendBtn { padding:6px 12px; border-radius:8px; border:1px solid #25d366; background:rgba(37,211,102,0.15); color:#25d366; font-size:11px; font-weight:700; cursor:pointer; }
+.histClearBtn { padding:6px 12px; border-radius:8px; border:1px solid #f85149; background:rgba(248,81,73,0.15); color:#f85149; font-size:11px; font-weight:700; cursor:pointer; }
+.histStats { display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; }
+.statItem { flex:1; min-width:60px; padding:8px 4px; border-radius:8px; text-align:center; font-size:11px; font-weight:700; }
+.stat-correct { background:rgba(63,185,80,0.15); color:#3fb950; border:1px solid rgba(63,185,80,0.4); }
+.stat-wrong { background:rgba(248,81,73,0.15); color:#f85149; border:1px solid rgba(248,81,73,0.4); }
+.stat-pending { background:rgba(210,153,34,0.15); color:#d29922; border:1px solid rgba(210,153,34,0.4); }
+.stat-total { background:rgba(88,166,255,0.15); color:#58a6ff; border:1px solid rgba(88,166,255,0.4); }
+.winrateBar { background:#0a0e1a; border:1px solid #1e2a44; border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+.winrateRow { display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px; }
+.winrateRow b { color:#fff; }
+.winrateProgressBg { background:#1e2a44; height:8px; border-radius:4px; overflow:hidden; margin-top:6px; }
+.winrateProgressFg { height:100%; background:linear-gradient(90deg,#3fb950,#238636); border-radius:4px; transition:width 0.4s; }
+.historyContent { display:none; max-height:600px; overflow-y:auto; }
+.historyContent.open { display:block; }
+.watchEmpty { color:#8b949e; font-size:12px; padding:20px; text-align:center; }
+
+.weekRow { background:#0a0e1a; border:1px solid #1e2a44; border-radius:10px; margin-bottom:8px; overflow:hidden; }
+.weekHeader { padding:11px 12px; background:linear-gradient(135deg,#131b2e,#1a2538); cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#fff; font-weight:700; }
+.weekStats { padding:8px 12px; background:#0d1424; font-size:11px; color:#8b949e; display:flex; gap:8px; flex-wrap:wrap; border-top:1px solid #1e2a44; }
+.weekStats b { color:#fff; }
+.winPctTag { padding:2px 8px; border-radius:6px; font-weight:900; font-size:10px; }
+.win-high { background:rgba(63,185,80,0.2); color:#3fb950; }
+.win-med { background:rgba(210,153,34,0.2); color:#d29922; }
+.win-low { background:rgba(248,81,73,0.2); color:#f85149; }
+.daysList { padding:6px; background:#060810; border-top:1px solid #1e2a44; }
+.dayRow { background:#0d1424; border:1px solid #1e2a44; border-radius:8px; margin-bottom:6px; overflow:hidden; }
+.dayRow:last-child { margin-bottom:0; }
+.dayHeader { padding:9px 11px; cursor:pointer; font-size:11px; color:#fff; display:flex; justify-content:space-between; align-items:center; background:#131b2e; }
+.dayStats { padding:7px 11px; background:#0a0e1a; font-size:10px; color:#8b949e; display:flex; gap:8px; flex-wrap:wrap; border-top:1px solid #1e2a44; }
+.sigList { padding:6px 8px; background:#050810; border-top:1px solid #1e2a44; }
+.sigRow { padding:7px 4px; font-size:10px; color:#8b949e; display:flex; flex-wrap:wrap; gap:8px; align-items:center; border-bottom:1px solid #1a2538; }
+.sigRow:last-child { border:none; }
+.sigRow b { color:#fff; }
+.sigTime { color:#58a6ff; font-weight:700; font-family:monospace; }
+.h-buy { color:#3fb950; font-weight:700; }
+.h-sell { color:#f85149; font-weight:700; }
+.outcome-correct { color:#3fb950; font-weight:900; }
+.outcome-wrong { color:#f85149; font-weight:900; }
+.outcome-pending { color:#d29922; font-weight:900; }
+.chev { font-size:10px; color:#8b949e; }
+
 #timerBox { background:#131b2e; border:2px solid #1e2a44; border-radius:14px; padding:16px; margin-bottom:14px; text-align:center; display:none; }
 #timerBox.active { display:block; }
 #timerBox.done { border-color:#3fb950; background:#0d2818; box-shadow:0 0 25px rgba(63,185,80,0.5); }
@@ -107,13 +155,6 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .tValue.ready { color:#f85149; }
 .tValue.done { color:#3fb950; font-size:38px; }
 .tHint { font-size:12px; margin-top:8px; color:#8b949e; font-weight:600; }
-#historyBox { background:#131b2e; border:1px solid #1e2a44; border-radius:12px; padding:14px; margin-top:14px; text-align:left; font-size:12px; }
-#historyBox h3 { color:#58a6ff; margin-bottom:10px; font-size:14px; }
-.histItem { padding:7px 0; border-bottom:1px solid #1e2a44; color:#8b949e; }
-.histItem:last-child { border:none; }
-.h-buy { color:#3fb950; font-weight:700; }
-.h-sell { color:#f85149; font-weight:700; }
-.h-wait { color:#d29922; font-weight:700; }
 .bottomNav { position:fixed; bottom:0; left:0; width:100%; height:66px; background:#131b2e; border-top:1px solid #1e2a44; display:flex; justify-content:space-around; align-items:center; z-index:500; padding:4px 0; }
 .navItem { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; cursor:pointer; color:#8b949e; font-size:10px; font-weight:600; padding:4px 0; position:relative; }
 .navItem.active { color:#3fb950; }
@@ -132,15 +173,17 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .watchItem .lg { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:900; color:#fff; }
 .watchItem .nm { color:#fff; font-weight:700; font-size:13px; }
 .watchItem .del { color:#f85149; cursor:pointer; font-size:16px; padding:4px 8px; }
-.watchEmpty { color:#8b949e; font-size:12px; padding:20px; text-align:center; }
 #profilePage h2 { color:#58a6ff; font-size:16px; margin-bottom:14px; text-align:center; }
 .profileBox { background:#131b2e; border:1px solid #1e2a44; border-radius:12px; padding:16px; margin-bottom:14px; text-align:left; }
 .profileBox h3 { color:#58a6ff; font-size:14px; margin-bottom:10px; }
 .profileBox input { width:100%; padding:11px; margin:5px 0; border-radius:8px; border:1px solid #1e2a44; background:#0a0e1a; color:#fff; font-size:14px; }
 .profileBox button { width:100%; padding:12px; margin-top:8px; border-radius:8px; border:none; font-size:14px; font-weight:700; cursor:pointer; }
+.profileBox select { width:100%; padding:11px; margin:5px 0; border-radius:8px; border:1px solid #1e2a44; background:#0a0e1a; color:#fff; font-size:14px; }
 .btn-green { background:#238636; color:#fff; }
 .btn-blue { background:#1f6feb; color:#fff; }
+.btn-wa { background:#25d366; color:#fff; }
 .profileBox .err { color:#f85149; font-size:12px; margin-top:8px; }
+.profileBox .ok { color:#3fb950; font-size:12px; margin-top:8px; }
 .linkBox { background:#0a0e1a; border:1px solid #1e2a44; border-radius:8px; padding:10px; font-size:11px; color:#58a6ff; word-break:break-all; margin-top:8px; }
 #toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:#238636; color:#fff; padding:11px 22px; border-radius:10px; font-size:13px; z-index:9999; display:none; }
 .note { font-size:11px; color:#8b949e; padding:10px; text-align:center; }
@@ -299,8 +342,19 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
       </div>
 
       <div id="historyBox">
-        <h3>📋 Signal History</h3>
-        <div id="historyList">Abhi koi signal nahi</div>
+        <div class="histHeader">
+          <h3>📋 Signal History (90 Days)</h3>
+          <div class="histHeaderBtns">
+            <button class="histToggleBtn" id="histToggleBtn" onclick="toggleHistory()">Show ▼</button>
+            <button class="histSendBtn" onclick="sendWeeklyReportManual()">📱 Weekly Report</button>
+            <button class="histClearBtn" onclick="clearHistory()">🗑 Clear</button>
+          </div>
+        </div>
+        <div class="historyContent" id="historyContent">
+          <div class="histStats" id="histStats"></div>
+          <div class="winrateBar" id="winrateBar"></div>
+          <div id="weeklyList"></div>
+        </div>
       </div>
 
       <div class="note">⚠️ <span style="color:#3fb950">✓ Green</span> = Working &nbsp; | &nbsp; <span style="color:#f85149">✗ Red</span> = Not working</div>
@@ -325,6 +379,34 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
         <button class="btn-green" onclick="changePassword()">Password Change Karein</button>
         <div class="err" id="settingsError"></div>
       </div>
+
+      <div class="profileBox">
+        <h3>📱 WhatsApp Weekly Report</h3>
+        <input type="tel" id="waNumber" placeholder="WhatsApp number (92XXXXXXXXXX)">
+        <select id="waDay">
+          <option value="5" selected>Friday (jumma)</option>
+          <option value="1">Monday</option>
+          <option value="2">Tuesday</option>
+          <option value="3">Wednesday</option>
+          <option value="4">Thursday</option>
+          <option value="6">Saturday</option>
+          <option value="0">Sunday</option>
+        </select>
+        <select id="waTime">
+          <option value="8">Subah 8:00</option>
+          <option value="9">Subah 9:00</option>
+          <option value="10">Subah 10:00</option>
+          <option value="12">Dopahar 12:00</option>
+          <option value="15" selected>Dopahar 3:00</option>
+          <option value="18">Shaam 6:00</option>
+          <option value="20">Raat 8:00</option>
+          <option value="21">Raat 9:00</option>
+        </select>
+        <button class="btn-wa" onclick="saveWaSettings()">💾 Save WhatsApp Settings</button>
+        <button class="btn-blue" onclick="sendWeeklyReportManual()">📤 Abhi Report Bhejein</button>
+        <div class="ok" id="waStatus"></div>
+      </div>
+
       <div class="profileBox">
         <h3>🔗 Board Ka Link</h3>
         <div class="linkBox" id="linkDisplay">Link yahan dikhega</div>
@@ -368,7 +450,9 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 
 <script>
 const KEY_PASS='sb_password', KEY_HINT='sb_hint', KEY_BROKER='sb_broker', KEY_WATCH='sb_watchlist', KEY_HIST='sb_history';
+const KEY_WA_NUM='sb_wa_num', KEY_WA_DAY='sb_wa_day', KEY_WA_TIME='sb_wa_time', KEY_WA_LAST='sb_wa_last';
 const BOARD_URL='https://awaismajeed786.github.io/Signal.board/signal5.html';
+const HISTORY_DAYS = 90;
 
 const PAIR_DATA = {
   'EURUSDT':{sym:'€',bg:'#003399'},'GBPUSDT':{sym:'£',bg:'#C8102E'},'USDJPY':{sym:'¥',bg:'#BC002D'},
@@ -419,6 +503,9 @@ const BROKER_PAIRS = {
 };
 
 let selectedBroker='Quotex', selectedPair='EURUSDT', timerInterval=null, priceInterval=null;
+let histOpen = false;
+let openWeeks = {};
+let openDays = {};
 
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
 
@@ -427,11 +514,10 @@ function switchTab(tab){
   document.querySelectorAll('.navItem').forEach(n=>n.classList.remove('active'));
   if(tab==='signals'){document.getElementById('signalPage').classList.add('active');document.getElementById('nav-signals').classList.add('active');}
   else if(tab==='watch'){document.getElementById('watchPage').classList.add('active');document.getElementById('nav-watch').classList.add('active');renderWatchlist();}
-  else{document.getElementById('profilePage').classList.add('active');document.getElementById('nav-profile').classList.add('active');document.getElementById('linkDisplay').textContent=BOARD_URL;}
+  else{document.getElementById('profilePage').classList.add('active');document.getElementById('nav-profile').classList.add('active');document.getElementById('linkDisplay').textContent=BOARD_URL;loadWaSettings();}
 }
 
 function toggleSel(){ document.getElementById('customSelect').classList.toggle('open'); }
-
 function pickPair(v){ selectedPair=v; document.getElementById('customSelect').classList.remove('open'); updatePairCard(); }
 
 function updatePairCard(){
@@ -513,13 +599,16 @@ function openBoard(){
   document.getElementById('mainBoard').style.display='block';
   loadBroker();renderWatchlist();startPriceRefresh();
   document.getElementById('linkDisplay').textContent=BOARD_URL;
-  loadHistoryUI();
+  cleanupOldHistory();
+  renderHistory();
+  checkAllPending();
   setRingProgress(100,'#58a6ff');
   setRingArrow('wait','#58a6ff');
   document.addEventListener('click', function(e){
     const c = document.getElementById('customSelect');
     if(c && !c.contains(e.target)) c.classList.remove('open');
   });
+  setTimeout(checkAutoWaSend, 2000);
 }
 
 function resetPassword(){if(confirm('Reset?')){localStorage.removeItem(KEY_PASS);localStorage.removeItem(KEY_HINT);location.reload();}}
@@ -555,6 +644,367 @@ function renderWatchlist(){
   b.innerHTML=l.map(x=>{const d=PAIR_DATA[x.v]||{sym:'?',bg:'#30363d'};return '<div class="watchItem"><div class="left"><div class="lg" style="background:'+d.bg+';">'+d.sym+'</div><div class="nm">'+x.n+'</div></div><div class="del" onclick="removeFromWatchlist(\''+x.v+'\')">✖</div></div>';}).join('');
 }
 
+/* ============ HISTORY 90 DAYS WITH WEEK/DAY TABLES ============ */
+function getTFMs(tf){
+  const m = {'30s':30000,'60s':60000,'1m':60000,'3m':180000,'5m':300000,'15m':900000,'30m':1800000,'1h':3600000,'4h':14400000};
+  return m[tf] || 60000;
+}
+function getHistory(){ try{return JSON.parse(localStorage.getItem(KEY_HIST)||'[]');} catch(e){return[];} }
+function saveHistory(h){ localStorage.setItem(KEY_HIST, JSON.stringify(h)); }
+function cleanupOldHistory(){
+  let h = getHistory();
+  const cutoff = Date.now() - (HISTORY_DAYS * 24 * 60 * 60 * 1000);
+  const filtered = h.filter(x => x.timestamp >= cutoff);
+  if(filtered.length !== h.length) saveHistory(filtered);
+}
+function clearHistory(){
+  if(confirm('Poori history delete karni hai?')){
+    localStorage.removeItem(KEY_HIST);
+    openWeeks = {}; openDays = {};
+    renderHistory();
+    showToast('🗑️ History clear');
+  }
+}
+function toggleHistory(){
+  histOpen = !histOpen;
+  const content = document.getElementById('historyContent');
+  const btn = document.getElementById('histToggleBtn');
+  if(histOpen){ content.classList.add('open'); btn.textContent = 'Hide ▲'; }
+  else { content.classList.remove('open'); btn.textContent = 'Show ▼'; }
+}
+function addHistory(sig, pair, price, tf, broker){
+  if(sig !== 'BUY' && sig !== 'SELL') return;
+  cleanupOldHistory();
+  let h = getHistory();
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('en-PK', {hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true});
+  const id = Date.now() + '_' + Math.random().toString(36).slice(2,8);
+  const item = { id: id, sig: sig, pair: pair, price: parseFloat(price), time: timeStr, timestamp: Date.now(), tf: tf, broker: broker, correct: null, exitPrice: null };
+  h.unshift(item);
+  if(h.length > 5000) h = h.slice(0, 5000);
+  saveHistory(h);
+  renderHistory();
+  const tfMs = getTFMs(tf);
+  setTimeout(() => checkOutcome(id), tfMs + 3000);
+}
+async function checkOutcome(id){
+  const h = getHistory();
+  const idx = h.findIndex(x => x.id === id);
+  if(idx === -1 || h[idx].correct !== null) return;
+  try {
+    const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + h[idx].pair);
+    const d = await r.json();
+    const exitPrice = parseFloat(d.price);
+    let correct = false;
+    if(h[idx].sig === 'BUY' && exitPrice > h[idx].price) correct = true;
+    if(h[idx].sig === 'SELL' && exitPrice < h[idx].price) correct = true;
+    h[idx].exitPrice = exitPrice;
+    h[idx].correct = correct;
+    saveHistory(h);
+    renderHistory();
+    showToast((correct?'✅ Sahi':'❌ Galat') + ' — ' + h[idx].pair + ' ' + h[idx].sig);
+  } catch(e) {}
+}
+function checkAllPending(){
+  const h = getHistory();
+  const now = Date.now();
+  h.forEach(item => {
+    if(item.correct === null && (item.sig === 'BUY' || item.sig === 'SELL')) {
+      const tfMs = getTFMs(item.tf);
+      const elapsed = now - item.timestamp;
+      if(elapsed >= tfMs) checkOutcome(item.id);
+      else setTimeout(() => checkOutcome(item.id), (tfMs - elapsed) + 3000);
+    }
+  });
+}
+function getWeekKey(ts){
+  const d = new Date(ts);
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  const mon = new Date(d);
+  mon.setDate(diff); mon.setHours(0,0,0,0);
+  return mon.getTime().toString();
+}
+function getDayKey(ts){
+  const d = new Date(ts);
+  d.setHours(0,0,0,0);
+  return d.getTime().toString();
+}
+function toggleWeek(k){ openWeeks[k] = !openWeeks[k]; renderHistory(); }
+function toggleDay(k){ openDays[k] = !openDays[k]; renderHistory(); }
+
+function statCalc(arr){
+  const c = arr.filter(x=>x.correct===true).length;
+  const w = arr.filter(x=>x.correct===false).length;
+  const p = arr.filter(x=>x.correct===null).length;
+  const t = arr.length;
+  const buys = arr.filter(x=>x.sig==='BUY').length;
+  const sells = arr.filter(x=>x.sig==='SELL').length;
+  const comp = c + w;
+  const wp = comp > 0 ? Math.round((c/comp)*100) : 0;
+  return {c,w,p,t,wp,buys,sells};
+}
+function winPctClass(wp){
+  if(wp >= 70) return 'win-high';
+  if(wp >= 50) return 'win-med';
+  return 'win-low';
+}
+
+function renderHistory(){
+  cleanupOldHistory();
+  const h = getHistory();
+  const stats = document.getElementById('histStats');
+  const winrateBar = document.getElementById('winrateBar');
+  const weeklyList = document.getElementById('weeklyList');
+  if(!stats || !weeklyList) return;
+  const overall = statCalc(h);
+  stats.innerHTML = 
+    '<div class="statItem stat-correct">✓ ' + overall.c + '</div>' +
+    '<div class="statItem stat-wrong">✗ ' + overall.w + '</div>' +
+    '<div class="statItem stat-pending">⏳ ' + overall.p + '</div>' +
+    '<div class="statItem stat-total">📊 ' + overall.t + '</div>';
+  winrateBar.innerHTML = 
+    '<div class="winrateRow"><span>Overall Win Rate (90 din)</span><b>' + overall.wp + '%</b></div>' +
+    '<div class="winrateProgressBg"><div class="winrateProgressFg" style="width:' + overall.wp + '%"></div></div>';
+  if(h.length === 0){
+    weeklyList.innerHTML = '<div class="watchEmpty">Abhi koi signal nahi<br>Analyze dabayein</div>';
+    return;
+  }
+  const weeksMap = {};
+  h.forEach(item => {
+    const wk = getWeekKey(item.timestamp);
+    if(!weeksMap[wk]) weeksMap[wk] = [];
+    weeksMap[wk].push(item);
+  });
+  const sortedWeekKeys = Object.keys(weeksMap).sort((a,b)=>parseInt(b)-parseInt(a));
+  const totalWeeks = sortedWeekKeys.length;
+  weeklyList.innerHTML = sortedWeekKeys.map((wk, wi) => {
+    const wSignals = weeksMap[wk];
+    const ws = statCalc(wSignals);
+    const wkStart = new Date(parseInt(wk));
+    const wkEnd = new Date(wkStart.getTime() + 6*24*60*60*1000);
+    const fmtDate = (d) => d.toLocaleDateString('en-PK', {day:'numeric', month:'short'});
+    const weekLabel = 'Week ' + (totalWeeks - wi);
+    const weekRange = fmtDate(wkStart) + ' to ' + fmtDate(wkEnd);
+    const isOpenWk = !!openWeeks[wk];
+    const daysMap = {};
+    wSignals.forEach(s => {
+      const dk = getDayKey(s.timestamp);
+      if(!daysMap[dk]) daysMap[dk] = [];
+      daysMap[dk].push(s);
+    });
+    const sortedDayKeys = Object.keys(daysMap).sort((a,b)=>parseInt(b)-parseInt(a));
+    const daysHtml = sortedDayKeys.map(dk => {
+      const dSignals = daysMap[dk];
+      const ds = statCalc(dSignals);
+      const dStart = new Date(parseInt(dk));
+      const dayName = dStart.toLocaleDateString('en-PK', {weekday:'long'});
+      const dayDate = dStart.toLocaleDateString('en-PK', {day:'numeric', month:'short', year:'numeric'});
+      const isOpenDy = !!openDays[dk];
+      const sigsHtml = dSignals.map(s => {
+        const cls = s.sig === 'BUY' ? 'h-buy' : 'h-sell';
+        let out = '';
+        if(s.correct === true) out = '<span class="outcome-correct">✓ Correct</span>';
+        else if(s.correct === false) out = '<span class="outcome-wrong">✗ Wrong</span>';
+        else out = '<span class="outcome-pending">⏳ Pending</span>';
+        return '<div class="sigRow">' +
+          '<span class="sigTime">' + s.time + '</span>' +
+          '<span><b>' + s.pair + '</b> ' + s.tf + '</span>' +
+          '<span>' + s.broker + '</span>' +
+          '<span class="' + cls + '">' + s.sig + '</span>' +
+          '<span>@ ' + s.price + '</span>' +
+          '<span>' + out + '</span>' +
+        '</div>';
+      }).join('');
+      return '<div class="dayRow">' +
+        '<div class="dayHeader" onclick="toggleDay(\'' + dk + '\')">' +
+          '<span>📅 ' + dayName + ' — ' + dayDate + '</span>' +
+          '<span class="chev">' + (isOpenDy ? '▼' : '▶') + '</span>' +
+        '</div>' +
+        '<div class="dayStats">' +
+          'Total: <b>' + ds.t + '</b> &nbsp; 🟢 ' + ds.buys + ' &nbsp; 🔴 ' + ds.sells + ' &nbsp; ✓ <b style="color:#3fb950;">' + ds.c + '</b> &nbsp; ✗ <b style="color:#f85149;">' + ds.w + '</b> &nbsp; ⏳ <b style="color:#d29922;">' + ds.p + '</b> &nbsp; Win: <span class="winPctTag ' + winPctClass(ds.wp) + '">' + ds.wp + '%</span>' +
+        '</div>' +
+        (isOpenDy ? '<div class="sigList">' + (sigsHtml || '<div style="padding:8px; color:#8b949e; font-size:11px;">Koi signal nahi</div>') + '</div>' : '') +
+      '</div>';
+    }).join('');
+    return '<div class="weekRow">' +
+      '<div class="weekHeader" onclick="toggleWeek(\'' + wk + '\')">' +
+        '<span>📆 ' + weekLabel + ' — ' + weekRange + '</span>' +
+        '<span class="chev">' + (isOpenWk ? '▼' : '▶') + '</span>' +
+      '</div>' +
+      '<div class="weekStats">' +
+        'Total: <b>' + ws.t + '</b> &nbsp; 🟢 ' + ws.buys + ' &nbsp; 🔴 ' + ws.sells + ' &nbsp; ✓ <b style="color:#3fb950;">' + ws.c + '</b> &nbsp; ✗ <b style="color:#f85149;">' + ws.w + '</b> &nbsp; ⏳ <b style="color:#d29922;">' + ws.p + '</b> &nbsp; Win: <span class="winPctTag ' + winPctClass(ws.wp) + '">' + ws.wp + '%</span>' +
+      '</div>' +
+      (isOpenWk ? '<div class="daysList">' + daysHtml + '</div>' : '') +
+    '</div>';
+  }).join('');
+}
+
+/* ============ WHATSAPP WEEKLY REPORT ============ */
+function loadWaSettings(){
+  const num = localStorage.getItem(KEY_WA_NUM) || '';
+  const day = localStorage.getItem(KEY_WA_DAY) || '5';
+  const time = localStorage.getItem(KEY_WA_TIME) || '15';
+  const numEl = document.getElementById('waNumber');
+  const dayEl = document.getElementById('waDay');
+  const timeEl = document.getElementById('waTime');
+  if(numEl) numEl.value = num;
+  if(dayEl) dayEl.value = day;
+  if(timeEl) timeEl.value = time;
+}
+
+function saveWaSettings(){
+  const num = document.getElementById('waNumber').value.replace(/\D/g,'');
+  const day = document.getElementById('waDay').value;
+  const time = document.getElementById('waTime').value;
+  if(num.length < 10){ document.getElementById('waStatus').style.color='#f85149'; document.getElementById('waStatus').textContent='❌ Sahi number likhein (jaise 923001234567)'; return; }
+  localStorage.setItem(KEY_WA_NUM, num);
+  localStorage.setItem(KEY_WA_DAY, day);
+  localStorage.setItem(KEY_WA_TIME, time);
+  const st = document.getElementById('waStatus');
+  st.style.color='#3fb950';
+  st.textContent='✅ Settings save ho gayin! Har ' + document.getElementById('waDay').options[document.getElementById('waDay').selectedIndex].text + ' ko report aayegi.';
+  showToast('✅ WhatsApp settings saved');
+}
+
+// ⭐ Friday to Friday week - last Friday se aaj Friday tak
+function getLastFridayStart(){
+  const now = new Date();
+  const day = now.getDay(); // 0=Sun, 5=Fri
+  const diff = (day - 5 + 7) % 7;
+  const fri = new Date(now);
+  fri.setDate(now.getDate() - diff);
+  fri.setHours(0,0,0,0);
+  return fri;
+}
+function getPreviousFridayStart(){
+  const last = getLastFridayStart();
+  const prev = new Date(last);
+  prev.setDate(last.getDate() - 7);
+  return prev;
+}
+
+// ⭐ Weekly report text banayein
+function buildWeeklyReport(){
+  const h = getHistory();
+  const weekStart = getPreviousFridayStart(); // Pichhla Friday
+  const weekEnd = getLastFridayStart(); // Yeh Friday
+  const weekStartTs = weekStart.getTime();
+  const weekEndTs = weekEnd.getTime();
+  
+  const weekSignals = h.filter(x => x.timestamp >= weekStartTs && x.timestamp < weekEndTs);
+  
+  const fmtFull = (d) => d.toLocaleDateString('en-PK', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+  
+  let msg = '';
+  msg += '📊 *MOON AI — WEEKLY SIGNAL REPORT*\n';
+  msg += '📅 _' + fmtFull(weekStart) + ' se ' + fmtFull(weekEnd) + '_\n\n';
+  
+  if(weekSignals.length === 0){
+    msg += '⚠️ Is hafte koi signal nahi aaya.\n';
+    return msg;
+  }
+  
+  const total = weekSignals.length;
+  const correct = weekSignals.filter(x=>x.correct===true).length;
+  const wrong = weekSignals.filter(x=>x.correct===false).length;
+  const pending = weekSignals.filter(x=>x.correct===null).length;
+  const buys = weekSignals.filter(x=>x.sig==='BUY').length;
+  const sells = weekSignals.filter(x=>x.sig==='SELL').length;
+  const completed = correct + wrong;
+  const wp = completed > 0 ? Math.round((correct/completed)*100) : 0;
+  
+  msg += '━━━━━━━━━━━━━━━\n';
+  msg += '📈 *TOTAL WEEKLY STATS*\n';
+  msg += '━━━━━━━━━━━━━━━\n';
+  msg += 'Total Signals: *' + total + '*\n';
+  msg += '🟢 BUY: *' + buys + '*\n';
+  msg += '🔴 SELL: *' + sells + '*\n';
+  msg += '✅ Correct: *' + correct + '*\n';
+  msg += '❌ Wrong: *' + wrong + '*\n';
+  msg += '⏳ Pending: *' + pending + '*\n';
+  msg += '🎯 Win Rate: *' + wp + '%*\n\n';
+  
+  // Day by day
+  msg += '━━━━━━━━━━━━━━━\n';
+  msg += '📅 *DAILY BREAKDOWN*\n';
+  msg += '━━━━━━━━━━━━━━━\n\n';
+  
+  const daysMap = {};
+  weekSignals.forEach(s => {
+    const dk = getDayKey(s.timestamp);
+    if(!daysMap[dk]) daysMap[dk] = [];
+    daysMap[dk].push(s);
+  });
+  const sortedDays = Object.keys(daysMap).sort((a,b)=>parseInt(a)-parseInt(b));
+  
+  sortedDays.forEach(dk => {
+    const ds = daysMap[dk];
+    const dObj = new Date(parseInt(dk));
+    const dayName = dObj.toLocaleDateString('en-PK', {weekday:'long'});
+    const dayDate = dObj.toLocaleDateString('en-PK', {day:'numeric', month:'short'});
+    const c = ds.filter(x=>x.correct===true).length;
+    const w = ds.filter(x=>x.correct===false).length;
+    const p = ds.filter(x=>x.correct===null).length;
+    const b = ds.filter(x=>x.sig==='BUY').length;
+    const s2 = ds.filter(x=>x.sig==='SELL').length;
+    const comp = c + w;
+    const dwp = comp > 0 ? Math.round((c/comp)*100) : 0;
+    
+    msg += '🕐 *' + dayName + '* (' + dayDate + ')\n';
+    msg += '   Total: ' + ds.length + ' | 🟢 ' + b + ' 🔴 ' + s2 + '\n';
+    msg += '   ✓ ' + c + '  ✗ ' + w + '  ⏳ ' + p + '  |  Win: *' + dwp + '%*\n\n';
+  });
+  
+  msg += '━━━━━━━━━━━━━━━\n';
+  msg += '_Moon AI Trading Board_\n';
+  
+  return msg;
+}
+
+// ⭐ Auto WhatsApp kholna
+function sendWeeklyReport(){
+  const num = localStorage.getItem(KEY_WA_NUM);
+  if(!num){ showToast('⚠️ Pehle WhatsApp number save karein'); return false; }
+  const msg = buildWeeklyReport();
+  const url = 'https://wa.me/' + num + '?text=' + encodeURIComponent(msg);
+  window.open(url, '_blank');
+  localStorage.setItem(KEY_WA_LAST, new Date().toDateString());
+  return true;
+}
+
+function sendWeeklyReportManual(){
+  if(!localStorage.getItem(KEY_WA_NUM)){
+    showToast('⚠️ Pehle Profile mein WhatsApp number save karein');
+    switchTab('profile');
+    return;
+  }
+  sendWeeklyReport();
+}
+
+// ⭐ Auto-check: agar aaj configured din hai to report bhejein
+function checkAutoWaSend(){
+  const num = localStorage.getItem(KEY_WA_NUM);
+  if(!num) return;
+  const day = parseInt(localStorage.getItem(KEY_WA_DAY) || '5');
+  const hour = parseInt(localStorage.getItem(KEY_WA_TIME) || '15');
+  const last = localStorage.getItem(KEY_WA_LAST) || '';
+  const now = new Date();
+  const today = now.toDateString();
+  
+  if(now.getDay() !== day) return;
+  if(now.getHours() < hour) return;
+  if(last === today) return;
+  
+  setTimeout(() => {
+    const ok = sendWeeklyReport();
+    if(ok){
+      showToast('📱 WhatsApp report khul gayi — Send dabayein!');
+    }
+  }, 1500);
+}
+
+/* ============ TIMER ============ */
 function getTFSeconds(tf){const m={'30s':30,'60s':60,'1m':60,'3m':180,'5m':300,'15m':900,'30m':1800,'1h':3600,'4h':14400};return m[tf]||60;}
 function getTFBinance(tf){const m={'30s':'1m','60s':'1m','1m':'1m','3m':'3m','5m':'5m','15m':'15m','30m':'30m','1h':'1h','4h':'4h'};return m[tf]||'1m';}
 
@@ -586,6 +1036,7 @@ function startTimer(tf,tfName){
   upd();timerInterval=setInterval(upd,1000);
 }
 
+/* ============ ANALYSIS ============ */
 async function getData(sym,tf,lim){
   const u='https://api.binance.com/api/v3/klines?symbol='+sym+'&interval='+tf+'&limit='+(lim||100);
   const r=await fetch(u);const d=await r.json();
@@ -599,20 +1050,13 @@ function bb(c,per,mult){const s=c.slice(-per);const sma=s.reduce((a,b)=>a+b,0)/p
 function candlePat(cs){const l=cs[cs.length-1],p=cs[cs.length-2];const b=Math.abs(l.close-l.open),r=l.high-l.low;if(l.close>l.open&&p.close<p.open&&l.close>p.open&&l.open<p.close)return'BUY';if(l.close<l.open&&p.close>p.open&&l.close<p.open&&l.open>p.close)return'SELL';if(r>0&&b/r<0.3&&l.close>l.open)return'BUY';if(r>0&&b/r<0.3&&l.close<l.open)return'SELL';return'NEUTRAL';}
 function playSound(t){try{if(navigator.vibrate)navigator.vibrate(t==='BUY'?[100,50,100]:[200,100,200]);const ctx=new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=t==='BUY'?880:440;g.gain.value=0.3;o.start();o.stop(ctx.currentTime+0.3);}catch(e){}}
 
-function loadHistoryUI(){try{const h=JSON.parse(localStorage.getItem(KEY_HIST)||'[]');renderHistory(h);}catch(e){}}
-function renderHistory(h){const list=document.getElementById('historyList');if(!h||h.length===0){list.innerHTML='Abhi koi signal nahi';return;}list.innerHTML=h.map(x=>{const cls=x.sig==='BUY'?'h-buy':x.sig==='SELL'?'h-sell':'h-wait';return '<div class="histItem">'+x.time+' — '+x.pair+' — <span class="'+cls+'">'+x.sig+'</span> — '+x.conf+'%</div>';}).join('');}
-function addHistory(sig,pair,conf){let h=[];try{h=JSON.parse(localStorage.getItem(KEY_HIST)||'[]');}catch(e){}const time=new Date().toLocaleTimeString('en-PK',{hour:'2-digit',minute:'2-digit'});h.unshift({sig:sig,pair:pair,conf:conf,time:time});if(h.length>10)h.pop();localStorage.setItem(KEY_HIST,JSON.stringify(h));renderHistory(h);}
-
 function setRingProgress(pct,color){
   const C = 534.07;
   const off = C - (C * pct / 100);
   const r = document.getElementById('ringFg');
   if(!r) return;
-  r.style.stroke = color;
-  r.style.strokeDasharray = C;
-  r.style.strokeDashoffset = off;
+  r.style.stroke = color; r.style.strokeDasharray = C; r.style.strokeDashoffset = off;
 }
-
 function setRingArrow(txt,color){
   const line=document.getElementById('arrowLine');
   const head=document.getElementById('arrowHead');
@@ -624,8 +1068,7 @@ function setRingArrow(txt,color){
   if(txt==='↗'||txt==='↘'){
     if(arrowSvg)arrowSvg.style.display='block';
     if(brainSvg)brainSvg.style.display='none';
-    line.setAttribute('stroke','#ffffff');
-    head.setAttribute('fill','#ffffff');
+    line.setAttribute('stroke','#ffffff'); head.setAttribute('fill','#ffffff');
     if(txt==='↗'){
       line.setAttribute('points','22,78 42,56 52,68 76,28');
       head.setAttribute('points','76,28 58,34 80,45');
@@ -656,14 +1099,11 @@ async function analyze(){
   document.getElementById('tfLabel').textContent='Timeframe: '+tfName;
 
   btn.classList.add('loading');btn.textContent='⏳ Analyzing...';
-  setRingProgress(0,'#58a6ff');
-  setRingArrow('wait','#58a6ff');
+  setRingProgress(0,'#58a6ff'); setRingArrow('wait','#58a6ff');
 
   try{
-    await new Promise(r=>setTimeout(r,400));
-    setRingProgress(30,'#58a6ff');
-    await new Promise(r=>setTimeout(r,400));
-    setRingProgress(60,'#58a6ff');
+    await new Promise(r=>setTimeout(r,400)); setRingProgress(30,'#58a6ff');
+    await new Promise(r=>setTimeout(r,400)); setRingProgress(60,'#58a6ff');
 
     const candles=await getData(pair,bTF,100);
     const closes=candles.map(c=>c.close);
@@ -742,7 +1182,7 @@ async function analyze(){
     document.getElementById('trendShow').textContent='Trend: '+(trend==='BUY'?'UP 📈':trend==='SELL'?'DOWN 📉':'Unknown');
     document.getElementById('detailsBox').innerHTML='<div>Broker: '+selectedBroker+'</div><div>'+pairName+' | Price: '+price+'</div><div>Buy: '+bv+' | Sell: '+sv2+'</div><br>'+log.join('<br>');
 
-    addHistory(signal,pairName,conf);
+    addHistory(signal, pair, price, tfName, selectedBroker);
     loadPrice(pair);
 
     btn.classList.remove('loading');
@@ -752,8 +1192,7 @@ async function analyze(){
   }catch(e){
     btn.classList.remove('loading');btn.className='analyzeBtn wait';
     btn.textContent='🔍 Analyze';
-    setRingProgress(100,'#f85149');
-    setRingArrow('error','#f85149');
+    setRingProgress(100,'#f85149'); setRingArrow('error','#f85149');
     document.getElementById('signalBig').style.display='block';
     document.getElementById('signalBig').textContent='ERROR';
     document.getElementById('signalBig').className='signalBig sig-sell';

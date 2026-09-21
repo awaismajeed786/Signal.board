@@ -56,8 +56,8 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 #loginScreen .link { color:#58a6ff; font-size:13px; margin-top:15px; text-decoration:underline; cursor:pointer; }
 #mainBoard { display:none; }
 .appHeader { max-width:520px; margin:0 auto; padding:12px 16px; background:#131b2e; border-bottom:1px solid #1e2a44; display:flex; align-items:center; justify-content:space-between; gap:8px; }
-.hLogo { display:flex; align-items:center; gap:10px; }
-.moonIcon { width:50px; height:50px; position:relative; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.hLogo { display:flex; align-items:center; gap:6px; }
+.moonIcon { width:42px; height:42px; position:relative; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
 .hText { text-align:left; line-height:1.15; }
 .hText .t1 { font-size:15px; font-weight:700; color:#fff; }
 .hText .t2 { font-size:11px; color:#7bc0ff; font-weight:500; }
@@ -284,16 +284,12 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
   <div class="appHeader">
     <div class="hLogo">
       <div class="moonIcon">
-        <svg viewBox="0 0 100 100" width="50" height="50">
-          <!-- Bada Chand (Crescent Moon) -->
-          <path d="M 45 10 A 40 40 0 1 0 45 90 A 30 30 0 1 1 45 10 Z" fill="#ffffff" filter="drop-shadow(0 0 4px rgba(255,255,255,0.8))"/>
-          
-          <!-- Chand ke andar center mein Golden Sitara -->
-          <path d="M 40 42 L 43 50 L 51 50 L 45 55 L 47 63 L 40 58 L 33 63 L 35 55 L 29 50 L 37 50 Z" fill="#f5c542" filter="drop-shadow(0 0 3px rgba(245,197,66,1))"/>
-          
-          <!-- Upar ki taraf jaati tedhi line (Uptrend Arrow) -->
-          <polyline points="60,85 72,68 78,74 90,52" stroke="#3fb950" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          <polygon points="90,52 82,55 88,62" fill="#3fb950"/>
+        <!-- CHAND + GOLDEN SITARA (Star upar-right corner mein) -->
+        <svg viewBox="0 0 100 100" width="42" height="42">
+          <!-- Chand -->
+          <path d="M 55 20 A 30 30 0 1 0 55 80 A 22 22 0 1 1 55 20 Z" fill="#ffffff" filter="drop-shadow(0 0 3px rgba(255,255,255,0.8))"/>
+          <!-- Golden Sitara (Chand ke upar right corner mein) -->
+          <path d="M 78 12 L 80 19 L 88 19 L 82 24 L 84 31 L 78 26 L 72 31 L 74 24 L 68 19 L 76 19 Z" fill="#f5c542" filter="drop-shadow(0 0 3px rgba(245,197,66,1))"/>
         </svg>
       </div>
       <div class="hText">
@@ -373,20 +369,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
               <polyline id="arrowLine" points="22,22 42,44 52,32 76,72" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
               <polygon id="arrowHead" points="76,72 58,66 80,55" fill="#ffffff"/>
             </svg>
-            <svg id="brainSvg" width="160" height="160" viewBox="0 0 160 160" fill="none" style="display:block; position:absolute;">
-              <path d="M 48 18 A 20 20 0 1 0 48 58 A 15 15 0 1 1 48 18 Z" fill="#ffffff" filter="drop-shadow(0 0 6px rgba(255,255,255,0.9))"/>
-              <text x="72" y="45" fill="#7bc0ff" font-size="19" font-weight="900" font-family="Arial" letter-spacing="2">MOON</text>
-              <path d="M 80 78 C 70 78 63 83 60 89 C 54 87 47 90 46 96 C 41 98 37 103 38 109 C 34 112 34 118 38 121 C 37 127 42 132 49 132 C 51 138 58 142 64 140 C 67 143 72 146 78 146 C 82 146 87 144 90 141 C 96 144 103 141 105 136 C 112 136 117 130 116 123 C 120 120 120 114 116 111 C 117 105 113 100 108 98 C 107 92 101 89 95 90 C 93 84 87 78 80 78 Z" stroke="#ffffff" stroke-width="2.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
-              <line x1="80" y1="78" x2="80" y2="146" stroke="#ffffff" stroke-width="1.8" opacity="0.65"/>
-              <path d="M 67 88 C 72 93 74 98 72 104" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 57 96 C 62 100 65 105 64 110" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 48 108 C 54 108 58 112 58 117" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 50 122 C 56 119 61 123 62 128" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 93 88 C 88 93 86 98 88 104" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 103 96 C 98 100 95 105 96 110" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 112 108 C 106 108 102 112 102 117" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 110 122 C 104 119 99 123 98 128" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
-            </svg>
+            <img id="brainSvg" src="icon-192.png" style="display:block; position:absolute; width:140px; height:140px; object-fit:contain; border-radius:50%;">
           </div>
         </div>
 
@@ -548,9 +531,7 @@ function installApp() {
   if (deferredPrompt) {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted install');
-      }
+      if (choiceResult.outcome === 'accepted') { console.log('User accepted install'); }
       deferredPrompt = null;
     });
   } else {
@@ -797,6 +778,7 @@ async function checkOutcome(id){
     saveHistory(h);
     renderHistory();
     showToast((correct?'✅ Sahi':'❌ Galat') + ' — ' + h[idx].pair + ' ' + h[idx].sig);
+    resetRingToImage();
   } catch(e) {}
 }
 function checkAllPending(){
@@ -1072,9 +1054,7 @@ function checkAutoWaSend(){
   if(last === today) return;
   setTimeout(() => {
     const ok = sendWeeklyReport();
-    if(ok){
-      showToast('📱 WhatsApp report khul gayi — Send dabayein!');
-    }
+    if(ok){ showToast('📱 WhatsApp report khul gayi — Send dabayein!'); }
   }, 1500);
 }
 
@@ -1152,6 +1132,16 @@ function setRingArrow(txt,color){
     if(arrowSvg)arrowSvg.style.display='none';
     if(brainSvg)brainSvg.style.display='block';
   }
+}
+
+function resetRingToImage(){
+  const arrowSvg=document.getElementById('arrowSvg');
+  const brainSvg=document.getElementById('brainSvg');
+  const wrap=document.getElementById('ringArrow');
+  if(arrowSvg)arrowSvg.style.display='none';
+  if(brainSvg)brainSvg.style.display='block';
+  if(wrap)wrap.style.filter='none';
+  setRingProgress(100,'#58a6ff');
 }
 
 async function analyze(){

@@ -49,7 +49,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .analyzeSub { color:#8b949e; font-size:12px; margin-bottom:16px; }
 .ringWrap { width:200px; height:200px; margin:0 auto 16px; position:relative; }
 .ringSvg { width:100%; height:100%; transform:rotate(-90deg); }
-.ringArrow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); display:flex; align-items:center; justify-content:center; filter:drop-shadow(0 0 8px currentColor); }
+.ringArrow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); display:flex; align-items:center; justify-content:center; transition:filter 0.3s; }
 .analysisBadge { display:inline-block; padding:5px 14px; border-radius:20px; font-size:10px; font-weight:700; margin-bottom:10px; }
 .badge-buy { background:rgba(63,185,80,0.15); color:#3fb950; border:1px solid rgba(63,185,80,0.4); }
 .badge-sell { background:rgba(248,81,73,0.15); color:#f85149; border:1px solid rgba(248,81,73,0.4); }
@@ -218,9 +218,21 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
             <circle cx="100" cy="100" r="78" fill="none" stroke="#1e2a44" stroke-width="1"></circle>
           </svg>
           <div class="ringArrow" id="ringArrow">
-            <svg id="ringArrowSvg" width="90" height="90" viewBox="0 0 90 90" fill="none">
-              <polyline id="arrowLine" points="20,20 38,38 46,28 68,62" stroke="#58a6ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              <polygon id="arrowHead" points="68,62 55,58 72,50" fill="#58a6ff"/>
+            <svg id="arrowSvg" width="100" height="100" viewBox="0 0 100 100" fill="none" style="display:none;">
+              <polyline id="arrowLine" points="22,22 42,44 52,32 76,72" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <polygon id="arrowHead" points="76,72 58,66 80,55" fill="#ffffff"/>
+            </svg>
+            <svg id="brainSvg" width="90" height="90" viewBox="0 0 90 90" fill="none" style="display:block;">
+              <path d="M45 18 C38 18 33 22 31 27 C25 27 20 32 20 38 C15 40 13 45 15 50 C12 55 15 62 21 65 C22 72 28 76 35 75 C38 78 42 80 45 80 C48 80 52 78 55 75 C62 76 68 72 69 65 C75 62 78 55 75 50 C77 45 75 40 70 38 C70 32 65 27 59 27 C57 22 52 18 45 18 Z" stroke="#ffffff" stroke-width="3" fill="none" stroke-linejoin="round"/>
+              <path d="M45 18 L45 80" stroke="#ffffff" stroke-width="2.5" opacity="0.7"/>
+              <path d="M31 27 C33 33 36 36 40 38" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.8"/>
+              <path d="M59 27 C57 33 54 36 50 38" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.8"/>
+              <path d="M21 50 C27 48 32 50 36 54" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.8"/>
+              <path d="M69 50 C63 48 58 50 54 54" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.8"/>
+              <path d="M35 75 C38 70 42 68 45 68" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.8"/>
+              <path d="M55 75 C52 70 48 68 45 68" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.8"/>
+              <circle cx="38" cy="44" r="1.5" fill="#ffffff"/>
+              <circle cx="52" cy="44" r="1.5" fill="#ffffff"/>
             </svg>
           </div>
         </div>
@@ -332,22 +344,11 @@ const KEY_PASS='sb_password', KEY_HINT='sb_hint', KEY_BROKER='sb_broker', KEY_WA
 const BOARD_URL='https://awaismajeed786.github.io/Signal.board/signal5.html';
 
 const PAIR_DATA = {
-  'EURUSDT':{sym:'€',bg:'#003399'},
-  'GBPUSDT':{sym:'£',bg:'#C8102E'},
-  'USDJPY':{sym:'¥',bg:'#BC002D'},
-  'AUDUSDT':{sym:'A$',bg:'#00843D'},
-  'USDCAD':{sym:'C$',bg:'#FF0000'},
-  'USDCHF':{sym:'₣',bg:'#DA291C'},
-  'NZDUSDT':{sym:'NZ$',bg:'#000000'},
-  'EURGBP':{sym:'€£',bg:'#003399'},
-  'EURJPY':{sym:'€¥',bg:'#003399'},
-  'GBPJPY':{sym:'£¥',bg:'#C8102E'},
-  'BTCUSDT':{sym:'₿',bg:'#F7931A'},
-  'ETHUSDT':{sym:'Ξ',bg:'#627EEA'},
-  'SOLUSDT':{sym:'◎',bg:'#9945FF'},
-  'XRPUSDT':{sym:'✕',bg:'#23292F'},
-  'DOGEUSDT':{sym:'Ð',bg:'#C2A633'},
-  'LTCUSDT':{sym:'Ł',bg:'#345D9D'}
+  'EURUSDT':{sym:'€',bg:'#003399'},'GBPUSDT':{sym:'£',bg:'#C8102E'},'USDJPY':{sym:'¥',bg:'#BC002D'},
+  'AUDUSDT':{sym:'A$',bg:'#00843D'},'USDCAD':{sym:'C$',bg:'#FF0000'},'USDCHF':{sym:'₣',bg:'#DA291C'},
+  'NZDUSDT':{sym:'NZ$',bg:'#000000'},'EURGBP':{sym:'€£',bg:'#003399'},'EURJPY':{sym:'€¥',bg:'#003399'},
+  'GBPJPY':{sym:'£¥',bg:'#C8102E'},'BTCUSDT':{sym:'₿',bg:'#F7931A'},'ETHUSDT':{sym:'Ξ',bg:'#627EEA'},
+  'SOLUSDT':{sym:'◎',bg:'#9945FF'},'XRPUSDT':{sym:'✕',bg:'#23292F'},'DOGEUSDT':{sym:'Ð',bg:'#C2A633'},'LTCUSDT':{sym:'Ł',bg:'#345D9D'}
 };
 
 const BROKER_PAIRS = {
@@ -357,7 +358,7 @@ const BROKER_PAIRS = {
   'XM':[{v:'EURUSDT',n:'EUR/USDT'},{v:'GBPUSDT',n:'GBP/USDT'},{v:'USDJPY',n:'USD/JPY'},{v:'AUDUSDT',n:'AUD/USDT'},{v:'USDCAD',n:'USD/CAD'},{v:'USDCHF',n:'USD/CHF'},{v:'NZDUSDT',n:'NZD/USDT'},{v:'EURGBP',n:'EUR/GBP'},{v:'EURJPY',n:'EUR/JPY'},{v:'GBPJPY',n:'GBP/JPY'},{v:'BTCUSDT',n:'BTC/USDT'},{v:'ETHUSDT',n:'ETH/USDT'},{v:'SOLUSDT',n:'SOL/USDT'},{v:'XRPUSDT',n:'XRP/USDT'},{v:'DOGEUSDT',n:'DOGE/USDT'},{v:'LTCUSDT',n:'LTC/USDT'}]
 };
 
-let selectedBroker='Quotex', timerInterval=null, priceInterval=null, currentTF='1m';
+let selectedBroker='Quotex', timerInterval=null, priceInterval=null;
 
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
 
@@ -527,20 +528,26 @@ function setRingProgress(pct,color){
 function setRingArrow(txt,color){
   const line=document.getElementById('arrowLine');
   const head=document.getElementById('arrowHead');
+  const arrowSvg=document.getElementById('arrowSvg');
+  const brainSvg=document.getElementById('brainSvg');
   const wrap=document.getElementById('ringArrow');
   if(!line||!head||!wrap)return;
-  line.setAttribute('stroke',color);
-  head.setAttribute('fill',color);
-  wrap.style.color=color;
-  if(txt==='↗'){
-    line.setAttribute('points','20,70 38,52 46,62 68,28');
-    head.setAttribute('points','68,28 55,32 72,40');
-  }else if(txt==='↘'){
-    line.setAttribute('points','20,20 38,38 46,28 68,62');
-    head.setAttribute('points','68,62 55,58 72,50');
+  wrap.style.filter='drop-shadow(0 0 15px '+color+') drop-shadow(0 0 25px '+color+')';
+  if(txt==='↗'||txt==='↘'){
+    if(arrowSvg)arrowSvg.style.display='block';
+    if(brainSvg)brainSvg.style.display='none';
+    line.setAttribute('stroke','#ffffff');
+    head.setAttribute('fill','#ffffff');
+    if(txt==='↗'){
+      line.setAttribute('points','22,78 42,56 52,68 76,28');
+      head.setAttribute('points','76,28 58,34 80,45');
+    }else{
+      line.setAttribute('points','22,22 42,44 52,32 76,72');
+      head.setAttribute('points','76,72 58,66 80,55');
+    }
   }else{
-    line.setAttribute('points','25,45 38,45 46,45 62,45');
-    head.setAttribute('points','62,45 55,40 55,50');
+    if(arrowSvg)arrowSvg.style.display='none';
+    if(brainSvg)brainSvg.style.display='block';
   }
 }
 
@@ -561,7 +568,7 @@ async function analyze(){
   document.getElementById('tfLabel').textContent='Timeframe: '+tfName;
 
   btn.classList.add('loading');btn.textContent='⏳ Analyzing...';
-  setRingProgress(10,'#58a6ff');setRingArrow('⏸','#58a6ff');
+  setRingProgress(10,'#58a6ff');setRingArrow('wait','#58a6ff');
 
   try{
     await new Promise(r=>setTimeout(r,600));
@@ -614,7 +621,7 @@ async function analyze(){
     else if(sv2>=3&&sv2>bv&&tSell){signal='SELL';conf=act>0?Math.round((sv2/act)*100):0;}
 
     setRingProgress(100,signal==='BUY'?'#3fb950':signal==='SELL'?'#f85149':'#d29922');
-    setRingArrow(signal==='BUY'?'↗':signal==='SELL'?'↘':'⏸',signal==='BUY'?'#3fb950':signal==='SELL'?'#f85149':'#d29922');
+    setRingArrow(signal==='BUY'?'↗':signal==='SELL'?'↘':'wait',signal==='BUY'?'#3fb950':signal==='SELL'?'#f85149':'#d29922');
 
     const badge=document.getElementById('analysisBadge');
     badge.style.display='inline-block';badge.className='analysisBadge badge-'+signal.toLowerCase();
@@ -654,7 +661,7 @@ async function analyze(){
   }catch(e){
     btn.classList.remove('loading');btn.className='analyzeBtn wait';
     btn.textContent='🔍 Analyze';
-    setRingArrow('⏸','#d29922');
+    setRingArrow('wait','#f85149');
     document.getElementById('signalBig').style.display='block';
     document.getElementById('signalBig').textContent='ERROR';
     document.getElementById('signalBig').className='signalBig sig-sell';

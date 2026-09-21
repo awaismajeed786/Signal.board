@@ -35,8 +35,8 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .pairRight { text-align:right; }
 .priceLbl { font-size:8px; color:#8b949e; font-weight:600; display:flex; align-items:center; gap:2px; justify-content:flex-end; }
 .priceDot { width:4px; height:4px; border-radius:50%; background:#3fb950; }
-.priceNum { font-size:13px; font-weight:700; color:#fff; margin-top:0; line-height:1.1; }
-.priceChange { font-size:9px; color:#3fb950; font-weight:600; margin-top:0; line-height:1.1; }
+.priceNum { font-size:13px; font-weight:700; color:#fff; line-height:1.1; }
+.priceChange { font-size:9px; color:#3fb950; font-weight:600; line-height:1.1; }
 .brokerBox { margin-bottom:14px; padding:10px; background:#131b2e; border-radius:12px; border:1px solid #1e2a44; }
 .brokerLabel { color:#8b949e; font-size:11px; margin-bottom:8px; text-align:center; }
 .brokerBtns { display:flex; gap:6px; flex-wrap:wrap; }
@@ -218,24 +218,24 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
             <circle cx="100" cy="100" r="78" fill="none" stroke="#1e2a44" stroke-width="2"></circle>
           </svg>
           <div class="ringArrow" id="ringArrow">
-            <svg id="arrowSvg" width="100" height="100" viewBox="0 0 100 100" fill="none" style="display:none;">
+            <svg id="arrowSvg" width="100" height="100" viewBox="0 0 100 100" fill="none" style="display:none; position:absolute;">
               <polyline id="arrowLine" points="22,22 42,44 52,32 76,72" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
               <polygon id="arrowHead" points="76,72 58,66 80,55" fill="#ffffff"/>
             </svg>
-            <svg id="brainSvg" width="140" height="140" viewBox="0 0 140 140" fill="none" style="display:block;">
-              <text x="70" y="22" text-anchor="middle" fill="#7bc0ff" font-size="20" font-weight="900" font-family="Arial" letter-spacing="3">MOON</text>
-              <path d="M 50 32 A 9 9 0 1 0 50 50 A 7 7 0 1 1 50 32 Z" fill="#ffffff" filter="drop-shadow(0 0 5px #7bc0ff)"/>
-              <polygon points="52,38 53.2,41.5 56.8,41.8 54,44 55,47.5 52,45.4 49,47.5 50,44 47.2,41.8 50.8,41.5" fill="#f5c542"/>
-              <path d="M 70 55 C 61 55 54 60 52 67 C 45 65 38 68 37 75 C 31 76 26 82 27 89 C 22 92 22 100 27 103 C 26 110 32 117 40 117 C 41 124 49 129 56 127 C 59 131 64 134 70 134 C 76 134 81 131 84 127 C 91 129 99 124 100 117 C 108 117 114 110 113 103 C 118 100 118 92 113 89 C 114 82 109 76 103 75 C 102 68 95 65 88 67 C 86 60 79 55 70 55 Z" stroke="#ffffff" stroke-width="2.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
-              <path d="M 70 55 L 70 134" stroke="#ffffff" stroke-width="2" opacity="0.65"/>
-              <path d="M 56 67 C 61 73 63 79 61 85" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 43 78 C 49 83 52 89 51 95" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 33 92 C 40 92 45 97 45 103" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 35 111 C 42 108 48 112 50 118" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 84 67 C 79 73 77 79 79 85" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 97 78 C 91 83 88 89 89 95" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 107 92 C 100 92 95 97 95 103" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
-              <path d="M 105 111 C 98 108 92 112 90 118" stroke="#ffffff" stroke-width="1.8" opacity="0.75" fill="none" stroke-linecap="round"/>
+            <svg id="brainSvg" width="150" height="150" viewBox="0 0 150 150" fill="none" style="display:block; position:absolute;">
+              <text x="75" y="24" text-anchor="middle" fill="#7bc0ff" font-size="20" font-weight="900" font-family="Arial" letter-spacing="3">MOON</text>
+              <path d="M 55 40 A 8 8 0 1 0 55 56 A 6 6 0 1 1 55 40 Z" fill="#ffffff" filter="drop-shadow(0 0 4px #7bc0ff)"/>
+              <polygon points="57,44 58,47 61,47.3 58.7,49 59.5,52 57,50.2 54.5,52 55.3,49 53,47.3 56,47" fill="#f5c542"/>
+              <path d="M 75 62 C 65 62 58 67 55 73 C 49 71 42 74 41 80 C 36 82 32 87 33 93 C 29 96 29 102 33 105 C 32 111 37 116 44 116 C 46 122 53 126 59 124 C 62 127 67 130 73 130 C 77 130 82 128 85 125 C 91 128 98 125 100 120 C 107 120 112 114 111 107 C 115 104 115 98 111 95 C 112 89 108 84 103 82 C 102 76 96 73 90 74 C 88 68 82 62 75 62 Z" stroke="#ffffff" stroke-width="2.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+              <line x1="75" y1="62" x2="75" y2="130" stroke="#ffffff" stroke-width="1.8" opacity="0.65"/>
+              <path d="M 62 72 C 67 77 69 82 67 88" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 52 80 C 57 84 60 89 59 94" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 43 92 C 49 92 53 96 53 101" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 45 106 C 51 103 56 107 57 112" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 88 72 C 83 77 81 82 83 88" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 98 80 C 93 84 90 89 91 94" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 107 92 C 101 92 97 96 97 101" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
+              <path d="M 105 106 C 99 103 94 107 93 112" stroke="#ffffff" stroke-width="1.5" opacity="0.75" fill="none" stroke-linecap="round"/>
             </svg>
           </div>
         </div>
@@ -436,6 +436,8 @@ function openBoard(){
   loadBroker();renderWatchlist();startPriceRefresh();
   document.getElementById('linkDisplay').textContent=BOARD_URL;
   loadHistoryUI();
+  // ⭐ Startup par brain dikhayein
+  setRingArrow('wait','#58a6ff');
 }
 
 function resetPassword(){if(confirm('Reset?')){localStorage.removeItem(KEY_PASS);localStorage.removeItem(KEY_HINT);location.reload();}}

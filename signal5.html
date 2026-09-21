@@ -7,6 +7,16 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Arial,sans-serif; -webkit-tap-highlight-color:transparent; }
 body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
+
+/* ================= DISCLAIMER CSS (NAYA ADDED) ================= */
+#disclaimerScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e1a; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px; z-index:10000; }
+#disclaimerScreen h2 { color:#f85149; margin-bottom:15px; text-align:center; font-size:20px; }
+.discBox { background:#131b2e; border:1px solid #1e2a44; border-radius:12px; padding:16px; max-width:400px; color:#c9d1d9; font-size:12px; line-height:1.6; margin-bottom:20px; max-height:55vh; overflow-y:auto; text-align:left; }
+.discBox p { margin-bottom: 10px; }
+.discBox b { color: #f85149; }
+#disclaimerScreen button { width:100%; max-width:400px; padding:15px; border-radius:10px; border:none; background:#238636; color:#fff; font-size:16px; font-weight:bold; cursor:pointer; }
+/* ============================================================== */
+
 #loginScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e1a; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px; z-index:9999; }
 #loginScreen h2 { color:#58a6ff; margin-bottom:20px; font-size:22px; text-align:center; }
 #loginScreen input { width:100%; max-width:320px; padding:14px; margin:8px 0; border-radius:10px; border:1px solid #1e2a44; background:#131b2e; color:#fff; font-size:16px; text-align:center; }
@@ -98,7 +108,6 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .analyzeBtn:active { transform:scale(0.97); }
 .analyzeBtn.loading { background:linear-gradient(135deg,#d29922,#e3b341); }
 .detailsBox { background:#131b2e; border:1px solid #1e2a44; border-radius:12px; padding:14px; margin-top:14px; text-align:left; font-size:12px; color:#8b949e; line-height:1.8; }
-
 #historyBox { background:#131b2e; border:1px solid #1e2a44; border-radius:12px; padding:14px; margin-top:14px; text-align:left; font-size:12px; }
 .histHeader { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px; }
 .histHeader h3 { color:#58a6ff; font-size:14px; }
@@ -120,7 +129,6 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .historyContent { display:none; max-height:600px; overflow-y:auto; }
 .historyContent.open { display:block; }
 .watchEmpty { color:#8b949e; font-size:12px; padding:20px; text-align:center; }
-
 .weekRow { background:#0a0e1a; border:1px solid #1e2a44; border-radius:10px; margin-bottom:8px; overflow:hidden; }
 .weekHeader { padding:11px 12px; background:linear-gradient(135deg,#131b2e,#1a2538); cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#fff; font-weight:700; }
 .weekStats { padding:8px 12px; background:#0d1424; font-size:11px; color:#8b949e; display:flex; gap:8px; flex-wrap:wrap; border-top:1px solid #1e2a44; }
@@ -145,7 +153,6 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .outcome-wrong { color:#f85149; font-weight:900; }
 .outcome-pending { color:#d29922; font-weight:900; }
 .chev { font-size:10px; color:#8b949e; }
-
 #timerBox { background:#131b2e; border:2px solid #1e2a44; border-radius:14px; padding:16px; margin-bottom:14px; text-align:center; display:none; }
 #timerBox.active { display:block; }
 #timerBox.done { border-color:#3fb950; background:#0d2818; box-shadow:0 0 25px rgba(63,185,80,0.5); }
@@ -193,6 +200,24 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 </style>
 </head>
 <body>
+
+<!-- ================= DISCLAIMER HTML (NAYA ADDED) ================= -->
+<div id="disclaimerScreen">
+  <h2>🛑 ZAROORI EHTIYAT (DISCLAIMER)</h2>
+  <div class="discBox">
+    <p><b>1. Maqsad:</b> Yeh app ("Moon AI Trading Board") sirf educational, learning aur market analysis ke maqsad ke liye banaya gaya hai. Isme diye gaye signals ya analysis koi financial advice nahi hain.</p>
+    
+    <p><b>2. Risk Ka Elaan:</b> Trading aur investing mein bohat zyada risk hota hai. Market mein paisa upar bhi jata hai aur neeche bhi. Aap apna paisa apni marzi aur apne risk par lagayenge. Kisi bhi trade mein profit ya loss ka pura risk aapka khud ka hoga.</p>
+    
+    <p><b>3. Koi Guarantee Nahi:</b> Hum kisi bhi trade ke profit ki koi guarantee nahi dete. Yeh app koi jaadu nahi hai, yeh sirf market ke indicators par based analysis deti hai.</p>
+    
+    <p><b>4. Zimmedari Se Inkaar (Non-Liability):</b> Agar aap is app ke signals ko follow karke trade karte hain aur aapko koi nuksan (loss) hota hai, toh iski poori zimmedari aapki khud ki hogi. <b>App ka developer, owner, ya koi bhi team member aapke kisi bhi financial nuksan, loss, ya profit ke liye hargiz zimmedar nahi hoga.</b></p>
+    
+    <p><b>5. Ittefaq:</b> App ko use karne ka matlab hai ke aap in sab baton se poori tarah se ittefaq karte hain aur apni marzi se is app ko use kar rahe hain.</p>
+  </div>
+  <button onclick="acceptDisclaimer()">✔️ Main Samajh Gaya, I Agree</button>
+</div>
+<!-- =============================================================== -->
 
 <div id="loginScreen">
   <h2 id="loginTitle">🔐 Password Set Karein</h2>
@@ -1204,7 +1229,29 @@ document.getElementById('tf').addEventListener('change',function(){
   document.getElementById('tfLabel').textContent='Timeframe: '+this.options[this.selectedIndex].text;
 });
 
-checkLogin();
+/* ================= DISCLAIMER JS LOGIC (NAYA ADDED) ================= */
+function acceptDisclaimer() {
+  localStorage.setItem('disclaimer_accepted', 'yes');
+  document.getElementById('disclaimerScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  checkLogin();
+}
+
+// Jab app pehli baar load ho
+window.addEventListener('DOMContentLoaded', () => {
+   if(localStorage.getItem('disclaimer_accepted') === 'yes') {
+       // Agar user pehle I Agree daba chuka hai, toh seedha login screen dikhaye
+       document.getElementById('disclaimerScreen').style.display = 'none';
+       document.getElementById('loginScreen').style.display = 'flex';
+       checkLogin();
+   } else {
+       // Agar pehli baar aaya hai, toh pehle Disclaimer dikhaye
+       document.getElementById('disclaimerScreen').style.display = 'flex';
+       document.getElementById('loginScreen').style.display = 'none';
+   }
+});
+/* =================================================================== */
+
 </script>
 </body>
 </html>

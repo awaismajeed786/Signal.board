@@ -1325,7 +1325,7 @@ async function analyze(){
     document.getElementById('detailsBox').innerHTML='<div>Broker: '+selectedBroker+'</div><div>'+pairName+' | Price: '+price+'</div><div>Buy: '+bv+' | Sell: '+sv2+'</div><br>'+log.join('<br>');
 
     try { addHistory(signal, pair, price, tfName, selectedBroker); } catch(err) { console.log('History err:', err); }
-try { loadPrice(pair); } catch(err) { console.log('Price err:', err); }
+    try { loadPrice(pair); } catch(err) { console.log('Price err:', err); }
 
     btn.classList.remove('loading');
     btn.className='analyzeBtn '+signal.toLowerCase();

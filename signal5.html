@@ -1289,12 +1289,17 @@ async function analyze(){
     else log.push('➖ Trend: Unknown');
 
     let signal='WAIT',conf=0;
-    const tBuy=(trend==='BUY'||trend==='NEUTRAL');
-    const tSell=(trend==='SELL'||trend==='NEUTRAL');
     const act=bv+sv2;
 
-    if(bv>=3&&bv>sv2&&tBuy){signal='BUY';conf=act>0?Math.round((bv/act)*100):0;}
-    else if(sv2>=3&&sv2>bv&&tSell){signal='SELL';conf=act>0?Math.round((sv2/act)*100):0;}
+    // ⭐ NAYA LOGIC - 2 indicators kaafi hain, WAIT kam aayega
+    if(bv>=2&&bv>sv2){signal='BUY';conf=act>0?Math.round((bv/act)*100):0;}
+    else if(sv2>=2&&sv2>bv){signal='SELL';conf=act>0?Math.round((sv2/act)*100):0;}
+    else if(bv===1&&sv2===1&&trend!=='NEUTRAL'){
+      if(trend==='BUY'){signal='BUY';conf=55;}
+      else{signal='SELL';conf=55;}
+    }
+    else if(bv>=1&&sv2===0&&trend==='BUY'){signal='BUY';conf=50;}
+    else if(sv2>=1&&bv===0&&trend==='SELL'){signal='SELL';conf=50;}
 
     setRingProgress(100,signal==='BUY'?'#3fb950':signal==='SELL'?'#f85149':'#d29922');
     setRingArrow(signal==='BUY'?'↗':signal==='SELL'?'↘':'wait',signal==='BUY'?'#3fb950':signal==='SELL'?'#f85149':'#d29922');
@@ -1311,7 +1316,7 @@ async function analyze(){
     if(signal==='BUY'||signal==='SELL'){
       const totalV=bv+sv2;
       const winV=signal==='BUY'?bv:sv2;
-      const starsCount=Math.min(5,Math.round((winV/Math.max(totalV,1))*5));
+      const starsCount=Math.min(5,Math.max(1,Math.round((winV/Math.max(totalV,1))*5)));
       const wRate=Math.min(95,50+conf/2);
       document.getElementById('starsBox').innerHTML=Array(5).fill(0).map((_,i)=>'<span class="star '+(i<starsCount?'filled':'empty')+'">★</span>').join('');
       document.getElementById('confSub').textContent=winV+'/'+totalV;

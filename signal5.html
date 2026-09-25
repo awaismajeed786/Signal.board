@@ -446,11 +446,9 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
     <div class="page" id="profilePage">
       <h2>👤 Profile</h2>
 
-      <!-- ⭐ COMBINED PASSWORD BOX -->
       <div class="profileBox">
         <h3>🔐 Password Settings</h3>
         
-        <!-- Toggle Switch -->
         <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #1e2a44; margin-bottom:12px;">
           <span style="color:#fff; font-size:14px; font-weight:600;">Password ON / OFF</span>
           <label class="switch">
@@ -460,7 +458,6 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
         </div>
         <div style="color:#8b949e; font-size:11px; margin-bottom:14px; line-height:1.5;" id="passStatusText">App khulte waqt password mangega</div>
         
-        <!-- Change Password Section (sirf tab dikhe jab password ON ho) -->
         <div id="passChangeSection">
           <div style="color:#58a6ff; font-size:12px; font-weight:700; margin-bottom:8px;">Password Change Karein</div>
           <input type="password" id="oldPass" placeholder="Purana password">
@@ -805,12 +802,14 @@ function getTFMs(tf){
   return m[tf] || 60000;
 }
 function getHistory(){ try{return JSON.parse(localStorage.getItem(KEY_HIST)||'[]');} catch(e){return[];} }
-function saveHistory(h){ localStorage.setItem(KEY_HIST, JSON.stringify(h)); }
+function saveHistory(h){ try{localStorage.setItem(KEY_HIST, JSON.stringify(h));}catch(e){console.log('Storage err:',e);} }
 function cleanupOldHistory(){
-  let h = getHistory();
-  const cutoff = Date.now() - (HISTORY_DAYS * 24 * 60 * 60 * 1000);
-  const filtered = h.filter(x => x.timestamp >= cutoff);
-  if(filtered.length !== h.length) saveHistory(filtered);
+  try{
+    let h = getHistory();
+    const cutoff = Date.now() - (HISTORY_DAYS * 24 * 60 * 60 * 1000);
+    const filtered = h.filter(x => x.timestamp >= cutoff);
+    if(filtered.length !== h.length) saveHistory(filtered);
+  }catch(e){console.log(e);}
 }
 function clearHistory(){
   if(confirm('Poori history delete karni hai?')){
@@ -828,25 +827,27 @@ function toggleHistory(){
   else { content.classList.remove('open'); btn.textContent = 'Show ▼'; }
 }
 function addHistory(sig, pair, price, tf, broker){
-  if(sig !== 'BUY' && sig !== 'SELL') return;
-  cleanupOldHistory();
-  let h = getHistory();
-  const now = new Date();
-  const timeStr = now.toLocaleTimeString('en-PK', {hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true});
-  const id = Date.now() + '_' + Math.random().toString(36).slice(2,8);
-  const item = { id: id, sig: sig, pair: pair, price: parseFloat(price), time: timeStr, timestamp: Date.now(), tf: tf, broker: broker, correct: null, exitPrice: null };
-  h.unshift(item);
-  if(h.length > 5000) h = h.slice(0, 5000);
-  saveHistory(h);
-  renderHistory();
-  const tfMs = getTFMs(tf);
-  setTimeout(() => checkOutcome(id), tfMs + 3000);
+  try {
+    if(sig !== 'BUY' && sig !== 'SELL') return;
+    cleanupOldHistory();
+    let h = getHistory();
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('en-PK', {hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true});
+    const id = Date.now() + '_' + Math.random().toString(36).slice(2,8);
+    const item = { id: id, sig: sig, pair: pair, price: parseFloat(price), time: timeStr, timestamp: Date.now(), tf: tf, broker: broker, correct: null, exitPrice: null };
+    h.unshift(item);
+    if(h.length > 5000) h = h.slice(0, 5000);
+    saveHistory(h);
+    renderHistory();
+    const tfMs = getTFMs(tf);
+    setTimeout(() => checkOutcome(id), tfMs + 3000);
+  } catch(e) { console.log('addHistory err:', e); }
 }
 async function checkOutcome(id){
-  const h = getHistory();
-  const idx = h.findIndex(x => x.id === id);
-  if(idx === -1 || h[idx].correct !== null) return;
   try {
+    const h = getHistory();
+    const idx = h.findIndex(x => x.id === id);
+    if(idx === -1 || h[idx].correct !== null) return;
     const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + h[idx].pair);
     const d = await r.json();
     const exitPrice = parseFloat(d.price);
@@ -859,7 +860,7 @@ async function checkOutcome(id){
     renderHistory();
     showToast((correct?'✅ Sahi':'❌ Galat') + ' — ' + h[idx].pair + ' ' + h[idx].sig);
     resetRingToImage();
-  } catch(e) {}
+  } catch(e) { console.log('checkOutcome err:', e); }
 }
 function checkAllPending(){
   const h = getHistory();
@@ -907,93 +908,95 @@ function winPctClass(wp){
 }
 
 function renderHistory(){
-  cleanupOldHistory();
-  const h = getHistory();
-  const stats = document.getElementById('histStats');
-  const winrateBar = document.getElementById('winrateBar');
-  const weeklyList = document.getElementById('weeklyList');
-  if(!stats || !weeklyList) return;
-  const overall = statCalc(h);
-  stats.innerHTML = 
-    '<div class="statItem stat-correct">✓ ' + overall.c + '</div>' +
-    '<div class="statItem stat-wrong">✗ ' + overall.w + '</div>' +
-    '<div class="statItem stat-pending">⏳ ' + overall.p + '</div>' +
-    '<div class="statItem stat-total">📊 ' + overall.t + '</div>';
-  winrateBar.innerHTML = 
-    '<div class="winrateRow"><span>Overall Win Rate (90 din)</span><b>' + overall.wp + '%</b></div>' +
-    '<div class="winrateProgressBg"><div class="winrateProgressFg" style="width:' + overall.wp + '%"></div></div>';
-  if(h.length === 0){
-    weeklyList.innerHTML = '<div class="watchEmpty">Abhi koi signal nahi<br>Analyze dabayein</div>';
-    return;
-  }
-  const weeksMap = {};
-  h.forEach(item => {
-    const wk = getWeekKey(item.timestamp);
-    if(!weeksMap[wk]) weeksMap[wk] = [];
-    weeksMap[wk].push(item);
-  });
-  const sortedWeekKeys = Object.keys(weeksMap).sort((a,b)=>parseInt(b)-parseInt(a));
-  const totalWeeks = sortedWeekKeys.length;
-  weeklyList.innerHTML = sortedWeekKeys.map((wk, wi) => {
-    const wSignals = weeksMap[wk];
-    const ws = statCalc(wSignals);
-    const wkStart = new Date(parseInt(wk));
-    const wkEnd = new Date(wkStart.getTime() + 6*24*60*60*1000);
-    const fmtDate = (d) => d.toLocaleDateString('en-PK', {day:'numeric', month:'short'});
-    const weekLabel = 'Week ' + (totalWeeks - wi);
-    const weekRange = fmtDate(wkStart) + ' to ' + fmtDate(wkEnd);
-    const isOpenWk = !!openWeeks[wk];
-    const daysMap = {};
-    wSignals.forEach(s => {
-      const dk = getDayKey(s.timestamp);
-      if(!daysMap[dk]) daysMap[dk] = [];
-      daysMap[dk].push(s);
+  try {
+    cleanupOldHistory();
+    const h = getHistory();
+    const stats = document.getElementById('histStats');
+    const winrateBar = document.getElementById('winrateBar');
+    const weeklyList = document.getElementById('weeklyList');
+    if(!stats || !weeklyList) return;
+    const overall = statCalc(h);
+    stats.innerHTML = 
+      '<div class="statItem stat-correct">✓ ' + overall.c + '</div>' +
+      '<div class="statItem stat-wrong">✗ ' + overall.w + '</div>' +
+      '<div class="statItem stat-pending">⏳ ' + overall.p + '</div>' +
+      '<div class="statItem stat-total">📊 ' + overall.t + '</div>';
+    winrateBar.innerHTML = 
+      '<div class="winrateRow"><span>Overall Win Rate (90 din)</span><b>' + overall.wp + '%</b></div>' +
+      '<div class="winrateProgressBg"><div class="winrateProgressFg" style="width:' + overall.wp + '%"></div></div>';
+    if(h.length === 0){
+      weeklyList.innerHTML = '<div class="watchEmpty">Abhi koi signal nahi<br>Analyze dabayein</div>';
+      return;
+    }
+    const weeksMap = {};
+    h.forEach(item => {
+      const wk = getWeekKey(item.timestamp);
+      if(!weeksMap[wk]) weeksMap[wk] = [];
+      weeksMap[wk].push(item);
     });
-    const sortedDayKeys = Object.keys(daysMap).sort((a,b)=>parseInt(b)-parseInt(a));
-    const daysHtml = sortedDayKeys.map(dk => {
-      const dSignals = daysMap[dk];
-      const ds = statCalc(dSignals);
-      const dStart = new Date(parseInt(dk));
-      const dayName = dStart.toLocaleDateString('en-PK', {weekday:'long'});
-      const dayDate = dStart.toLocaleDateString('en-PK', {day:'numeric', month:'short', year:'numeric'});
-      const isOpenDy = !!openDays[dk];
-      const sigsHtml = dSignals.map(s => {
-        const cls = s.sig === 'BUY' ? 'h-buy' : 'h-sell';
-        let out = '';
-        if(s.correct === true) out = '<span class="outcome-correct">✓ Correct</span>';
-        else if(s.correct === false) out = '<span class="outcome-wrong">✗ Wrong</span>';
-        else out = '<span class="outcome-pending">⏳ Pending</span>';
-        return '<div class="sigRow">' +
-          '<span class="sigTime">' + s.time + '</span>' +
-          '<span><b>' + s.pair + '</b> ' + s.tf + '</span>' +
-          '<span>' + s.broker + '</span>' +
-          '<span class="' + cls + '">' + s.sig + '</span>' +
-          '<span>@ ' + s.price + '</span>' +
-          '<span>' + out + '</span>' +
+    const sortedWeekKeys = Object.keys(weeksMap).sort((a,b)=>parseInt(b)-parseInt(a));
+    const totalWeeks = sortedWeekKeys.length;
+    weeklyList.innerHTML = sortedWeekKeys.map((wk, wi) => {
+      const wSignals = weeksMap[wk];
+      const ws = statCalc(wSignals);
+      const wkStart = new Date(parseInt(wk));
+      const wkEnd = new Date(wkStart.getTime() + 6*24*60*60*1000);
+      const fmtDate = (d) => d.toLocaleDateString('en-PK', {day:'numeric', month:'short'});
+      const weekLabel = 'Week ' + (totalWeeks - wi);
+      const weekRange = fmtDate(wkStart) + ' to ' + fmtDate(wkEnd);
+      const isOpenWk = !!openWeeks[wk];
+      const daysMap = {};
+      wSignals.forEach(s => {
+        const dk = getDayKey(s.timestamp);
+        if(!daysMap[dk]) daysMap[dk] = [];
+        daysMap[dk].push(s);
+      });
+      const sortedDayKeys = Object.keys(daysMap).sort((a,b)=>parseInt(b)-parseInt(a));
+      const daysHtml = sortedDayKeys.map(dk => {
+        const dSignals = daysMap[dk];
+        const ds = statCalc(dSignals);
+        const dStart = new Date(parseInt(dk));
+        const dayName = dStart.toLocaleDateString('en-PK', {weekday:'long'});
+        const dayDate = dStart.toLocaleDateString('en-PK', {day:'numeric', month:'short', year:'numeric'});
+        const isOpenDy = !!openDays[dk];
+        const sigsHtml = dSignals.map(s => {
+          const cls = s.sig === 'BUY' ? 'h-buy' : 'h-sell';
+          let out = '';
+          if(s.correct === true) out = '<span class="outcome-correct">✓ Correct</span>';
+          else if(s.correct === false) out = '<span class="outcome-wrong">✗ Wrong</span>';
+          else out = '<span class="outcome-pending">⏳ Pending</span>';
+          return '<div class="sigRow">' +
+            '<span class="sigTime">' + s.time + '</span>' +
+            '<span><b>' + s.pair + '</b> ' + s.tf + '</span>' +
+            '<span>' + s.broker + '</span>' +
+            '<span class="' + cls + '">' + s.sig + '</span>' +
+            '<span>@ ' + s.price + '</span>' +
+            '<span>' + out + '</span>' +
+          '</div>';
+        }).join('');
+        return '<div class="dayRow">' +
+          '<div class="dayHeader" onclick="toggleDay(\'' + dk + '\')">' +
+            '<span>📅 ' + dayName + ' — ' + dayDate + '</span>' +
+            '<span class="chev">' + (isOpenDy ? '▼' : '▶') + '</span>' +
+          '</div>' +
+          '<div class="dayStats">' +
+            'Total: <b>' + ds.t + '</b> &nbsp; 🟢 ' + ds.buys + ' &nbsp; 🔴 ' + ds.sells + ' &nbsp; ✓ <b style="color:#3fb950;">' + ds.c + '</b> &nbsp; ✗ <b style="color:#f85149;">' + ds.w + '</b> &nbsp; ⏳ <b style="color:#d29922;">' + ds.p + '</b> &nbsp; Win: <span class="winPctTag ' + winPctClass(ds.wp) + '">' + ds.wp + '%</span>' +
+          '</div>' +
+          (isOpenDy ? '<div class="sigList">' + (sigsHtml || '<div style="padding:8px; color:#8b949e; font-size:11px;">Koi signal nahi</div>') + '</div>' : '') +
         '</div>';
       }).join('');
-      return '<div class="dayRow">' +
-        '<div class="dayHeader" onclick="toggleDay(\'' + dk + '\')">' +
-          '<span>📅 ' + dayName + ' — ' + dayDate + '</span>' +
-          '<span class="chev">' + (isOpenDy ? '▼' : '▶') + '</span>' +
+      return '<div class="weekRow">' +
+        '<div class="weekHeader" onclick="toggleWeek(\'' + wk + '\')">' +
+          '<span>📆 ' + weekLabel + ' — ' + weekRange + '</span>' +
+          '<span class="chev">' + (isOpenWk ? '▼' : '▶') + '</span>' +
         '</div>' +
-        '<div class="dayStats">' +
-          'Total: <b>' + ds.t + '</b> &nbsp; 🟢 ' + ds.buys + ' &nbsp; 🔴 ' + ds.sells + ' &nbsp; ✓ <b style="color:#3fb950;">' + ds.c + '</b> &nbsp; ✗ <b style="color:#f85149;">' + ds.w + '</b> &nbsp; ⏳ <b style="color:#d29922;">' + ds.p + '</b> &nbsp; Win: <span class="winPctTag ' + winPctClass(ds.wp) + '">' + ds.wp + '%</span>' +
+        '<div class="weekStats">' +
+          'Total: <b>' + ws.t + '</b> &nbsp; 🟢 ' + ws.buys + ' &nbsp; 🔴 ' + ws.sells + ' &nbsp; ✓ <b style="color:#3fb950;">' + ws.c + '</b> &nbsp; ✗ <b style="color:#f85149;">' + ws.w + '</b> &nbsp; ⏳ <b style="color:#d29922;">' + ws.p + '</b> &nbsp; Win: <span class="winPctTag ' + winPctClass(ws.wp) + '">' + ws.wp + '%</span>' +
         '</div>' +
-        (isOpenDy ? '<div class="sigList">' + (sigsHtml || '<div style="padding:8px; color:#8b949e; font-size:11px;">Koi signal nahi</div>') + '</div>' : '') +
+        (isOpenWk ? '<div class="daysList">' + daysHtml + '</div>' : '') +
       '</div>';
     }).join('');
-    return '<div class="weekRow">' +
-      '<div class="weekHeader" onclick="toggleWeek(\'' + wk + '\')">' +
-        '<span>📆 ' + weekLabel + ' — ' + weekRange + '</span>' +
-        '<span class="chev">' + (isOpenWk ? '▼' : '▶') + '</span>' +
-      '</div>' +
-      '<div class="weekStats">' +
-        'Total: <b>' + ws.t + '</b> &nbsp; 🟢 ' + ws.buys + ' &nbsp; 🔴 ' + ws.sells + ' &nbsp; ✓ <b style="color:#3fb950;">' + ws.c + '</b> &nbsp; ✗ <b style="color:#f85149;">' + ws.w + '</b> &nbsp; ⏳ <b style="color:#d29922;">' + ws.p + '</b> &nbsp; Win: <span class="winPctTag ' + winPctClass(ws.wp) + '">' + ws.wp + '%</span>' +
-      '</div>' +
-      (isOpenWk ? '<div class="daysList">' + daysHtml + '</div>' : '') +
-    '</div>';
-  }).join('');
+  } catch(e) { console.log('renderHistory err:', e); }
 }
 
 function loadWaSettings(){
@@ -1324,6 +1327,7 @@ async function analyze(){
     document.getElementById('trendShow').textContent='Trend: '+(trend==='BUY'?'UP 📈':trend==='SELL'?'DOWN 📉':'Unknown');
     document.getElementById('detailsBox').innerHTML='<div>Broker: '+selectedBroker+'</div><div>'+pairName+' | Price: '+price+'</div><div>Buy: '+bv+' | Sell: '+sv2+'</div><br>'+log.join('<br>');
 
+    // ⭐ SAFE CALLS - ERROR NAHI AAYEGA
     try { addHistory(signal, pair, price, tfName, selectedBroker); } catch(err) { console.log('History err:', err); }
     try { loadPrice(pair); } catch(err) { console.log('Price err:', err); }
 
@@ -1332,12 +1336,15 @@ async function analyze(){
     btn.textContent='🔄 Analyze Again';
 
   }catch(e){
+    console.log('Analyze err:', e);
     btn.classList.remove('loading');btn.className='analyzeBtn wait';
     btn.textContent='🔍 Analyze';
-    setRingProgress(100,'#f85149'); setRingArrow('error','#f85149');
+    setRingProgress(100,'#d29922'); setRingArrow('wait','#d29922');
+    document.getElementById('analysisBadge').style.display='inline-block';
+    document.getElementById('analysisBadge').className='analysisBadge badge-wait';
     document.getElementById('signalBig').style.display='block';
-    document.getElementById('signalBig').textContent='ERROR';
-    document.getElementById('signalBig').className='signalBig sig-sell';
+    document.getElementById('signalBig').textContent='WAIT';
+    document.getElementById('signalBig').className='signalBig sig-wait';
   }
   document.getElementById('aiBar').classList.add('hidden');
 }

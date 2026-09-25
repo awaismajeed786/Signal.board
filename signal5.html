@@ -1291,7 +1291,7 @@ async function analyze(){
     let signal='WAIT',conf=0;
     const act=bv+sv2;
 
-    // ⭐ NAYA LOGIC - 2 indicators kaafi hain, WAIT kam aayega
+    // ⭐ NAYA LOGIC - WAIT kam aayega
     if(bv>=2&&bv>sv2){signal='BUY';conf=act>0?Math.round((bv/act)*100):0;}
     else if(sv2>=2&&sv2>bv){signal='SELL';conf=act>0?Math.round((sv2/act)*100):0;}
     else if(bv===1&&sv2===1&&trend!=='NEUTRAL'){

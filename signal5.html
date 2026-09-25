@@ -1327,7 +1327,6 @@ async function analyze(){
     document.getElementById('trendShow').textContent='Trend: '+(trend==='BUY'?'UP 📈':trend==='SELL'?'DOWN 📉':'Unknown');
     document.getElementById('detailsBox').innerHTML='<div>Broker: '+selectedBroker+'</div><div>'+pairName+' | Price: '+price+'</div><div>Buy: '+bv+' | Sell: '+sv2+'</div><br>'+log.join('<br>');
 
-    // ⭐ SAFE CALLS - ERROR NAHI AAYEGA
     try { addHistory(signal, pair, price, tfName, selectedBroker); } catch(err) { console.log('History err:', err); }
     try { loadPrice(pair); } catch(err) { console.log('Price err:', err); }
 

@@ -19,25 +19,32 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 #installScreen .instHint { color: #8b949e; font-size: 12px; line-height: 1.6; max-width: 320px; margin-top: 20px; padding: 15px; background: #131b2e; border-radius: 10px; border: 1px solid #1e2a44; }
 @keyframes pulseGlow { 0%,100% { filter: drop-shadow(0 0 15px rgba(63,185,80,0.6)); } 50% { filter: drop-shadow(0 0 35px rgba(63,185,80,1)); } }
 
+/* ================= INTRO SCREEN (WELCOME + MOON AI + TRADING BOARD) ================= */
 #introScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e1a; display:none; justify-content:center; align-items:center; z-index:10005; transition: opacity 1.2s ease; overflow:hidden; }
-.introWrap { position:relative; width: 260px; height: 260px; display:flex; justify-content:center; align-items:center; }
+.introWrap { position:relative; width: 320px; height: 320px; display:flex; justify-content:center; align-items:center; }
 .moonSvg { position:absolute; animation: moonRise 3s ease-out forwards; }
-.introText { position:absolute; color:#fff; font-size:34px; font-weight:900; letter-spacing:5px; opacity:0; text-shadow: 0 0 25px rgba(255,255,255,0.9), 0 0 45px rgba(123,192,255,0.5); animation: emergeText 2s ease-out 3s forwards; white-space:nowrap; z-index:2; }
-.introSub { position:absolute; color:#f5c542; font-size:14px; font-weight:700; letter-spacing:8px; opacity:0; text-shadow: 0 0 15px rgba(245,197,66,1), 0 0 30px rgba(245,197,66,0.5); animation: emergeSub 2s ease-out 4.5s forwards; white-space:nowrap; z-index:2; }
+.introWelcome { position:absolute; color:#7bc0ff; font-size:20px; font-weight:900; letter-spacing:12px; opacity:0; text-shadow: 0 0 20px rgba(123,192,255,1), 0 0 40px rgba(123,192,255,0.6); animation: emergeWelcome 2s ease-out 2.5s forwards; white-space:nowrap; z-index:2; }
+.introText { position:absolute; color:#fff; font-size:32px; font-weight:900; letter-spacing:5px; opacity:0; text-shadow: 0 0 25px rgba(255,255,255,0.9), 0 0 45px rgba(123,192,255,0.5); animation: emergeTextNew 2s ease-out 3.5s forwards; white-space:nowrap; z-index:2; }
+.introSub { position:absolute; color:#f5c542; font-size:13px; font-weight:700; letter-spacing:8px; opacity:0; text-shadow: 0 0 15px rgba(245,197,66,1), 0 0 30px rgba(245,197,66,0.5); animation: emergeSubNew 2s ease-out 4.5s forwards; white-space:nowrap; z-index:2; }
 @keyframes moonRise { 
    0% { transform: translateY(100vh) rotate(-180deg) scale(0.2); opacity: 0; } 
    60% { transform: translateY(0) rotate(0deg) scale(1.1); opacity: 1; } 
    100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
 }
-@keyframes emergeText { 
-   0% { transform: scale(0); opacity: 0; filter: blur(15px); } 
-   60% { transform: scale(1.2) translateY(-80px); opacity: 1; filter: blur(0); } 
-   100% { transform: scale(1) translateY(-80px); opacity: 1; filter: blur(0); } 
+@keyframes emergeWelcome { 
+   0% { transform: translateY(0) scale(0); opacity: 0; filter: blur(15px); } 
+   60% { transform: translateY(-145px) scale(1.2); opacity: 1; filter: blur(0); } 
+   100% { transform: translateY(-145px) scale(1); opacity: 1; filter: blur(0); } 
 }
-@keyframes emergeSub { 
-   0% { transform: scale(0); opacity: 0; filter: blur(15px); } 
-   60% { transform: scale(1.2) translateY(85px); opacity: 1; filter: blur(0); } 
-   100% { transform: scale(1) translateY(85px); opacity: 1; filter: blur(0); } 
+@keyframes emergeTextNew { 
+   0% { transform: translateY(0) scale(0); opacity: 0; filter: blur(15px); } 
+   60% { transform: translateY(115px) scale(1.2); opacity: 1; filter: blur(0); } 
+   100% { transform: translateY(115px) scale(1); opacity: 1; filter: blur(0); } 
+}
+@keyframes emergeSubNew { 
+   0% { transform: translateY(0) scale(0); opacity: 0; filter: blur(15px); } 
+   60% { transform: translateY(160px) scale(1.2); opacity: 1; filter: blur(0); } 
+   100% { transform: translateY(160px) scale(1); opacity: 1; filter: blur(0); } 
 }
 .introHide { opacity: 0; pointer-events: none; }
 
@@ -68,6 +75,13 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .bnbTag { display:flex; align-items:center; gap:4px; font-size:11px; color:#f0b90b; font-weight:700; }
 .bnbIcon { width:18px; height:18px; }
 .container { max-width:520px; margin:0 auto; padding:14px; }
+
+/* ⭐ WEEKEND BANNER */
+#weekendBanner { display:none; background:linear-gradient(135deg,#7a4a00,#d29922); border-radius:12px; padding:14px; margin-bottom:12px; border:2px solid #d29922; box-shadow:0 0 20px rgba(210,153,34,0.4); }
+#weekendBanner.show { display:block; }
+#weekendBanner .wTitle { font-size:14px; font-weight:900; color:#fff; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+#weekendBanner .wText { font-size:11px; color:#fff; line-height:1.5; opacity:0.95; }
+
 .pairRow { display:flex; align-items:center; justify-content:space-between; padding:6px 2px; border-bottom:1px solid #1e2a44; margin-bottom:8px; }
 .pairLeft { display:flex; align-items:center; gap:6px; }
 .bnbIcon2 { width:14px; height:14px; }
@@ -90,13 +104,16 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .customSelect .selBox .selText { display:flex; align-items:center; gap:6px; }
 .customSelect .selList { position:absolute; top:100%; left:0; right:0; background:#131b2e; border:1px solid #1e2a44; border-radius:10px; margin-top:4px; max-height:280px; overflow-y:auto; z-index:100; display:none; box-shadow:0 8px 25px rgba(0,0,0,0.6); }
 .customSelect.open .selList { display:block; }
-.customSelect .selList .opt { padding:11px 12px; font-size:13px; font-weight:600; cursor:pointer; border-bottom:1px solid #1e2a44; display:flex; align-items:center; gap:8px; }
+.customSelect .selList .opt { padding:11px 12px; font-size:13px; font-weight:600; cursor:pointer; border-bottom:1px solid #1e2a44; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .customSelect .selList .opt:last-child { border:none; }
 .customSelect .selList .opt:active { background:#0a0e1a; }
 .opt-ok { color:#3fb950; font-weight:900; font-size:15px; }
 .opt-no { color:#f85149; font-weight:900; font-size:15px; }
 .opt-name-ok { color:#fff; }
 .opt-name-no { color:#f85149; }
+.opt-otc-tag { background:rgba(248,81,73,0.2); color:#f85149; font-size:9px; font-weight:900; padding:2px 6px; border-radius:4px; border:1px solid rgba(248,81,73,0.5); margin-left:4px; }
+.opt-crypto-tag { background:rgba(63,185,80,0.2); color:#3fb950; font-size:9px; font-weight:900; padding:2px 6px; border-radius:4px; border:1px solid rgba(63,185,80,0.5); margin-left:4px; }
+
 .analyzeSection { background:#0d1424; border:1px solid #1e2a44; border-radius:16px; padding:20px 16px; margin-bottom:14px; text-align:center; position:relative; }
 .analyzeHeader { position:absolute; top:10px; left:12px; text-align:left; }
 .analyzeTitle { color:#fff; font-size:10px; font-weight:700; margin-bottom:1px; }
@@ -262,6 +279,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
       <circle cx="72" cy="42" r="36" fill="#0a0e1a"/>
       <path d="M 80 8 L 83 17 L 92 17 L 85 23 L 88 32 L 80 26 L 72 32 L 75 23 L 68 17 L 77 17 Z" fill="#f5c542" filter="drop-shadow(0 0 10px rgba(245,197,66,1))"/>
     </svg>
+    <div class="introWelcome">WELCOME</div>
     <div class="introText">MOON AI</div>
     <div class="introSub">TRADING BOARD</div>
   </div>
@@ -315,6 +333,11 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
   </div>
 
   <div class="container">
+    <div id="weekendBanner">
+      <div class="wTitle">⚠️ WEEKEND — OTC MARKET ACTIVE</div>
+      <div class="wText">Real market band hai. Brokers OTC pairs bana rahe hain. In par signal accurate nahi hoga. <b>Crypto pairs (BTC, ETH, SOL, XRP, DOGE)</b> par trade karein — yeh 24/7 chalte hain.</div>
+    </div>
+
     <div class="page active" id="signalPage">
       <div class="pairRow">
         <div class="pairLeft">
@@ -448,7 +471,6 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 
       <div class="profileBox">
         <h3>🔐 Password Settings</h3>
-        
         <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #1e2a44; margin-bottom:12px;">
           <span style="color:#fff; font-size:14px; font-weight:600;">Password ON / OFF</span>
           <label class="switch">
@@ -543,6 +565,8 @@ const KEY_PASS_ENABLED='sb_pass_enabled';
 const BOARD_URL='https://awaismajeed786.github.io/Signal.board/signal5.html';
 const HISTORY_DAYS = 90;
 
+const CRYPTO_PAIRS = ['BTCUSDT','ETHUSDT','SOLUSDT','XRPUSDT','DOGEUSDT','LTCUSDT','BNBUSDT','ADAUSDT','DOTUSDT','LINKUSDT','POLUSDT','AVAXUSDT','TRXUSDT'];
+
 let deferredPrompt = null;
 
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -559,6 +583,25 @@ function installApp() {
     });
   } else {
     alert('Install option khud Chrome menu mein hai:\n\n1. Upar 3 dots (⋮) par tap karein\n2. "Install app" ya "Add to Home screen" select karein');
+  }
+}
+
+function isWeekend() {
+  const day = new Date().getDay();
+  return day === 0 || day === 6;
+}
+
+function isCrypto(sym) {
+  return CRYPTO_PAIRS.indexOf(sym) !== -1;
+}
+
+function checkWeekendBanner() {
+  const banner = document.getElementById('weekendBanner');
+  if(!banner) return;
+  if(isWeekend()) {
+    banner.classList.add('show');
+  } else {
+    banner.classList.remove('show');
   }
 }
 
@@ -651,10 +694,18 @@ function startPriceRefresh(){
 function updatePairDropdown(b){
   const list = document.getElementById('selList');
   list.innerHTML = '';
+  const weekend = isWeekend();
   (BROKER_PAIRS[b]||[]).forEach(p=>{
     const div = document.createElement('div');
     div.className = 'opt';
-    div.innerHTML = '<span class="' + (p.ok ? 'opt-ok' : 'opt-no') + '">' + (p.ok ? '✓' : '✗') + '</span> <span class="' + (p.ok ? 'opt-name-ok' : 'opt-name-no') + '">' + p.n + '</span>';
+    const crypto = isCrypto(p.v);
+    let tag = '';
+    if(crypto){
+      tag = '<span class="opt-crypto-tag">✓ 24/7</span>';
+    } else if(weekend){
+      tag = '<span class="opt-otc-tag">⚠️ OTC</span>';
+    }
+    div.innerHTML = '<span class="' + (p.ok ? 'opt-ok' : 'opt-no') + '">' + (p.ok ? '✓' : '✗') + '</span> <span class="' + (p.ok ? 'opt-name-ok' : 'opt-name-no') + '">' + p.n + '</span>' + tag;
     div.onclick = () => pickPair(p.v);
     list.appendChild(div);
   });
@@ -755,6 +806,7 @@ function openBoard(){
   cleanupOldHistory();
   renderHistory();
   checkAllPending();
+  checkWeekendBanner();
   setRingProgress(100,'#58a6ff');
   setRingArrow('wait','#58a6ff');
   document.addEventListener('click', function(e){
@@ -1235,6 +1287,10 @@ async function analyze(){
   const pairName=document.getElementById('pairTitle').textContent;
   const bTF=getTFBinance(tf);
 
+  if(isWeekend() && !isCrypto(pair)){
+    showToast('⚠️ Weekend hai! Forex par OTC hai. Crypto pair select karein.');
+  }
+
   if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
   document.getElementById('timerBox').classList.remove('active','done');
   document.getElementById('analysisBadge').style.display='none';
@@ -1291,7 +1347,6 @@ async function analyze(){
     let signal='WAIT',conf=0;
     const act=bv+sv2;
 
-    // ⭐ NAYA LOGIC - WAIT kam aayega
     if(bv>=2&&bv>sv2){signal='BUY';conf=act>0?Math.round((bv/act)*100):0;}
     else if(sv2>=2&&sv2>bv){signal='SELL';conf=act>0?Math.round((sv2/act)*100):0;}
     else if(bv===1&&sv2===1&&trend!=='NEUTRAL'){

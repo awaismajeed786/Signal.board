@@ -525,7 +525,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
         <div style="color:#8b949e; font-size:12px; line-height:1.6;">
           <b style="color:#fff;">Moon AI Trading Board</b><br>
           Version 1.0<br>
-          Data: Binance<br>
+          Data: Binance + TwelveData<br>
           Brokers: Quotex, Pocket, XM
         </div>
       </div>
@@ -563,7 +563,11 @@ const KEY_PASS_ENABLED='sb_pass_enabled';
 const BOARD_URL='https://awaismajeed786.github.io/Signal.board/signal5.html';
 const HISTORY_DAYS = 90;
 
+// ⭐ AAPKI TWELVEDATA API KEY
+const TWELVE_DATA_API_KEY = '0b191136a7bc45b6a0e7ec40c873b85d';
+
 const CRYPTO_PAIRS = ['BTCUSDT','ETHUSDT','SOLUSDT','XRPUSDT','DOGEUSDT','LTCUSDT','BNBUSDT','ADAUSDT','DOTUSDT','LINKUSDT','POLUSDT','AVAXUSDT','TRXUSDT'];
+const FOREX_PAIRS = ['EURUSDT','GBPUSDT','AUDUSDT'];
 
 let deferredPrompt = null;
 
@@ -591,6 +595,19 @@ function isWeekend() {
 
 function isCrypto(sym) {
   return CRYPTO_PAIRS.indexOf(sym) !== -1;
+}
+
+function isForex(sym) {
+  return FOREX_PAIRS.indexOf(sym) !== -1;
+}
+
+function getTwelveDataSym(sym) {
+  const map = {
+    'EURUSDT': 'EUR/USD',
+    'GBPUSDT': 'GBP/USD',
+    'AUDUSDT': 'AUD/USD'
+  };
+  return map[sym] || sym;
 }
 
 function checkWeekendBanner() {
@@ -679,12 +696,51 @@ function updatePairCard(){
   loadPrice(selectedPair);loadChange(selectedPair);
 }
 
+// ⭐ UPDATED: Forex par TwelveData, Crypto par Binance
 async function loadPrice(sym){
-  try{const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol='+sym);const d=await r.json();const p=parseFloat(d.price);let s;if(p>1000)s=p.toFixed(2);else if(p>10)s=p.toFixed(3);else s=p.toFixed(4);document.getElementById('priceNum').textContent=s;}catch(e){document.getElementById('priceNum').textContent='--';}
+  try{
+    if(isForex(sym)){
+      const tdSym = getTwelveDataSym(sym);
+      const r = await fetch('https://api.twelvedata.com/price?symbol=' + tdSym + '&apikey=' + TWELVE_DATA_API_KEY);
+      const d = await r.json();
+      const p = parseFloat(d.price);
+      let s;
+      if(p > 1000) s = p.toFixed(2);
+      else if(p > 10) s = p.toFixed(3);
+      else s = p.toFixed(5);
+      document.getElementById('priceNum').textContent = s;
+    } else {
+      const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + sym);
+      const d = await r.json();
+      const p = parseFloat(d.price);
+      let s;
+      if(p > 1000) s = p.toFixed(2);
+      else if(p > 10) s = p.toFixed(3);
+      else s = p.toFixed(4);
+      document.getElementById('priceNum').textContent = s;
+    }
+  } catch(e) { document.getElementById('priceNum').textContent = '--'; }
 }
 
 async function loadChange(sym){
-  try{const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+sym);const d=await r.json();const c=parseFloat(d.priceChangePercent);const el=document.getElementById('priceChange');if(c>=0){el.textContent='↑ +'+c.toFixed(2)+'%';el.style.color='#3fb950';}else{el.textContent='↓ '+c.toFixed(2)+'%';el.style.color='#f85149';}}catch(e){}
+  try{
+    if(isForex(sym)){
+      const tdSym = getTwelveDataSym(sym);
+      const r = await fetch('https://api.twelvedata.com/quote?symbol=' + tdSym + '&apikey=' + TWELVE_DATA_API_KEY);
+      const d = await r.json();
+      const c = parseFloat(d.percent_change);
+      const el = document.getElementById('priceChange');
+      if(c >= 0) { el.textContent = '↑ +' + c.toFixed(2) + '%'; el.style.color = '#3fb950'; }
+      else { el.textContent = '↓ ' + c.toFixed(2) + '%'; el.style.color = '#f85149'; }
+    } else {
+      const r = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=' + sym);
+      const d = await r.json();
+      const c = parseFloat(d.priceChangePercent);
+      const el = document.getElementById('priceChange');
+      if(c >= 0) { el.textContent = '↑ +' + c.toFixed(2) + '%'; el.style.color = '#3fb950'; }
+      else { el.textContent = '↓ ' + c.toFixed(2) + '%'; el.style.color = '#f85149'; }
+    }
+  } catch(e) {}
 }
 
 function startPriceRefresh(){
@@ -896,14 +952,23 @@ function addHistory(sig, pair, price, tf, broker){
     setTimeout(() => checkOutcome(id), tfMs + 3000);
   } catch(e) { console.log('addHistory err:', e); }
 }
+
 async function checkOutcome(id){
   try {
     const h = getHistory();
     const idx = h.findIndex(x => x.id === id);
     if(idx === -1 || h[idx].correct !== null) return;
-    const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + h[idx].pair);
-    const d = await r.json();
-    const exitPrice = parseFloat(d.price);
+    let exitPrice;
+    if(isForex(h[idx].pair)){
+      const tdSym = getTwelveDataSym(h[idx].pair);
+      const r = await fetch('https://api.twelvedata.com/price?symbol=' + tdSym + '&apikey=' + TWELVE_DATA_API_KEY);
+      const d = await r.json();
+      exitPrice = parseFloat(d.price);
+    } else {
+      const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + h[idx].pair);
+      const d = await r.json();
+      exitPrice = parseFloat(d.price);
+    }
     let correct = false;
     if(h[idx].sig === 'BUY' && exitPrice > h[idx].price) correct = true;
     if(h[idx].sig === 'SELL' && exitPrice < h[idx].price) correct = true;
@@ -1195,40 +1260,36 @@ function checkAutoWaSend(){
 }
 
 function getTFSeconds(tf){const m={'30s':30,'60s':60,'1m':60,'3m':180,'5m':300,'15m':900,'30m':1800,'1h':3600,'4h':14400};return m[tf]||60;}
-function getTFBinance(tf){const m={'30s':'1m','60s':'1m','1m':'1m','3m':'3m','5m':'5m','15m':'15m','30m':'30m','1h':'1h','4h':'4h'};return m[tf]||'1m';}
 
-function startTimer(tf,tfName){
-  if(timerInterval)clearInterval(timerInterval);
-  const total=getTFSeconds(tf);
-  const box=document.getElementById('timerBox'),val=document.getElementById('tValue'),hint=document.getElementById('tHint'),lbl=document.getElementById('tLabel');
-  box.classList.add('active');box.classList.remove('done');
-  lbl.textContent='⏱️ '+tfName+' Timer:';
-  val.className='tValue';hint.style.color='#8b949e';hint.textContent='Timer 000 hone par trade lagayein...';
-  let rem=total;
-  function fmt(s){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;if(h>0)return h+':'+(m<10?'0':'')+m+':'+(sec<10?'0':'')+sec;if(m>0)return m+':'+(sec<10?'0':'')+sec;return sec+'s';}
-  function upd(){
-    val.textContent=fmt(rem);
-    val.classList.remove('warning','ready','done');
-    if(rem<=5){val.classList.add('ready');hint.textContent='⚡ '+rem+' sec!';hint.style.color='#f85149';}
-    else if(rem<=10){val.classList.add('warning');hint.textContent='⚠️ Taiyar...';hint.style.color='#d29922';}
-    else val.classList.add('normal');
-    if(rem<=0){
-      clearInterval(timerInterval);timerInterval=null;
-      box.classList.add('done');val.classList.add('done');val.textContent='000';
-      lbl.textContent='✅ TRADE LAGAYEIN!';hint.textContent='🚀 Abhi trade lagayein!';hint.style.color='#3fb950';
-      playSound('BUY');playSound('SELL');
-      setTimeout(()=>box.classList.remove('active','done'),10000);
-      return;
-    }
-    rem--;
-  }
-  upd();timerInterval=setInterval(upd,1000);
+// ⭐ NAYA: TwelveData ke liye timeframe mapping
+function getTFBinance(tf){const m={'30s':'1m','60s':'1m','1m':'1m','3m':'3m','5m':'5m','15m':'15m','30m':'30m','1h':'1h','4h':'4h'};return m[tf]||'1m';}
+function getTFTwelve(tf){const m={'30s':'1min','60s':'1min','1m':'1min','3m':'5min','5m':'5min','15m':'15min','30m':'30min','1h':'1h','4h':'4h'};return m[tf]||'1min';}
+
+// ⭐ NAYA: TwelveData se candles lana
+async function getTwelveData(sym, tf, lim){
+  const tdSym = getTwelveDataSym(sym);
+  const interval = getTFTwelve(tf);
+  const u = 'https://api.twelvedata.com/time_series?symbol=' + tdSym + '&interval=' + interval + '&outputsize=' + (lim || 100) + '&apikey=' + TWELVE_DATA_API_KEY;
+  const r = await fetch(u);
+  const d = await r.json();
+  if(!d.values) throw new Error('TwelveData error: ' + (d.message || 'No data'));
+  // TwelveData newest-first deta hai. Binance oldest-first deta hai. Ulta karna hoga.
+  return d.values.reverse().map(c => ({
+    open: parseFloat(c.open),
+    high: parseFloat(c.high),
+    low: parseFloat(c.low),
+    close: parseFloat(c.close)
+  }));
 }
 
-async function getData(sym,tf,lim){
-  const u='https://api.binance.com/api/v3/klines?symbol='+sym+'&interval='+tf+'&limit='+(lim||100);
-  const r=await fetch(u);const d=await r.json();
-  return d.map(c=>({open:parseFloat(c[1]),high:parseFloat(c[2]),low:parseFloat(c[3]),close:parseFloat(c[4])}));
+async function getData(sym, tf, lim){
+  if(isForex(sym)){
+    return await getTwelveData(sym, tf, lim);
+  } else {
+    const u='https://api.binance.com/api/v3/klines?symbol='+sym+'&interval='+tf+'&limit='+(lim||100);
+    const r=await fetch(u);const d=await r.json();
+    return d.map(c=>({open:parseFloat(c[1]),high:parseFloat(c[2]),low:parseFloat(c[3]),close:parseFloat(c[4])}));
+  }
 }
 function ema(p,per){const k=2/(per+1);let e=p.slice(0,per).reduce((a,b)=>a+b,0)/per;for(let i=per;i<p.length;i++)e=p[i]*k+e*(1-k);return e;}
 function rsi(c,per){let g=0,l=0;for(let i=c.length-per;i<c.length;i++){const d=c[i]-c[i-1];if(d>=0)g+=d;else l-=d;}if(l===0&&g===0)return 50;if(l===0)return 100;const rs=(g/per)/(l/per);const r=100-(100/(1+rs));return isNaN(r)?50:r;}

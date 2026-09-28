@@ -340,7 +340,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
       <div class="pairRow">
         <div class="pairLeft">
           <svg class="bnbIcon2" viewBox="0 0 24 24" fill="#f0b90b"><path d="M12 0L8.5 3.5 12 7l3.5-3.5L12 0zM3.5 8.5L0 12l3.5 3.5L7 12 3.5 8.5zm8.5 0L8.5 12 12 15.5 15.5 12 12 8.5zm8.5 0L17 12l3.5 3.5L24 12l-3.5-3.5zM12 17l-3.5 3.5L12 24l3.5-3.5L12 17z"/></svg>
-          <div class="pairTitle" id="pairTitle">EUR/USD</div>
+          <div class="pairTitle" id="pairTitle">EUR/USDT</div>
           <span class="pairStatus status-ok" id="pairStatus">✓</span>
         </div>
         <div class="pairRight">
@@ -363,7 +363,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
       <div class="selRow">
         <div class="customSelect" id="customSelect">
           <div class="selBox" onclick="toggleSel()">
-            <span class="selText" id="selText">✓ EUR/USD</span>
+            <span class="selText" id="selText">✓ EUR/USDT</span>
             <span class="arrow">▼</span>
           </div>
           <div class="selList" id="selList"></div>
@@ -525,7 +525,7 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
         <div style="color:#8b949e; font-size:12px; line-height:1.6;">
           <b style="color:#fff;">Moon AI Trading Board</b><br>
           Version 1.0<br>
-          Data: Binance & TwelveData<br>
+          Data: Binance<br>
           Brokers: Quotex, Pocket, XM
         </div>
       </div>
@@ -563,10 +563,6 @@ const KEY_PASS_ENABLED='sb_pass_enabled';
 const BOARD_URL='https://awaismajeed786.github.io/Signal.board/signal5.html';
 const HISTORY_DAYS = 90;
 
-// --- API KEYS AND PROXY ---
-const TWELVE_DATA_KEY = '0b191136a7bc45b6a0e7ec40c873b85d';
-const PROXY_URL = 'https://api.allorigins.win/raw?url=';
-
 const CRYPTO_PAIRS = ['BTCUSDT','ETHUSDT','SOLUSDT','XRPUSDT','DOGEUSDT','LTCUSDT','BNBUSDT','ADAUSDT','DOTUSDT','LINKUSDT','POLUSDT','AVAXUSDT','TRXUSDT'];
 
 let deferredPrompt = null;
@@ -594,7 +590,7 @@ function isWeekend() {
 }
 
 function isCrypto(sym) {
-  return CRYPTO_PAIRS.indexOf(sym) !== -1 || sym.endsWith('USDT');
+  return CRYPTO_PAIRS.indexOf(sym) !== -1;
 }
 
 function checkWeekendBanner() {
@@ -607,10 +603,9 @@ function checkWeekendBanner() {
   }
 }
 
-// UPDATED: PAIR DATA (Forex + Crypto)
 const PAIR_DATA = {
-  'EUR/USD':{sym:'€',bg:'#003399'},'GBP/USD':{sym:'£',bg:'#C8102E'},'AUD/USD':{sym:'A$',bg:'#00843D'},
-  'USD/JPY':{sym:'¥',bg:'#BC002D'},'USD/CAD':{sym:'C$',bg:'#FF0000'},
+  'EURUSDT':{sym:'€',bg:'#003399'},'GBPUSDT':{sym:'£',bg:'#C8102E'},'USDJPY':{sym:'¥',bg:'#BC002D'},
+  'AUDUSDT':{sym:'A$',bg:'#00843D'},'USDCAD':{sym:'C$',bg:'#FF0000'},
   'BTCUSDT':{sym:'₿',bg:'#F7931A'},'ETHUSDT':{sym:'Ξ',bg:'#627EEA'},
   'SOLUSDT':{sym:'◎',bg:'#9945FF'},'XRPUSDT':{sym:'✕',bg:'#23292F'},'DOGEUSDT':{sym:'Ð',bg:'#C2A633'},
   'LTCUSDT':{sym:'Ł',bg:'#345D9D'},'BNBUSDT':{sym:'⬥',bg:'#F3BA2F'},'ADAUSDT':{sym:'₳',bg:'#0033AD'},
@@ -618,30 +613,29 @@ const PAIR_DATA = {
   'AVAXUSDT':{sym:'▲',bg:'#E84142'},'TRXUSDT':{sym:'◈',bg:'#EF0027'}
 };
 
-// UPDATED: BROKER PAIRS (Forex use EUR/USD format, Crypto use USDT)
 const BROKER_PAIRS = {
   'Quotex':[
-    {v:'EUR/USD',n:'EUR/USD',ok:true},{v:'GBP/USD',n:'GBP/USD',ok:true},
-    {v:'AUD/USD',n:'AUD/USD',ok:true},{v:'BTCUSDT',n:'BTC/USDT',ok:true},
+    {v:'EURUSDT',n:'EUR/USDT',ok:true},{v:'GBPUSDT',n:'GBP/USDT',ok:true},
+    {v:'AUDUSDT',n:'AUD/USDT',ok:true},{v:'BTCUSDT',n:'BTC/USDT',ok:true},
     {v:'ETHUSDT',n:'ETH/USDT',ok:true},{v:'SOLUSDT',n:'SOL/USDT',ok:true},
     {v:'XRPUSDT',n:'XRP/USDT',ok:true},{v:'DOGEUSDT',n:'DOGE/USDT',ok:true}
   ],
   'Pocket Option':[
-    {v:'EUR/USD',n:'EUR/USD',ok:true},{v:'GBP/USD',n:'GBP/USD',ok:true},
-    {v:'AUD/USD',n:'AUD/USD',ok:true},{v:'BTCUSDT',n:'BTC/USDT',ok:true},
+    {v:'EURUSDT',n:'EUR/USDT',ok:true},{v:'GBPUSDT',n:'GBP/USDT',ok:true},
+    {v:'AUDUSDT',n:'AUD/USDT',ok:true},{v:'BTCUSDT',n:'BTC/USDT',ok:true},
     {v:'ETHUSDT',n:'ETH/USDT',ok:true},{v:'SOLUSDT',n:'SOL/USDT',ok:true},
     {v:'XRPUSDT',n:'XRP/USDT',ok:true},{v:'DOGEUSDT',n:'DOGE/USDT',ok:true}
   ],
   'Pocket Broker':[
-    {v:'EUR/USD',n:'EUR/USD',ok:true},{v:'GBP/USD',n:'GBP/USD',ok:true},
-    {v:'AUD/USD',n:'AUD/USD',ok:true},{v:'BTCUSDT',n:'BTC/USDT',ok:true},
+    {v:'EURUSDT',n:'EUR/USDT',ok:true},{v:'GBPUSDT',n:'GBP/USDT',ok:true},
+    {v:'AUDUSDT',n:'AUD/USDT',ok:true},{v:'BTCUSDT',n:'BTC/USDT',ok:true},
     {v:'ETHUSDT',n:'ETH/USDT',ok:true},{v:'SOLUSDT',n:'SOL/USDT',ok:true},
     {v:'XRPUSDT',n:'XRP/USDT',ok:true},{v:'DOGEUSDT',n:'DOGE/USDT',ok:true}
   ],
   'XM':[
-    {v:'EUR/USD',n:'EUR/USD',ok:true},{v:'GBP/USD',n:'GBP/USD',ok:true},
-    {v:'USD/JPY',n:'USD/JPY',ok:true},{v:'AUD/USD',n:'AUD/USD',ok:true},
-    {v:'USD/CAD',n:'USD/CAD',ok:true},{v:'BTCUSDT',n:'BTC/USDT',ok:true},
+    {v:'EURUSDT',n:'EUR/USDT',ok:true},{v:'GBPUSDT',n:'GBP/USDT',ok:true},
+    {v:'USDJPY',n:'USD/JPY',ok:false},{v:'AUDUSDT',n:'AUD/USDT',ok:true},
+    {v:'USDCAD',n:'USD/CAD',ok:false},{v:'BTCUSDT',n:'BTC/USDT',ok:true},
     {v:'ETHUSDT',n:'ETH/USDT',ok:true},{v:'SOLUSDT',n:'SOL/USDT',ok:true},
     {v:'XRPUSDT',n:'XRP/USDT',ok:true},{v:'DOGEUSDT',n:'DOGE/USDT',ok:true},
     {v:'LTCUSDT',n:'LTC/USDT',ok:true},{v:'BNBUSDT',n:'BNB/USDT',ok:true},
@@ -651,7 +645,7 @@ const BROKER_PAIRS = {
   ]
 };
 
-let selectedBroker='Quotex', selectedPair='EUR/USD', timerInterval=null, priceInterval=null;
+let selectedBroker='Quotex', selectedPair='EURUSDT', timerInterval=null, priceInterval=null;
 let histOpen = false;
 let openWeeks = {};
 let openDays = {};
@@ -685,60 +679,12 @@ function updatePairCard(){
   loadPrice(selectedPair);loadChange(selectedPair);
 }
 
-// UPDATED: loadPrice (Forex vs Crypto)
 async function loadPrice(sym){
-  try{
-    let p;
-    if(isCrypto(sym)){
-      // Crypto: Binance
-      const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbol='+sym);
-      const d = await r.json();
-      p = parseFloat(d.price);
-    } else {
-      // Forex: TwelveData via Proxy
-      const url = `https://api.twelvedata.com/price?symbol=${sym}&apikey=${TWELVE_DATA_KEY}`;
-      const r = await fetch(PROXY_URL + encodeURIComponent(url));
-      const d = await r.json();
-      if(d.status === 'error') throw new Error(d.message);
-      p = parseFloat(d.price);
-    }
-    
-    let s;
-    if(p > 1000) s = p.toFixed(2);
-    else if(p > 10) s = p.toFixed(3);
-    else s = p.toFixed(5); // 5 decimals for Forex
-    
-    document.getElementById('priceNum').textContent = s;
-  } catch(e){
-    console.log('Price error:', e);
-    document.getElementById('priceNum').textContent = '--';
-  }
+  try{const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol='+sym);const d=await r.json();const p=parseFloat(d.price);let s;if(p>1000)s=p.toFixed(2);else if(p>10)s=p.toFixed(3);else s=p.toFixed(4);document.getElementById('priceNum').textContent=s;}catch(e){document.getElementById('priceNum').textContent='--';}
 }
 
-// UPDATED: loadChange (Forex vs Crypto)
 async function loadChange(sym){
-  try{
-    let c;
-    if(isCrypto(sym)){
-      // Crypto: Binance
-      const r = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+sym);
-      const d = await r.json();
-      c = parseFloat(d.priceChangePercent);
-    } else {
-      // Forex: TwelveData via Proxy
-      const url = `https://api.twelvedata.com/quote?symbol=${sym}&apikey=${TWELVE_DATA_KEY}`;
-      const r = await fetch(PROXY_URL + encodeURIComponent(url));
-      const d = await r.json();
-      if(d.status === 'error') throw new Error(d.message);
-      c = parseFloat(d.percent_change);
-    }
-    
-    const el = document.getElementById('priceChange');
-    if(c >= 0){ el.textContent = '↑ +' + c.toFixed(2) + '%'; el.style.color = '#3fb950'; }
-    else { el.textContent = '↓ ' + c.toFixed(2) + '%'; el.style.color = '#f85149'; }
-  } catch(e){
-    console.log('Change error:', e);
-  }
+  try{const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+sym);const d=await r.json();const c=parseFloat(d.priceChangePercent);const el=document.getElementById('priceChange');if(c>=0){el.textContent='↑ +'+c.toFixed(2)+'%';el.style.color='#3fb950';}else{el.textContent='↓ '+c.toFixed(2)+'%';el.style.color='#f85149';}}catch(e){}
 }
 
 function startPriceRefresh(){
@@ -951,25 +897,14 @@ function addHistory(sig, pair, price, tf, broker){
   } catch(e) { console.log('addHistory err:', e); }
 }
 
-// UPDATED: checkOutcome (Forex vs Crypto)
 async function checkOutcome(id){
   try {
     const h = getHistory();
     const idx = h.findIndex(x => x.id === id);
     if(idx === -1 || h[idx].correct !== null) return;
-    
-    let exitPrice;
-    if(isCrypto(h[idx].pair)){
-      const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + h[idx].pair);
-      const d = await r.json();
-      exitPrice = parseFloat(d.price);
-    } else {
-      const url = `https://api.twelvedata.com/price?symbol=${h[idx].pair}&apikey=${TWELVE_DATA_KEY}`;
-      const r = await fetch(PROXY_URL + encodeURIComponent(url));
-      const d = await r.json();
-      exitPrice = parseFloat(d.price);
-    }
-    
+    const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=' + h[idx].pair);
+    const d = await r.json();
+    const exitPrice = parseFloat(d.price);
     let correct = false;
     if(h[idx].sig === 'BUY' && exitPrice > h[idx].price) correct = true;
     if(h[idx].sig === 'SELL' && exitPrice < h[idx].price) correct = true;
@@ -1261,6 +1196,7 @@ function checkAutoWaSend(){
 }
 
 function getTFSeconds(tf){const m={'30s':30,'60s':60,'1m':60,'3m':180,'5m':300,'15m':900,'30m':1800,'1h':3600,'4h':14400};return m[tf]||60;}
+function getTFBinance(tf){const m={'30s':'1m','60s':'1m','1m':'1m','3m':'3m','5m':'5m','15m':'15m','30m':'30m','1h':'1h','4h':'4h'};return m[tf]||'1m';}
 
 function startTimer(tf,tfName){
   if(timerInterval)clearInterval(timerInterval);
@@ -1290,29 +1226,11 @@ function startTimer(tf,tfName){
   upd();timerInterval=setInterval(upd,1000);
 }
 
-// UPDATED: getData (Forex vs Crypto)
 async function getData(sym,tf,lim){
-  if(isCrypto(sym)){
-    // Crypto: Binance
-    const u='https://api.binance.com/api/v3/klines?symbol='+sym+'&interval='+tf+'&limit='+(lim||100);
-    const r=await fetch(u);const d=await r.json();
-    return d.map(c=>({open:parseFloat(c[1]),high:parseFloat(c[2]),low:parseFloat(c[3]),close:parseFloat(c[4])}));
-  } else {
-    // Forex: TwelveData via Proxy
-    // Map Binance timeframes to TwelveData timeframes
-    const intervalMap = { '30s':'1min', '60s':'1min', '1m':'1min', '3m':'5min', '5m':'5min', '15m':'15min', '30m':'30min', '1h':'1h', '4h':'4h' };
-    const tdInterval = intervalMap[tf] || '1min';
-    const url = `https://api.twelvedata.com/time_series?symbol=${sym}&interval=${tdInterval}&outputsize=${lim||100}&apikey=${TWELVE_DATA_KEY}`;
-    const r = await fetch(PROXY_URL + encodeURIComponent(url));
-    const d = await r.json();
-    if(d.status === 'error' || !d.values) throw new Error(d.message || 'Error fetching Forex data');
-    return d.values.map(c => ({
-        open: parseFloat(c.open), high: parseFloat(c.high),
-        low: parseFloat(c.low), close: parseFloat(c.close)
-    })).reverse(); // Reverse to match Binance order (oldest first)
-  }
+  const u='https://api.binance.com/api/v3/klines?symbol='+sym+'&interval='+tf+'&limit='+(lim||100);
+  const r=await fetch(u);const d=await r.json();
+  return d.map(c=>({open:parseFloat(c[1]),high:parseFloat(c[2]),low:parseFloat(c[3]),close:parseFloat(c[4])}));
 }
-
 function ema(p,per){const k=2/(per+1);let e=p.slice(0,per).reduce((a,b)=>a+b,0)/per;for(let i=per;i<p.length;i++)e=p[i]*k+e*(1-k);return e;}
 function rsi(c,per){let g=0,l=0;for(let i=c.length-per;i<c.length;i++){const d=c[i]-c[i-1];if(d>=0)g+=d;else l-=d;}if(l===0&&g===0)return 50;if(l===0)return 100;const rs=(g/per)/(l/per);const r=100-(100/(1+rs));return isNaN(r)?50:r;}
 function macd(c){return ema(c,12)-ema(c,26);}
@@ -1369,6 +1287,7 @@ async function analyze(){
   const tf=document.getElementById('tf').value;
   const tfName=document.getElementById('tf').options[document.getElementById('tf').selectedIndex].text;
   const pairName=document.getElementById('pairTitle').textContent;
+  const bTF=getTFBinance(tf);
 
   if(isWeekend() && !isCrypto(pair)){
     showToast('⚠️ Weekend hai! Forex par OTC hai. Crypto pair select karein.');
@@ -1389,8 +1308,7 @@ async function analyze(){
     await new Promise(r=>setTimeout(r,400)); setRingProgress(30,'#58a6ff');
     await new Promise(r=>setTimeout(r,400)); setRingProgress(60,'#58a6ff');
 
-    // Pass `tf` directly, getData will handle the mapping
-    const candles=await getData(pair,tf,100);
+    const candles=await getData(pair,bTF,100);
     const closes=candles.map(c=>c.close);
     const highs=candles.map(c=>c.high);
     const lows=candles.map(c=>c.low);
@@ -1399,11 +1317,7 @@ async function analyze(){
     setRingProgress(85,'#58a6ff');
 
     let trend='NEUTRAL';
-    try{
-      const tr=await getData(pair,tf,250);
-      const tc=tr.map(c=>c.close);
-      if(tc.length>=200){const e200=ema(tc,200);trend=price>e200?'BUY':'SELL';}
-    }catch(e){}
+    try{const tr=await getData(pair,bTF,250);const tc=tr.map(c=>c.close);if(tc.length>=200){const e200=ema(tc,200);trend=price>e200?'BUY':'SELL';}}catch(e){}
 
     const e9=ema(closes,9),e21=ema(closes,21);
     const rv=rsi(closes,14),mv=macd(closes);

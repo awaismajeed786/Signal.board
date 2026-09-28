@@ -19,7 +19,6 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 #installScreen .instHint { color: #8b949e; font-size: 12px; line-height: 1.6; max-width: 320px; margin-top: 20px; padding: 15px; background: #131b2e; border-radius: 10px; border: 1px solid #1e2a44; }
 @keyframes pulseGlow { 0%,100% { filter: drop-shadow(0 0 15px rgba(63,185,80,0.6)); } 50% { filter: drop-shadow(0 0 35px rgba(63,185,80,1)); } }
 
-/* ================= INTRO SCREEN (WELCOME + MOON AI + TRADING BOARD) ================= */
 #introScreen { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0e1a; display:none; justify-content:center; align-items:center; z-index:10005; transition: opacity 1.2s ease; overflow:hidden; }
 .introWrap { position:relative; width: 320px; height: 320px; display:flex; justify-content:center; align-items:center; }
 .moonSvg { position:absolute; animation: moonRise 3s ease-out forwards; }
@@ -76,7 +75,6 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 .bnbIcon { width:18px; height:18px; }
 .container { max-width:520px; margin:0 auto; padding:14px; }
 
-/* ⭐ WEEKEND BANNER */
 #weekendBanner { display:none; background:linear-gradient(135deg,#7a4a00,#d29922); border-radius:12px; padding:14px; margin-bottom:12px; border:2px solid #d29922; box-shadow:0 0 20px rgba(210,153,34,0.4); }
 #weekendBanner.show { display:block; }
 #weekendBanner .wTitle { font-size:14px; font-weight:900; color:#fff; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
@@ -629,7 +627,10 @@ const BROKER_PAIRS = {
     {v:'XRPUSDT',n:'XRP/USDT',ok:true},{v:'DOGEUSDT',n:'DOGE/USDT',ok:true}
   ],
   'Pocket Broker':[
-    {v:'BTCUSDT',n:'BTC/USDT',ok:true},{v:'ETHUSDT',n:'ETH/USDT',ok:true}
+    {v:'EURUSDT',n:'EUR/USDT',ok:true},{v:'GBPUSDT',n:'GBP/USDT',ok:true},
+    {v:'AUDUSDT',n:'AUD/USDT',ok:true},{v:'BTCUSDT',n:'BTC/USDT',ok:true},
+    {v:'ETHUSDT',n:'ETH/USDT',ok:true},{v:'SOLUSDT',n:'SOL/USDT',ok:true},
+    {v:'XRPUSDT',n:'XRP/USDT',ok:true},{v:'DOGEUSDT',n:'DOGE/USDT',ok:true}
   ],
   'XM':[
     {v:'EURUSDT',n:'EUR/USDT',ok:true},{v:'GBPUSDT',n:'GBP/USDT',ok:true},

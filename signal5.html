@@ -59,13 +59,20 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
 #weekendBanner.show { display:block; }
 #weekendBanner .wTitle { font-size:14px; font-weight:900; color:#fff; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
 #weekendBanner .wText { font-size:11px; color:#fff; line-height:1.5; opacity:0.95; }
-.liveCountdown { display:flex; align-items:center; justify-content:center; gap:10px; background:#131b2e; border:1px solid #1e2a44; border-radius:12px; padding:12px; margin-bottom:12px; }
+.liveCountdown { display:flex; align-items:center; justify-content:center; gap:10px; background:#131b2e; border:1px solid #1e2a44; border-radius:12px; padding:12px; margin-bottom:10px; }
 .lcLabel { color:#8b949e; font-size:11px; font-weight:600; }
 .lcValue { font-size:26px; font-weight:900; color:#58a6ff; font-family:monospace; min-width:80px; text-align:center; }
 .lcValue.warn { color:#d29922; }
 .lcValue.danger { color:#f85149; animation:pulseTimer 0.5s infinite; }
 .lcTf { color:#7bc0ff; font-size:10px; font-weight:700; background:rgba(88,166,255,0.15); padding:3px 8px; border-radius:6px; border:1px solid rgba(88,166,255,0.4); }
 @keyframes pulseTimer { 0%,100%{ opacity:1; } 50%{ opacity:0.5; } }
+.syncBtn { width:100%; padding:12px; margin-bottom:12px; border-radius:10px; border:none; background:linear-gradient(135deg,#1f6feb,#58a6ff); color:#fff; font-size:14px; font-weight:800; cursor:pointer; box-shadow:0 4px 15px rgba(31,111,235,0.4); }
+.syncBtn:active { transform:scale(0.97); }
+.offsetRow { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:12px; padding:8px; background:#0a0e1a; border:1px solid #1e2a44; border-radius:8px; }
+.offsetRow span { color:#8b949e; font-size:10px; font-weight:700; }
+.offsetVal { color:#58a6ff; font-size:14px; font-weight:900; font-family:monospace; min-width:45px; text-align:center; }
+.offsetBtnSmall { width:30px; height:30px; border-radius:8px; border:1px solid #2ea043; background:#0d2818; color:#3fb950; font-size:18px; font-weight:900; cursor:pointer; padding:0; }
+.offsetBtnSmall:active { background:#238636; color:#fff; }
 .pairRow { display:flex; align-items:center; justify-content:space-between; padding:6px 2px; border-bottom:1px solid #1e2a44; margin-bottom:8px; }
 .pairLeft { display:flex; align-items:center; gap:6px; }
 .bnbIcon2 { width:14px; height:14px; }
@@ -327,6 +334,15 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
         <span class="lcTf" id="lcTf">5 MIN</span>
       </div>
 
+      <button class="syncBtn" onclick="syncNow()">🎯 SYNC NOW (Broker Ke Candle Change Par Dabayein)</button>
+
+      <div class="offsetRow">
+        <span>Manual:</span>
+        <button class="offsetBtnSmall" onclick="adjustOffset(-1)">−</button>
+        <span class="offsetVal" id="offsetDisplay">+0</span>
+        <button class="offsetBtnSmall" onclick="adjustOffset(1)">+</button>
+      </div>
+
       <div class="pairRow">
         <div class="pairLeft">
           <svg class="bnbIcon2" viewBox="0 0 24 24" fill="#f0b90b"><path d="M12 0L8.5 3.5 12 7l3.5-3.5L12 0zM3.5 8.5L0 12l3.5 3.5L7 12 3.5 8.5zm8.5 0L8.5 12 12 15.5 15.5 12 12 8.5zm8.5 0L17 12l3.5 3.5L24 12l-3.5-3.5zM12 17l-3.5 3.5L12 24l3.5-3.5L12 17z"/></svg>
@@ -479,6 +495,16 @@ body { background:#0a0e1a; color:#fff; padding:0 0 80px 0; min-height:100vh; }
       </div>
 
       <div class="profileBox">
+        <h3>⏱️ Time Adjust (Broker Match)</h3>
+        <div style="color:#8b949e; font-size:11px; margin-bottom:10px; line-height:1.6;">Yeh offset aapki app aur broker ke time ka farq batata hai. Signals page par +/- se adjust karein.</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:#0a0e1a; border-radius:8px; border:1px solid #1e2a44;">
+          <span style="color:#fff; font-size:13px;">Current Offset:</span>
+          <span style="color:#58a6ff; font-size:16px; font-weight:900; font-family:monospace;" id="profileOffsetDisplay">+0s</span>
+        </div>
+        <button class="btn-green" onclick="resetOffset()">🔄 Reset Offset to 0</button>
+      </div>
+
+      <div class="profileBox">
         <h3>📱 WhatsApp Weekly Report</h3>
         <input type="tel" id="waNumber" placeholder="WhatsApp number (92XXXXXXXXXX)">
         <select id="waDay">
@@ -556,9 +582,9 @@ const TWELVE_DATA_KEY = '0b191136a7bc45b6a0e7ec40c873b85d';
 const PROXY_URL = 'https://mute-night-bba1.contact-awaismajeed.workers.dev/?url=';
 const CRYPTO_PAIRS = ['BTCUSDT','ETHUSDT','SOLUSDT','XRPUSDT','DOGEUSDT','LTCUSDT','BNBUSDT','ADAUSDT','DOTUSDT','LINKUSDT','POLUSDT','AVAXUSDT','TRXUSDT'];
 
-// ===== AUTO TIME SYNC (Broker Se Match Karne Ke Liye) =====
+// ===== SERVER TIME SYNC =====
 let serverTimeOffset = 0;
-const CANDLE_OFFSET_SECONDS = 15; // Quotex ke liye (agar farq rahe to 16, 17 ya 14 karein)
+let manualOffset = parseInt(localStorage.getItem('manual_offset') || '0');
 
 async function syncServerTime() {
     try {
@@ -569,6 +595,48 @@ async function syncServerTime() {
     } catch(e) {
         console.log('Time sync failed, using phone time.');
     }
+}
+
+function updateOffsetDisplays() {
+    const val = (manualOffset >= 0 ? '+' : '') + manualOffset;
+    const el1 = document.getElementById('offsetDisplay');
+    const el2 = document.getElementById('profileOffsetDisplay');
+    if (el1) el1.textContent = val;
+    if (el2) el2.textContent = val + 's';
+}
+
+// ===== SYNC NOW (Broker Ke Candle Change Par) =====
+function syncNow() {
+    const tfSelect = document.getElementById('tf');
+    if (!tfSelect) return;
+    const tf = tfSelect.value;
+    const tfSec = getTFSeconds(tf);
+    const nowMs = Date.now() + serverTimeOffset;
+    const nowSec = Math.floor(nowMs / 1000);
+    const currentPos = ((nowSec % tfSec) + tfSec) % tfSec;
+    manualOffset = (tfSec - currentPos) % tfSec;
+    localStorage.setItem('manual_offset', manualOffset);
+    updateOffsetDisplays();
+    startLiveCountdown();
+    showToast('🎯 Synced! Offset: +' + manualOffset + 's');
+}
+
+function adjustOffset(change) {
+    manualOffset += change;
+    if (manualOffset > 60) manualOffset = 60;
+    if (manualOffset < -60) manualOffset = -60;
+    localStorage.setItem('manual_offset', manualOffset);
+    updateOffsetDisplays();
+    startLiveCountdown();
+    showToast('Offset: ' + (manualOffset >= 0 ? '+' : '') + manualOffset + 's');
+}
+
+function resetOffset() {
+    manualOffset = 0;
+    localStorage.setItem('manual_offset', 0);
+    updateOffsetDisplays();
+    startLiveCountdown();
+    showToast('🔄 Offset reset to 0');
 }
 
 let deferredPrompt = null;
@@ -599,7 +667,7 @@ let selectedBroker='Quotex', selectedPair='EUR/USD', timerInterval=null, priceIn
 let histOpen = false; let openWeeks = {}; let openDays = {};
 
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',2000);}
-function switchTab(tab){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.navItem').forEach(n=>n.classList.remove('active')); if(tab==='signals'){document.getElementById('signalPage').classList.add('active');document.getElementById('nav-signals').classList.add('active');} else if(tab==='watch'){document.getElementById('watchPage').classList.add('active');document.getElementById('nav-watch').classList.add('active');renderWatchlist();} else{document.getElementById('profilePage').classList.add('active');document.getElementById('nav-profile').classList.add('active');document.getElementById('linkDisplay').textContent=BOARD_URL;loadWaSettings();loadPasswordSetting();} }
+function switchTab(tab){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.navItem').forEach(n=>n.classList.remove('active')); if(tab==='signals'){document.getElementById('signalPage').classList.add('active');document.getElementById('nav-signals').classList.add('active');} else if(tab==='watch'){document.getElementById('watchPage').classList.add('active');document.getElementById('nav-watch').classList.add('active');renderWatchlist();} else{document.getElementById('profilePage').classList.add('active');document.getElementById('nav-profile').classList.add('active');document.getElementById('linkDisplay').textContent=BOARD_URL;loadWaSettings();loadPasswordSetting();updateOffsetDisplays();} }
 function toggleSel(){ document.getElementById('customSelect').classList.toggle('open'); }
 function pickPair(v){ selectedPair=v; document.getElementById('customSelect').classList.remove('open'); updatePairCard(); }
 
@@ -624,7 +692,7 @@ function checkLogin(){ if(sessionStorage.getItem('sb_session') === 'active') { d
 
 function handleLogin(){ const sp=localStorage.getItem(KEY_PASS);const pass=document.getElementById('passInput').value;const e=document.getElementById('loginError'); if(!sp){ const c=document.getElementById('passConfirm').value;const h=document.getElementById('hintInput').value; if(pass.length<3){e.textContent='3+ characters';return;} if(pass!==c){e.textContent='Match nahi';return;} localStorage.setItem(KEY_PASS,pass);if(h)localStorage.setItem(KEY_HINT,h); sessionStorage.setItem('sb_session','active'); e.textContent='';openBoard(); }else{ if(pass===sp){sessionStorage.setItem('sb_session','active');e.textContent='';openBoard();}else e.textContent='❌ Galat password'; } }
 
-function openBoard(){ document.getElementById('loginScreen').style.display='none'; document.getElementById('mainBoard').style.display='block'; loadBroker();renderWatchlist();startPriceRefresh(); syncServerTime(); startLiveCountdown(); document.getElementById('linkDisplay').textContent=BOARD_URL; cleanupOldHistory(); renderHistory(); checkAllPending(); checkWeekendBanner(); setRingProgress(100,'#58a6ff'); setRingArrow('wait','#58a6ff'); document.addEventListener('click', function(e){ const c = document.getElementById('customSelect'); if(c && !c.contains(e.target)) c.classList.remove('open'); }); setTimeout(checkAutoWaSend, 2000); }
+function openBoard(){ document.getElementById('loginScreen').style.display='none'; document.getElementById('mainBoard').style.display='block'; loadBroker();renderWatchlist();startPriceRefresh(); syncServerTime(); startLiveCountdown(); updateOffsetDisplays(); document.getElementById('linkDisplay').textContent=BOARD_URL; cleanupOldHistory(); renderHistory(); checkAllPending(); checkWeekendBanner(); setRingProgress(100,'#58a6ff'); setRingArrow('wait','#58a6ff'); document.addEventListener('click', function(e){ const c = document.getElementById('customSelect'); if(c && !c.contains(e.target)) c.classList.remove('open'); }); setTimeout(checkAutoWaSend, 2000); }
 
 function resetPassword(){if(confirm('Reset?')){sessionStorage.removeItem('sb_session');localStorage.removeItem(KEY_PASS);localStorage.removeItem(KEY_HINT);location.reload();}}
 function changePassword(){ const o=document.getElementById('oldPass').value,n=document.getElementById('newPass').value,h=document.getElementById('newHint').value; const e=document.getElementById('settingsError'),sp=localStorage.getItem(KEY_PASS); if(o!==sp){e.textContent='❌ Purana galat';return;} if(n.length<3){e.textContent='Naya 3+ chars';return;} localStorage.setItem(KEY_PASS,n);if(h)localStorage.setItem(KEY_HINT,h); e.style.color='#3fb950';e.textContent='✅ Change!'; setTimeout(()=>{e.textContent='';e.style.color='#f85149';},2000); }
@@ -671,14 +739,14 @@ function checkAutoWaSend(){ const num = localStorage.getItem(KEY_WA_NUM); if(!nu
 function getTFSeconds(tf){const m={'30s':30,'60s':60,'1m':60,'3m':180,'5m':300,'15m':900,'30m':1800,'1h':3600,'4h':14400};return m[tf]||60;}
 function getTFBinance(tf){const m={'30s':'1m','60s':'1m','1m':'1m','3m':'3m','5m':'5m','15m':'15m','30m':'30m','1h':'1h','4h':'4h'};return m[tf]||'1m';}
 
-// ===== LIVE CANDLE COUNTDOWN (Server Time Synced) =====
+// ===== LIVE CANDLE COUNTDOWN (Server + Manual Offset) =====
 let liveCountdownInterval = null;
 
 function getSecondsRemaining(tf) {
-    const now = Date.now() + serverTimeOffset;
-    const totalSec = Math.floor(now / 1000) + CANDLE_OFFSET_SECONDS;
+    const nowMs = Date.now() + serverTimeOffset;
+    const nowSec = Math.floor(nowMs / 1000) + manualOffset;
     const tfSec = getTFSeconds(tf);
-    const elapsed = ((totalSec % tfSec) + tfSec) % tfSec;
+    const elapsed = ((nowSec % tfSec) + tfSec) % tfSec;
     return tfSec - elapsed;
 }
 

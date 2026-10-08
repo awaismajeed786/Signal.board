@@ -10,23 +10,20 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;-webkit-tap-highlight-color:transparent}
 body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
 #installScreen{position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0e1a;display:none;flex-direction:column;justify-content:center;align-items:center;padding:30px;z-index:10010;text-align:center}
-#installScreen .instLogo{margin-bottom:25px;animation:pulseGlow 2s ease-in-out infinite}
-#installScreen h1{color:#fff;font-size:32px;font-weight:900;letter-spacing:4px;margin-bottom:8px;text-shadow:0 0 20px rgba(63,185,80,0.5)}
+#installScreen h1{color:#fff;font-size:32px;font-weight:900;letter-spacing:4px;margin-bottom:8px}
 #installScreen .sub{color:#f5c542;font-size:13px;font-weight:700;letter-spacing:6px;margin-bottom:40px}
-#installScreen .instBtn{width:100%;max-width:320px;padding:18px;font-size:18px;font-weight:800;border:none;border-radius:14px;background:linear-gradient(135deg,#2ea043,#3fb950);color:#fff;box-shadow:0 6px 25px rgba(63,185,80,0.5);cursor:pointer;margin-bottom:15px}
-#installScreen .instBtn:active{transform:scale(0.97)}
-#installScreen .instHint{color:#8b949e;font-size:12px;line-height:1.6;max-width:320px;margin-top:20px;padding:15px;background:#131b2e;border-radius:10px;border:1px solid #1e2a44}
-@keyframes pulseGlow{0%,100%{filter:drop-shadow(0 0 15px rgba(63,185,80,0.6))}50%{filter:drop-shadow(0 0 35px rgba(63,185,80,1))}}
+#installScreen .instBtn{width:100%;max-width:320px;padding:18px;font-size:18px;font-weight:800;border:none;border-radius:14px;background:linear-gradient(135deg,#2ea043,#3fb950);color:#fff;cursor:pointer;margin-bottom:15px}
+#installScreen .instHint{color:#8b949e;font-size:12px;line-height:1.6;max-width:320px;padding:15px;background:#131b2e;border-radius:10px;border:1px solid #1e2a44;margin-top:20px}
 #introScreen{position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0e1a;display:none;justify-content:center;align-items:center;z-index:10005;transition:opacity 1.2s ease;overflow:hidden}
 .introWrap{position:relative;width:320px;height:320px;display:flex;justify-content:center;align-items:center}
 .moonSvg{position:absolute;animation:moonRise 3s ease-out forwards}
-.introWelcome{position:absolute;color:#7bc0ff;font-size:20px;font-weight:900;letter-spacing:12px;opacity:0;text-shadow:0 0 20px rgba(123,192,255,1);animation:emergeWelcome 2s ease-out 2.5s forwards;white-space:nowrap;z-index:2}
-.introText{position:absolute;color:#fff;font-size:32px;font-weight:900;letter-spacing:5px;opacity:0;text-shadow:0 0 25px rgba(255,255,255,0.9);animation:emergeTextNew 2s ease-out 3.5s forwards;white-space:nowrap;z-index:2}
-.introSub{position:absolute;color:#f5c542;font-size:13px;font-weight:700;letter-spacing:8px;opacity:0;text-shadow:0 0 15px rgba(245,197,66,1);animation:emergeSubNew 2s ease-out 4.5s forwards;white-space:nowrap;z-index:2}
+.introWelcome{position:absolute;color:#7bc0ff;font-size:20px;font-weight:900;letter-spacing:12px;opacity:0;animation:emergeWelcome 2s ease-out 2.5s forwards;white-space:nowrap;z-index:2}
+.introText{position:absolute;color:#fff;font-size:32px;font-weight:900;letter-spacing:5px;opacity:0;animation:emergeTextNew 2s ease-out 3.5s forwards;white-space:nowrap;z-index:2}
+.introSub{position:absolute;color:#f5c542;font-size:13px;font-weight:700;letter-spacing:8px;opacity:0;animation:emergeSubNew 2s ease-out 4.5s forwards;white-space:nowrap;z-index:2}
 @keyframes moonRise{0%{transform:translateY(100vh) rotate(-180deg) scale(0.2);opacity:0}60%{transform:translateY(0) rotate(0deg) scale(1.1);opacity:1}100%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}}
-@keyframes emergeWelcome{0%{transform:translateY(0) scale(0);opacity:0;filter:blur(15px)}60%{transform:translateY(-145px) scale(1.2);opacity:1;filter:blur(0)}100%{transform:translateY(-145px) scale(1);opacity:1;filter:blur(0)}}
-@keyframes emergeTextNew{0%{transform:translateY(0) scale(0);opacity:0;filter:blur(15px)}60%{transform:translateY(115px) scale(1.2);opacity:1;filter:blur(0)}100%{transform:translateY(115px) scale(1);opacity:1;filter:blur(0)}}
-@keyframes emergeSubNew{0%{transform:translateY(0) scale(0);opacity:0;filter:blur(15px)}60%{transform:translateY(160px) scale(1.2);opacity:1;filter:blur(0)}100%{transform:translateY(160px) scale(1);opacity:1;filter:blur(0)}}
+@keyframes emergeWelcome{0%{transform:translateY(0) scale(0);opacity:0;filter:blur(15px)}100%{transform:translateY(-145px) scale(1);opacity:1;filter:blur(0)}}
+@keyframes emergeTextNew{0%{transform:translateY(0) scale(0);opacity:0;filter:blur(15px)}100%{transform:translateY(115px) scale(1);opacity:1;filter:blur(0)}}
+@keyframes emergeSubNew{0%{transform:translateY(0) scale(0);opacity:0;filter:blur(15px)}100%{transform:translateY(160px) scale(1);opacity:1;filter:blur(0)}}
 .introHide{opacity:0;pointer-events:none}
 #disclaimerScreen{position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0e1a;display:none;flex-direction:column;justify-content:center;align-items:center;padding:20px;z-index:10000}
 #disclaimerScreen h2{color:#f85149;margin-bottom:15px;text-align:center;font-size:20px}
@@ -44,11 +41,11 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
 #mainBoard{display:none}
 .appHeader{max-width:520px;margin:0 auto;padding:12px 16px;background:#131b2e;border-bottom:1px solid #1e2a44;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .hLogo{display:flex;align-items:center;gap:6px}
-.moonIcon{width:45px;height:45px;position:relative;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.moonIcon{width:45px;height:45px;position:relative;display:flex;align-items:center;justify-content:center}
 .hText{text-align:left;line-height:1.15}
 .hText .t1{font-size:15px;font-weight:700;color:#fff}
 .hText .t2{font-size:11px;color:#7bc0ff;font-weight:500}
-.hRight{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.hRight{display:flex;align-items:center;gap:10px}
 .liveTag{display:flex;align-items:center;gap:5px;font-size:11px;color:#3fb950;font-weight:600}
 .liveDot{width:7px;height:7px;border-radius:50%;background:#3fb950;box-shadow:0 0 6px #3fb950;animation:pulseDot 1.5s infinite}
 @keyframes pulseDot{0%,100%{opacity:1}50%{opacity:0.4}}
@@ -56,28 +53,42 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
 .marketTag .mt{font-size:13px;font-weight:800}
 .marketTag .ms{font-size:9px;font-weight:600}
 .container{max-width:520px;margin:0 auto;padding:14px}
-#weekendBanner{display:none;background:linear-gradient(135deg,#7a4a00,#d29922);border-radius:12px;padding:14px;margin-bottom:12px;border:2px solid #d29922;box-shadow:0 0 20px rgba(210,153,34,0.4)}
+#weekendBanner{display:none;background:linear-gradient(135deg,#7a4a00,#d29922);border-radius:12px;padding:14px;margin-bottom:12px;border:2px solid #d29922}
 #weekendBanner.show{display:block}
 #weekendBanner .wTitle{font-size:14px;font-weight:900;color:#fff;margin-bottom:6px}
-#weekendBanner .wText{font-size:11px;color:#fff;line-height:1.5;opacity:0.95}
-.timerCard{background:#131b2e;border:1px solid #1e2a44;border-radius:12px;padding:10px 12px;margin-bottom:12px}
-.timerMain{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.timerLeft{display:flex;align-items:center;gap:8px;flex:1}
-.timerLabel{color:#8b949e;font-size:11px;font-weight:600}
-.timerVal{font-size:28px;font-weight:900;color:#58a6ff;font-family:monospace;min-width:70px}
-.timerVal.warn{color:#d29922}
-.timerVal.danger{color:#f85149;animation:pulseTimer 0.5s infinite}
-.timerTf{color:#7bc0ff;font-size:10px;font-weight:700;background:rgba(88,166,255,0.15);padding:3px 8px;border-radius:6px;border:1px solid rgba(88,166,255,0.4)}
-.timerArrow{width:36px;height:36px;border-radius:50%;border:2px solid #2ea043;background:#0d2818;color:#3fb950;font-size:14px;font-weight:900;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;transition:transform 0.3s;flex-shrink:0}
-.timerArrow.open{transform:rotate(180deg)}
+#weekendBanner .wText{font-size:11px;color:#fff;line-height:1.5}
+/* Compact Control Panel */
+.controlPanel{background:#131b2e;border:1px solid #1e2a44;border-radius:12px;padding:10px;margin-bottom:12px}
+.cpTop{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cpDropdown{position:relative;flex:1}
+.cpDDBox{padding:10px 12px;border-radius:9px;border:2px solid #1e2a44;background:#0a0e1a;color:#fff;font-size:12px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.cpDDBox .lbl{color:#8b949e;font-size:9px;font-weight:600}
+.cpDDBox .val{color:#3fb950;font-size:12px;font-weight:800}
+.cpDDList{position:absolute;top:100%;left:0;right:0;background:#131b2e;border:1px solid #1e2a44;border-radius:9px;margin-top:4px;z-index:100;display:none;box-shadow:0 8px 25px rgba(0,0,0,0.6);max-height:220px;overflow-y:auto}
+.cpDropdown.open .cpDDList{display:block}
+.cpDDList .opt{padding:9px 11px;font-size:11px;font-weight:700;cursor:pointer;border-bottom:1px solid #1e2a44;color:#8b949e;display:flex;justify-content:space-between;align-items:center}
+.cpDDList .opt:last-child{border:none}
+.cpDDList .opt.active{color:#3fb950;background:#0d2818}
+.cpDDList .opt.active::before{content:'✓ ';color:#3fb950}
+.cpDDList .opt .tag{font-size:9px;font-weight:900}
+.cpDDList .opt .tag.crypto{color:#3fb950}
+.cpDDList .opt .tag.otc{color:#f85149}
+.cpTimer{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#0a0e1a;border:1px solid #1e2a44;border-radius:9px}
+.cpTimerLbl{color:#8b949e;font-size:12px;font-weight:600}
+.cpTimerVal{font-size:22px;font-weight:900;color:#58a6ff;font-family:monospace;flex:1}
+.cpTimerVal.warn{color:#d29922}
+.cpTimerVal.danger{color:#f85149;animation:pulseTimer 0.5s infinite}
+.cpArrowBtn{width:32px;height:32px;border-radius:50%;border:2px solid #2ea043;background:#0d2818;color:#3fb950;font-size:12px;font-weight:900;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;transition:transform 0.3s}
+.cpArrowBtn.open{transform:rotate(180deg)}
 @keyframes pulseTimer{0%,100%{opacity:1}50%{opacity:0.5}}
-.syncPanel{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #1e2a44}
-.syncPanel.open{display:block}
-.syncBtn{width:100%;padding:11px;margin-bottom:8px;border-radius:9px;border:none;background:linear-gradient(135deg,#1f6feb,#58a6ff);color:#fff;font-size:13px;font-weight:800;cursor:pointer}
-.offsetRow{display:flex;align-items:center;justify-content:center;gap:10px;padding:6px;background:#0a0e1a;border:1px solid #1e2a44;border-radius:8px}
-.offsetRow span{color:#8b949e;font-size:10px;font-weight:700}
-.offsetVal{color:#58a6ff;font-size:14px;font-weight:900;font-family:monospace;min-width:42px;text-align:center}
-.offsetBtnSmall{width:30px;height:30px;border-radius:8px;border:1px solid #2ea043;background:#0d2818;color:#3fb950;font-size:18px;font-weight:900;cursor:pointer;padding:0}
+.cpSyncPanel{display:none;margin-top:8px;padding-top:8px;border-top:1px solid #1e2a44}
+.cpSyncPanel.open{display:block}
+.cpSyncBtn{width:100%;padding:10px;margin-bottom:6px;border-radius:8px;border:none;background:linear-gradient(135deg,#1f6feb,#58a6ff);color:#fff;font-size:12px;font-weight:800;cursor:pointer}
+.cpOffsetRow{display:flex;align-items:center;justify-content:center;gap:8px;padding:5px;background:#0a0e1a;border:1px solid #1e2a44;border-radius:7px}
+.cpOffsetRow span{color:#8b949e;font-size:10px;font-weight:700}
+.cpOffsetVal{color:#58a6ff;font-size:13px;font-weight:900;font-family:monospace;min-width:40px;text-align:center}
+.cpOffsetBtn{width:28px;height:28px;border-radius:7px;border:1px solid #2ea043;background:#0d2818;color:#3fb950;font-size:16px;font-weight:900;cursor:pointer;padding:0}
+/* Pair display */
 .pairRow{display:flex;align-items:center;justify-content:space-between;padding:6px 2px;border-bottom:1px solid #1e2a44;margin-bottom:8px}
 .pairLeft{display:flex;align-items:center;gap:6px}
 .pairTitle{font-size:13px;font-weight:700;color:#fff}
@@ -86,25 +97,7 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
 .priceDot{width:4px;height:4px;border-radius:50%;background:#3fb950}
 .priceNum{font-size:13px;font-weight:700;color:#fff;line-height:1.1}
 .priceChange{font-size:9px;color:#3fb950;font-weight:600;line-height:1.1}
-.brokerBox{margin-bottom:14px;padding:10px;background:#131b2e;border-radius:12px;border:1px solid #1e2a44}
-.brokerLabel{color:#8b949e;font-size:11px;margin-bottom:8px;text-align:center}
-.brokerBtns{display:flex;gap:6px;flex-wrap:wrap}
-.brokerBtn{flex:1;min-width:70px;padding:10px 4px;border-radius:9px;border:2px solid #1e2a44;background:#0a0e1a;color:#8b949e;font-size:11px;font-weight:700;cursor:pointer}
-.brokerBtn.active{border-color:#2ea043;background:#0d2818;color:#3fb950;box-shadow:0 0 12px rgba(46,160,67,0.35)}
-.selRow{display:flex;gap:8px;margin-bottom:12px}
-.selRow select{flex:1;padding:12px 10px;border-radius:10px;border:1px solid #1e2a44;background:#131b2e;color:#fff;font-size:13px;font-weight:600}
-.customSelect{position:relative;flex:1}
-.customSelect .selBox{padding:12px 10px;border-radius:10px;border:1px solid #1e2a44;background:#131b2e;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-.customSelect .selBox .arrow{color:#8b949e;font-size:11px}
-.customSelect .selBox .selText{display:flex;align-items:center;gap:6px}
-.customSelect .selList{position:absolute;top:100%;left:0;right:0;background:#131b2e;border:1px solid #1e2a44;border-radius:10px;margin-top:4px;max-height:280px;overflow-y:auto;z-index:100;display:none;box-shadow:0 8px 25px rgba(0,0,0,0.6)}
-.customSelect.open .selList{display:block}
-.customSelect .selList .opt{padding:11px 12px;font-size:13px;font-weight:600;cursor:pointer;border-bottom:1px solid #1e2a44;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.opt-ok{color:#3fb950;font-weight:900;font-size:15px}
-.opt-no{color:#f85149;font-weight:900;font-size:15px}
-.opt-name-ok{color:#fff}
-.opt-otc-tag{background:rgba(248,81,73,0.2);color:#f85149;font-size:9px;font-weight:900;padding:2px 6px;border-radius:4px;border:1px solid rgba(248,81,73,0.5);margin-left:4px}
-.opt-crypto-tag{background:rgba(63,185,80,0.2);color:#3fb950;font-size:9px;font-weight:900;padding:2px 6px;border-radius:4px;border:1px solid rgba(63,185,80,0.5);margin-left:4px}
+/* Analyze */
 .analyzeSection{background:#0d1424;border:1px solid #1e2a44;border-radius:16px;padding:20px 16px;margin-bottom:14px;text-align:center;position:relative}
 .analyzeHeader{position:absolute;top:10px;left:12px;text-align:left}
 .analyzeTitle{color:#fff;font-size:10px;font-weight:700}
@@ -125,7 +118,7 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
 .statLbl{color:#8b949e;font-size:10px;font-weight:600;margin-bottom:8px}
 .stars{display:flex;justify-content:center;gap:3px;margin-bottom:6px}
 .star{font-size:16px}
-.star.filled{color:#f5c542;text-shadow:0 0 5px #f5c542}
+.star.filled{color:#f5c542}
 .star.empty{color:#2a3a5a}
 .statVal{font-size:24px;font-weight:900;margin-bottom:2px}
 .val-high{color:#3fb950}
@@ -149,9 +142,10 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
 .histHeader{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
 .histHeader h3{color:#58a6ff;font-size:14px}
 .histHeaderBtns{display:flex;gap:6px;flex-wrap:wrap}
-.histToggleBtn{padding:6px 12px;border-radius:8px;border:1px solid #30363d;background:#21262d;color:#58a6ff;font-size:11px;font-weight:700;cursor:pointer}
-.histSendBtn{padding:6px 12px;border-radius:8px;border:1px solid #25d366;background:rgba(37,211,102,0.15);color:#25d366;font-size:11px;font-weight:700;cursor:pointer}
-.histClearBtn{padding:6px 12px;border-radius:8px;border:1px solid #f85149;background:rgba(248,81,73,0.15);color:#f85149;font-size:11px;font-weight:700;cursor:pointer}
+.histToggleBtn,.histSendBtn,.histClearBtn{padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer}
+.histToggleBtn{border:1px solid #30363d;background:#21262d;color:#58a6ff}
+.histSendBtn{border:1px solid #25d366;background:rgba(37,211,102,0.15);color:#25d366}
+.histClearBtn{border:1px solid #f85149;background:rgba(248,81,73,0.15);color:#f85149}
 .histStats{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
 .statItem{flex:1;min-width:60px;padding:8px 4px;border-radius:8px;text-align:center;font-size:11px;font-weight:700}
 .stat-correct{background:rgba(63,185,80,0.15);color:#3fb950;border:1px solid rgba(63,185,80,0.4)}
@@ -200,7 +194,7 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
 .bottomNav{position:fixed;bottom:0;left:0;width:100%;height:66px;background:#131b2e;border-top:1px solid #1e2a44;display:flex;justify-content:space-around;align-items:center;z-index:500;padding:4px 0}
 .navItem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;color:#8b949e;font-size:10px;font-weight:600;padding:4px 0;position:relative}
 .navItem.active{color:#3fb950}
-.navItem.active::before{content:'';position:absolute;top:0;width:36px;height:3px;border-radius:2px;background:#3fb950;box-shadow:0 0 8px #3fb950}
+.navItem.active::before{content:'';position:absolute;top:0;width:36px;height:3px;border-radius:2px;background:#3fb950}
 .navIcon{display:flex;align-items:center;justify-content:center;height:24px}
 .navIcon svg{width:22px;height:22px}
 .page{display:none}
@@ -224,7 +218,7 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
 .profileBox .err{color:#f85149;font-size:12px;margin-top:8px}
 .profileBox .ok{color:#3fb950;font-size:12px;margin-top:8px}
 .linkBox{background:#0a0e1a;border:1px solid #1e2a44;border-radius:8px;padding:10px;font-size:11px;color:#58a6ff;word-break:break-all;margin-top:8px}
-.switch{position:relative;display:inline-block;width:52px;height:28px;flex-shrink:0}
+.switch{position:relative;display:inline-block;width:52px;height:28px}
 .switch input{opacity:0;width:0;height:0}
 .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#30363d;transition:.3s;border-radius:28px}
 .slider:before{position:absolute;content:"";height:22px;width:22px;left:3px;bottom:3px;background:#fff;transition:.3s;border-radius:50%}
@@ -240,28 +234,18 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
 <body>
 
 <div id="installScreen">
-  <div class="instLogo">
-    <svg viewBox="0 0 100 100" width="140" height="140">
-      <circle cx="55" cy="50" r="42" fill="#ffffff"/>
-      <circle cx="72" cy="42" r="36" fill="#0a0e1a"/>
-      <path d="M 80 8 L 83 17 L 92 17 L 85 23 L 88 32 L 80 26 L 72 32 L 75 23 L 68 17 L 77 17 Z" fill="#f5c542"/>
-    </svg>
+  <div style="margin-bottom:25px;">
+    <svg viewBox="0 0 100 100" width="140" height="140"><circle cx="55" cy="50" r="42" fill="#fff"/><circle cx="72" cy="42" r="36" fill="#0a0e1a"/><path d="M 80 8 L 83 17 L 92 17 L 85 23 L 88 32 L 80 26 L 72 32 L 75 23 L 68 17 L 77 17 Z" fill="#f5c542"/></svg>
   </div>
   <h1>MOON AI</h1>
   <div class="sub">TRADING BOARD</div>
   <button class="instBtn" onclick="installApp()" id="installBtn">📲 Install App</button>
-  <div class="instHint" id="installHint">
-    Agar button kaam na kare, toh upar right corner ke <b>3 dots (⋮)</b> par tap karein aur <b>"Install app"</b> ya <b>"Add to Home screen"</b> select karein.
-  </div>
+  <div class="instHint">Agar button kaam na kare, toh 3 dots (⋮) par tap karein aur "Install app" select karein.</div>
 </div>
 
 <div id="introScreen">
   <div class="introWrap">
-    <svg class="moonSvg" viewBox="0 0 100 100" width="180" height="180">
-      <circle cx="55" cy="50" r="42" fill="#ffffff"/>
-      <circle cx="72" cy="42" r="36" fill="#0a0e1a"/>
-      <path d="M 80 8 L 83 17 L 92 17 L 85 23 L 88 32 L 80 26 L 72 32 L 75 23 L 68 17 L 77 17 Z" fill="#f5c542"/>
-    </svg>
+    <svg class="moonSvg" viewBox="0 0 100 100" width="180" height="180"><circle cx="55" cy="50" r="42" fill="#fff"/><circle cx="72" cy="42" r="36" fill="#0a0e1a"/><path d="M 80 8 L 83 17 L 92 17 L 85 23 L 88 32 L 80 26 L 72 32 L 75 23 L 68 17 L 77 17 Z" fill="#f5c542"/></svg>
     <div class="introWelcome">WELCOME</div>
     <div class="introText">MOON AI</div>
     <div class="introSub">TRADING BOARD</div>
@@ -269,13 +253,13 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
 </div>
 
 <div id="disclaimerScreen">
-  <h2>🛑 ZAROORI EHTIYAT (DISCLAIMER)</h2>
+  <h2>🛑 ZAROORI EHTIYAT</h2>
   <div class="discBox">
-    <p><b>1. Maqsad:</b> Yeh app ("Moon AI Trading Board") sirf educational, learning aur market analysis ke maqsad ke liye banaya gaya hai. Isme diye gaye signals ya analysis koi financial advice nahi hain.</p>
-    <p><b>2. Risk Ka Elaan:</b> Trading aur investing mein bohat zyada risk hota hai. Market mein paisa upar bhi jata hai aur neeche bhi. Aap apna paisa apni marzi aur apne risk par lagayenge. Kisi bhi trade mein profit ya loss ka pura risk aapka khud ka hoga.</p>
-    <p><b>3. Koi Guarantee Nahi:</b> Hum kisi bhi trade ke profit ki koi guarantee nahi dete. Yeh app koi jaadu nahi hai, yeh sirf market ke indicators par based analysis deti hai.</p>
-    <p><b>4. Zimmedari Se Inkaar (Non-Liability):</b> Agar aap is app ke signals ko follow karke trade karte hain aur aapko koi nuksan (loss) hota hai, toh iski poori zimmedari aapki khud ki hogi. <b>App ka developer, owner, ya koi bhi team member aapke kisi bhi financial nuksan, loss, ya profit ke liye hargiz zimmedar nahi hoga.</b></p>
-    <p><b>5. Ittefaq:</b> App ko use karne ka matlab hai ke aap in sab baton se poori tarah se ittefaq karte hain aur apni marzi se is app ko use kar rahe hain.</p>
+    <p><b>1. Maqsad:</b> Yeh app sirf educational aur market analysis ke liye hai. Signals koi financial advice nahi hain.</p>
+    <p><b>2. Risk:</b> Trading mein bohat zyada risk hai. Profit/loss ka pura risk aapka khud ka hoga.</p>
+    <p><b>3. Guarantee Nahi:</b> Hum kisi trade ke profit ki guarantee nahi dete.</p>
+    <p><b>4. Zimmedari:</b> Loss hone par developer/owner zimmedar nahi hoga.</p>
+    <p><b>5. Ittefaq:</b> App use karne ka matlab hai aap in sab se ittefaq karte hain.</p>
   </div>
   <button onclick="acceptDisclaimer()">✔️ Main Samajh Gaya, I Agree</button>
 </div>
@@ -295,16 +279,9 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
   <div class="appHeader">
     <div class="hLogo">
       <div class="moonIcon">
-        <svg viewBox="0 0 100 100" width="42" height="42">
-          <circle cx="55" cy="50" r="40" fill="#ffffff"/>
-          <circle cx="70" cy="44" r="34" fill="#0a0e1a"/>
-          <path d="M 78 10 L 81 18 L 89 18 L 83 23 L 85 31 L 78 26 L 71 31 L 73 23 L 67 18 L 75 18 Z" fill="#f5c542"/>
-        </svg>
+        <svg viewBox="0 0 100 100" width="42" height="42"><circle cx="55" cy="50" r="40" fill="#fff"/><circle cx="70" cy="44" r="34" fill="#0a0e1a"/><path d="M 78 10 L 81 18 L 89 18 L 83 23 L 85 31 L 78 26 L 71 31 L 73 23 L 67 18 L 75 18 Z" fill="#f5c542"/></svg>
       </div>
-      <div class="hText">
-        <div class="t1">Moon AI</div>
-        <div class="t2">Trading Board</div>
-      </div>
+      <div class="hText"><div class="t1">Moon AI</div><div class="t2">Trading Board</div></div>
     </div>
     <div class="hRight">
       <div class="liveTag"><div class="liveDot"></div>Live</div>
@@ -317,30 +294,76 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
 
   <div class="container">
     <div id="weekendBanner">
-      <div class="wTitle">⚠️ WEEKEND — MARKET BAND HAI</div>
-      <div class="wText">Forex market weekend par band hoti hai. Crypto 24/7 chalta hai — aap Crypto par trade kar sakte hain.</div>
+      <div class="wTitle">⚠️ WEEKEND — MARKET BAND</div>
+      <div class="wText">Forex band hai. Crypto 24/7 chalta hai — Crypto par trade karein.</div>
     </div>
 
     <div class="page active" id="signalPage">
-      <div class="timerCard">
-        <div class="timerMain">
-          <div class="timerLeft">
-            <span class="timerLabel">⏱️ Next:</span>
-            <span class="timerVal" id="lcValue">--</span>
-            <span class="timerTf" id="lcTf">5 MIN</span>
+
+      <div class="controlPanel">
+        <div class="cpTop">
+          <div class="cpDropdown" id="brokerDropdown">
+            <div class="cpDDBox" onclick="toggleBrokerDD()">
+              <span><span class="lbl">Broker:</span> <span class="val" id="brokerDDText">Quotex</span></span>
+              <span>▼</span>
+            </div>
+            <div class="cpDDList">
+              <div class="opt active" id="b-quotex" onclick="selectBroker('Quotex')">Quotex</div>
+              <div class="opt" id="b-pocket" onclick="selectBroker('Pocket Option')">Pocket Option</div>
+              <div class="opt" id="b-pbroker" onclick="selectBroker('Pocket Broker')">Pocket Broker</div>
+              <div class="opt" id="b-xm" onclick="selectBroker('XM')">XM</div>
+            </div>
           </div>
-          <button class="timerArrow" id="timerArrow" onclick="toggleSyncPanel()">▼</button>
+          <div class="cpDropdown" id="pairDropdown">
+            <div class="cpDDBox" onclick="togglePairDD()">
+              <span><span class="lbl">Pair:</span> <span class="val" id="pairDDText">EUR/USD</span></span>
+              <span>▼</span>
+            </div>
+            <div class="cpDDList" id="pairDDList"></div>
+          </div>
         </div>
-        <div class="syncPanel" id="syncPanel">
-          <button class="syncBtn" onclick="syncNow()">🎯 SYNC NOW (Broker Ke Candle Change Par)</button>
-          <div class="offsetRow">
+        <div class="cpTop">
+          <div class="cpDropdown" id="tfDropdown">
+            <div class="cpDDBox" onclick="toggleTfDD()">
+              <span><span class="lbl">Time:</span> <span class="val" id="tfDDText">5 MIN</span></span>
+              <span>▼</span>
+            </div>
+            <div class="cpDDList">
+              <div class="opt" onclick="selectTF('30s','30 SEC',event)">30 SEC</div>
+              <div class="opt" onclick="selectTF('60s','60 SEC',event)">60 SEC</div>
+              <div class="opt" onclick="selectTF('1m','1 MIN',event)">1 MIN</div>
+              <div class="opt" onclick="selectTF('3m','3 MIN',event)">3 MIN</div>
+              <div class="opt active" onclick="selectTF('5m','5 MIN',event)">5 MIN</div>
+              <div class="opt" onclick="selectTF('15m','15 MIN',event)">15 MIN</div>
+              <div class="opt" onclick="selectTF('30m','30 MIN',event)">30 MIN</div>
+              <div class="opt" onclick="selectTF('1h','1 HOUR',event)">1 HOUR</div>
+              <div class="opt" onclick="selectTF('4h','4 HOUR',event)">4 HOUR</div>
+            </div>
+          </div>
+          <div class="cpTimer" style="flex:1;">
+            <span class="cpTimerLbl">⏱️</span>
+            <span class="cpTimerVal" id="lcValue">--</span>
+            <button class="cpArrowBtn" id="timerArrow" onclick="toggleSyncPanel()">▼</button>
+          </div>
+        </div>
+        <div class="cpSyncPanel" id="syncPanel">
+          <button class="cpSyncBtn" onclick="syncNow()">🎯 SYNC NOW (Candle Change Par)</button>
+          <div class="cpOffsetRow">
             <span>Manual:</span>
-            <button class="offsetBtnSmall" onclick="adjustOffset(-1)">−</button>
-            <span class="offsetVal" id="offsetDisplay">+0</span>
-            <button class="offsetBtnSmall" onclick="adjustOffset(1)">+</button>
+            <button class="cpOffsetBtn" onclick="adjustOffset(-1)">−</button>
+            <span class="cpOffsetVal" id="offsetDisplay">+0</span>
+            <button class="cpOffsetBtn" onclick="adjustOffset(1)">+</button>
           </div>
         </div>
       </div>
+
+      <select id="tf" style="display:none;">
+        <option value="30s">30 SEC</option><option value="60s">60 SEC</option>
+        <option value="1m">1 MIN</option><option value="3m">3 MIN</option>
+        <option value="5m" selected>5 MIN</option><option value="15m">15 MIN</option>
+        <option value="30m">30 MIN</option><option value="1h">1 HOUR</option>
+        <option value="4h">4 HOUR</option>
+      </select>
 
       <div class="pairRow">
         <div class="pairLeft">
@@ -352,37 +375,6 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
           <div class="priceNum" id="priceNum">--</div>
           <div class="priceChange" id="priceChange">--</div>
         </div>
-      </div>
-
-      <div class="brokerBox">
-        <div class="brokerLabel">🏢 Broker Chunein</div>
-        <div class="brokerBtns">
-          <button class="brokerBtn active" id="b-quotex" onclick="selectBroker('Quotex')">Quotex</button>
-          <button class="brokerBtn" id="b-pocket" onclick="selectBroker('Pocket Option')">Pocket</button>
-          <button class="brokerBtn" id="b-pbroker" onclick="selectBroker('Pocket Broker')">P.Broker</button>
-          <button class="brokerBtn" id="b-xm" onclick="selectBroker('XM')">XM</button>
-        </div>
-      </div>
-
-      <div class="selRow">
-        <div class="customSelect" id="customSelect">
-          <div class="selBox" onclick="toggleSel()">
-            <span class="selText" id="selText">✓ EUR/USD</span>
-            <span class="arrow">▼</span>
-          </div>
-          <div class="selList" id="selList"></div>
-        </div>
-        <select id="tf">
-          <option value="30s">30 SEC</option>
-          <option value="60s">60 SEC</option>
-          <option value="1m">1 MIN</option>
-          <option value="3m">3 MIN</option>
-          <option value="5m" selected>5 MIN</option>
-          <option value="15m">15 MIN</option>
-          <option value="30m">30 MIN</option>
-          <option value="1h">1 HOUR</option>
-          <option value="4h">4 HOUR</option>
-        </select>
       </div>
 
       <div class="analyzeSection">
@@ -398,8 +390,8 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
           </svg>
           <div class="ringArrow" id="ringArrow">
             <svg id="arrowSvg" width="100" height="100" viewBox="0 0 100 100" fill="none" style="display:none;position:absolute;">
-              <polyline id="arrowLine" points="22,22 42,44 52,32 76,72" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              <polygon id="arrowHead" points="76,72 58,66 80,55" fill="#ffffff"/>
+              <polyline id="arrowLine" points="22,22 42,44 52,32 76,72" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <polygon id="arrowHead" points="76,72 58,66 80,55" fill="#fff"/>
             </svg>
             <img id="brainSvg" src="icon-192.png" style="display:block;position:absolute;width:140px;height:140px;object-fit:contain;border-radius:50%;">
           </div>
@@ -412,16 +404,8 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
           <div class="tHint" id="tHint">Intezar karein...</div>
         </div>
         <div class="statRow" id="statRow" style="display:none;">
-          <div class="statCard">
-            <div class="statLbl">CONFIDENCE</div>
-            <div class="stars" id="starsBox"></div>
-            <div class="statSub" id="confSub">0/6</div>
-          </div>
-          <div class="statCard">
-            <div class="statLbl">WIN RATE</div>
-            <div class="statVal" id="winRateVal">--%</div>
-            <div class="statSub" id="winRateSub">--</div>
-          </div>
+          <div class="statCard"><div class="statLbl">CONFIDENCE</div><div class="stars" id="starsBox"></div><div class="statSub" id="confSub">0/6</div></div>
+          <div class="statCard"><div class="statLbl">WIN RATE</div><div class="statVal" id="winRateVal">--%</div><div class="statSub" id="winRateSub">--</div></div>
         </div>
         <div class="aiBar hidden" id="aiBar">📊 AI PROCESSING<span class="dots"><span></span><span></span><span></span></span></div>
         <button class="analyzeBtn wait" id="bigBtn" onclick="analyze()">🔍 Analyze</button>
@@ -447,7 +431,6 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
           <div id="weeklyList"></div>
         </div>
       </div>
-
       <div class="note">⚠️ <span style="color:#3fb950">✓ Green</span> = Working &nbsp; | &nbsp; <span style="color:#f85149">✗ Red</span> = Not working</div>
     </div>
 
@@ -468,7 +451,7 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
           <span style="color:#fff;font-size:14px;font-weight:600;">Password ON / OFF</span>
           <label class="switch"><input type="checkbox" id="passToggle" onchange="togglePasswordFeature()"><span class="slider"></span></label>
         </div>
-        <div style="color:#8b949e;font-size:11px;margin-bottom:14px;line-height:1.5;" id="passStatusText">App khulte waqt password mangega</div>
+        <div style="color:#8b949e;font-size:11px;margin-bottom:14px;" id="passStatusText">App khulte waqt password mangega</div>
         <div id="passChangeSection">
           <div style="color:#58a6ff;font-size:12px;font-weight:700;margin-bottom:8px;">Password Change Karein</div>
           <input type="password" id="oldPass" placeholder="Purana password">
@@ -478,49 +461,43 @@ body{background:#0a0e1a;color:#fff;padding:0 0 80px 0;min-height:100vh}
           <div class="err" id="settingsError"></div>
         </div>
       </div>
-
       <div class="profileBox">
         <h3>⏱️ Time Adjust</h3>
-        <div style="color:#8b949e;font-size:11px;margin-bottom:10px;">Signals page par timer ke saath ▼ button dabayein aur "SYNC NOW" se match karein.</div>
+        <div style="color:#8b949e;font-size:11px;margin-bottom:10px;">Timer ke saath ▼ dabayein aur SYNC NOW se match karein.</div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:#0a0e1a;border-radius:8px;border:1px solid #1e2a44;">
           <span style="color:#fff;font-size:13px;">Current Offset:</span>
           <span style="color:#58a6ff;font-size:16px;font-weight:900;font-family:monospace;" id="profileOffsetDisplay">+0s</span>
         </div>
         <button class="btn-green" onclick="resetOffset()">🔄 Reset Offset to 0</button>
       </div>
-
       <div class="profileBox">
         <h3>📱 WhatsApp Weekly Report</h3>
         <input type="tel" id="waNumber" placeholder="WhatsApp number (92XXXXXXXXXX)">
         <select id="waDay">
-          <option value="5" selected>Friday (jumma)</option>
-          <option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option>
+          <option value="5" selected>Friday</option><option value="1">Monday</option>
+          <option value="2">Tuesday</option><option value="3">Wednesday</option>
           <option value="4">Thursday</option><option value="6">Saturday</option><option value="0">Sunday</option>
         </select>
         <select id="waTime">
-          <option value="8">Subah 8:00</option><option value="9">Subah 9:00</option>
-          <option value="10">Subah 10:00</option><option value="12">Dopahar 12:00</option>
-          <option value="15" selected>Dopahar 3:00</option><option value="18">Shaam 6:00</option>
-          <option value="20">Raat 8:00</option><option value="21">Raat 9:00</option>
+          <option value="8">8:00 AM</option><option value="9">9:00 AM</option>
+          <option value="10">10:00 AM</option><option value="12">12:00 PM</option>
+          <option value="15" selected>3:00 PM</option><option value="18">6:00 PM</option>
+          <option value="20">8:00 PM</option><option value="21">9:00 PM</option>
         </select>
         <button class="btn-wa" onclick="saveWaSettings()">💾 Save WhatsApp Settings</button>
         <button class="btn-blue" onclick="sendWeeklyReportManual()">📤 Abhi Report Bhejein</button>
         <div class="ok" id="waStatus"></div>
       </div>
-
       <div class="profileBox">
         <h3>🔗 Board Ka Link</h3>
         <div class="linkBox" id="linkDisplay">Link yahan dikhega</div>
         <button class="btn-blue" onclick="copyBoardLink()">📋 Link Copy Karein</button>
       </div>
-
       <div class="profileBox">
         <h3>ℹ️ About</h3>
         <div style="color:#8b949e;font-size:12px;line-height:1.6;">
           <b style="color:#fff;">Moon AI Trading Board</b><br>
-          Version 1.0<br>
-          Markets: Forex & Crypto<br>
-          Brokers: Quotex, Pocket, XM
+          Version 1.0<br>Markets: Forex & Crypto<br>Brokers: Quotex, Pocket, XM
         </div>
       </div>
     </div>
@@ -557,66 +534,36 @@ const CRYPTO_PAIRS=['BTCUSDT','ETHUSDT','SOLUSDT','XRPUSDT','DOGEUSDT'];
 let serverTimeOffset=0;
 let manualOffset=parseInt(localStorage.getItem('manual_offset')||'0');
 
-async function syncServerTime(){
-  try{const res=await fetch('https://api.binance.com/api/v3/time');const data=await res.json();serverTimeOffset=data.serverTime-Date.now();}catch(e){}
-}
+async function syncServerTime(){try{const res=await fetch('https://api.binance.com/api/v3/time');const data=await res.json();serverTimeOffset=data.serverTime-Date.now();}catch(e){}}
 
-function updateOffsetDisplays(){
-  const val=(manualOffset>=0?'+':'')+manualOffset;
-  const el1=document.getElementById('offsetDisplay');
-  const el2=document.getElementById('profileOffsetDisplay');
-  if(el1)el1.textContent=val;
-  if(el2)el2.textContent=val+'s';
-}
+function updateOffsetDisplays(){const val=(manualOffset>=0?'+':'')+manualOffset;const el1=document.getElementById('offsetDisplay');const el2=document.getElementById('profileOffsetDisplay');if(el1)el1.textContent=val;if(el2)el2.textContent=val+'s';}
+function toggleSyncPanel(){const panel=document.getElementById('syncPanel');const arrow=document.getElementById('timerArrow');if(!panel||!arrow)return;panel.classList.toggle('open');arrow.classList.toggle('open');}
+function syncNow(){const tfSelect=document.getElementById('tf');if(!tfSelect)return;const tf=tfSelect.value;const tfSec=getTFSeconds(tf);const nowMs=Date.now()+serverTimeOffset;const nowSec=Math.floor(nowMs/1000);const currentPos=((nowSec%tfSec)+tfSec)%tfSec;manualOffset=(tfSec-currentPos)%tfSec;localStorage.setItem('manual_offset',manualOffset);updateOffsetDisplays();startLiveCountdown();showToast('🎯 Synced! Offset: +'+manualOffset+'s');}
+function adjustOffset(change){manualOffset+=change;if(manualOffset>60)manualOffset=60;if(manualOffset<-60)manualOffset=-60;localStorage.setItem('manual_offset',manualOffset);updateOffsetDisplays();startLiveCountdown();showToast('Offset: '+(manualOffset>=0?'+':'')+manualOffset+'s');}
+function resetOffset(){manualOffset=0;localStorage.setItem('manual_offset',0);updateOffsetDisplays();startLiveCountdown();showToast('🔄 Reset');}
 
-function toggleSyncPanel(){
-  const panel=document.getElementById('syncPanel');
-  const arrow=document.getElementById('timerArrow');
-  if(!panel||!arrow)return;
-  panel.classList.toggle('open');
-  arrow.classList.toggle('open');
-}
+function toggleBrokerDD(){document.getElementById('brokerDropdown').classList.toggle('open');document.getElementById('tfDropdown').classList.remove('open');document.getElementById('pairDropdown').classList.remove('open');}
+function togglePairDD(){document.getElementById('pairDropdown').classList.toggle('open');document.getElementById('brokerDropdown').classList.remove('open');document.getElementById('tfDropdown').classList.remove('open');}
+function toggleTfDD(){document.getElementById('tfDropdown').classList.toggle('open');document.getElementById('brokerDropdown').classList.remove('open');document.getElementById('pairDropdown').classList.remove('open');}
 
-function syncNow(){
-  const tfSelect=document.getElementById('tf');
-  if(!tfSelect)return;
-  const tf=tfSelect.value;
-  const tfSec=getTFSeconds(tf);
-  const nowMs=Date.now()+serverTimeOffset;
-  const nowSec=Math.floor(nowMs/1000);
-  const currentPos=((nowSec%tfSec)+tfSec)%tfSec;
-  manualOffset=(tfSec-currentPos)%tfSec;
-  localStorage.setItem('manual_offset',manualOffset);
-  updateOffsetDisplays();
+function selectTF(val,name,evt){
+  document.getElementById('tf').value=val;
+  document.getElementById('tfDDText').textContent=name;
+  document.getElementById('tfDropdown').classList.remove('open');
+  document.querySelectorAll('#tfDropdown .cpDDList .opt').forEach(o=>o.classList.remove('active'));
+  if(evt)evt.target.classList.add('active');
+  document.getElementById('tfLabel').textContent='Timeframe: '+name;
   startLiveCountdown();
-  showToast('🎯 Synced! Offset: +'+manualOffset+'s');
 }
 
-function adjustOffset(change){
-  manualOffset+=change;
-  if(manualOffset>60)manualOffset=60;
-  if(manualOffset<-60)manualOffset=-60;
-  localStorage.setItem('manual_offset',manualOffset);
-  updateOffsetDisplays();
-  startLiveCountdown();
-  showToast('Offset: '+(manualOffset>=0?'+':'')+manualOffset+'s');
-}
-
-function resetOffset(){
-  manualOffset=0;
-  localStorage.setItem('manual_offset',0);
-  updateOffsetDisplays();
-  startLiveCountdown();
-  showToast('🔄 Offset reset to 0');
-}
+function selectPairFromDD(val){pickPair(val);document.getElementById('pairDropdown').classList.remove('open');}
 
 let deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;});
-function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then((r)=>{deferredPrompt=null;});}else{alert('Install option khud Chrome menu mein hai:\n\n1. Upar 3 dots (⋮) par tap karein\n2. "Install app" ya "Add to Home screen" select karein');}}
+function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});}else{alert('3 dots (⋮) par tap karein aur Install app select karein');}}
 function isWeekend(){const day=new Date().getDay();return day===0||day===6;}
 function isCrypto(sym){return CRYPTO_PAIRS.indexOf(sym)!==-1||sym.endsWith('USDT');}
-function isForex(sym){return sym.indexOf('/')!==-1;}
-function checkWeekendBanner(){const banner=document.getElementById('weekendBanner');if(!banner)return;if(isWeekend()){banner.classList.add('show');}else{banner.classList.remove('show');}}
+function checkWeekendBanner(){const banner=document.getElementById('weekendBanner');if(!banner)return;if(isWeekend())banner.classList.add('show');else banner.classList.remove('show');}
 
 const PAIR_DATA={
   'EUR/USD':{sym:'€',bg:'#003399'},'GBP/USD':{sym:'£',bg:'#C8102E'},'AUD/USD':{sym:'A$',bg:'#00843D'},
@@ -645,8 +592,7 @@ function switchTab(tab){
   else{document.getElementById('profilePage').classList.add('active');document.getElementById('nav-profile').classList.add('active');document.getElementById('linkDisplay').textContent=BOARD_URL;loadWaSettings();loadPasswordSetting();updateOffsetDisplays();}
 }
 
-function toggleSel(){document.getElementById('customSelect').classList.toggle('open');}
-function pickPair(v){selectedPair=v;document.getElementById('customSelect').classList.remove('open');updatePairCard();}
+function pickPair(v){selectedPair=v;updatePairCard();}
 
 function updatePairCard(){
   if(!selectedPair)return;
@@ -659,36 +605,21 @@ function updatePairCard(){
   const statusEl=document.getElementById('pairStatus');
   statusEl.textContent=ok?'✓':'✗';
   statusEl.className='pairStatus '+(ok?'status-ok':'status-no');
-  const selText=document.getElementById('selText');
-  selText.innerHTML='<span class="'+(ok?'opt-ok':'opt-no')+'">'+(ok?'✓':'✗')+'</span> <span class="'+(ok?'opt-name-ok':'opt-name-no')+'">'+cleanName+'</span>';
-  
-  // Header update
+  document.getElementById('pairDDText').textContent=cleanName;
   const mktEl=document.getElementById('marketTypeText');
   const srcEl=document.getElementById('dataSourceText');
   if(mktEl&&srcEl){
-    if(isCrypto(selectedPair)){
-      mktEl.textContent='Crypto';mktEl.style.color='#f0b90b';
-      srcEl.textContent='Binance';srcEl.style.color='#8b949e';
-    } else {
-      mktEl.textContent='Forex';mktEl.style.color='#3fb950';
-      srcEl.textContent='TwelveData';srcEl.style.color='#8b949e';
-    }
+    if(isCrypto(selectedPair)){mktEl.textContent='Crypto';mktEl.style.color='#f0b90b';srcEl.textContent='Binance';}
+    else{mktEl.textContent='Forex';mktEl.style.color='#3fb950';srcEl.textContent='TwelveData';}
   }
-  
   loadPrice(selectedPair);loadChange(selectedPair);
 }
 
 async function loadPrice(sym){
   try{
     let p;
-    if(isCrypto(sym)){
-      const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol='+sym);
-      const d=await r.json();p=parseFloat(d.price);
-    } else {
-      const url=`https://api.twelvedata.com/price?symbol=${sym}&apikey=${TWELVE_DATA_KEY}`;
-      const r=await fetch(PROXY_URL+encodeURIComponent(url));
-      const d=await r.json();if(d.status==='error')throw new Error(d.message);p=parseFloat(d.price);
-    }
+    if(isCrypto(sym)){const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol='+sym);const d=await r.json();p=parseFloat(d.price);}
+    else{const url=`https://api.twelvedata.com/price?symbol=${sym}&apikey=${TWELVE_DATA_KEY}`;const r=await fetch(PROXY_URL+encodeURIComponent(url));const d=await r.json();if(d.status==='error')throw new Error(d.message);p=parseFloat(d.price);}
     let s;if(p>1000)s=p.toFixed(2);else if(p>10)s=p.toFixed(3);else s=p.toFixed(5);
     document.getElementById('priceNum').textContent=s;
   }catch(e){document.getElementById('priceNum').textContent='--';}
@@ -697,14 +628,8 @@ async function loadPrice(sym){
 async function loadChange(sym){
   try{
     let c;
-    if(isCrypto(sym)){
-      const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+sym);
-      const d=await r.json();c=parseFloat(d.priceChangePercent);
-    } else {
-      const url=`https://api.twelvedata.com/quote?symbol=${sym}&apikey=${TWELVE_DATA_KEY}`;
-      const r=await fetch(PROXY_URL+encodeURIComponent(url));
-      const d=await r.json();if(d.status==='error')throw new Error(d.message);c=parseFloat(d.percent_change);
-    }
+    if(isCrypto(sym)){const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+sym);const d=await r.json();c=parseFloat(d.priceChangePercent);}
+    else{const url=`https://api.twelvedata.com/quote?symbol=${sym}&apikey=${TWELVE_DATA_KEY}`;const r=await fetch(PROXY_URL+encodeURIComponent(url));const d=await r.json();if(d.status==='error')throw new Error(d.message);c=parseFloat(d.percent_change);}
     const el=document.getElementById('priceChange');
     if(c>=0){el.textContent='↑ +'+c.toFixed(2)+'%';el.style.color='#3fb950';}
     else{el.textContent='↓ '+c.toFixed(2)+'%';el.style.color='#f85149';}
@@ -714,51 +639,41 @@ async function loadChange(sym){
 function startPriceRefresh(){if(priceInterval)clearInterval(priceInterval);priceInterval=setInterval(()=>{if(selectedPair){loadPrice(selectedPair);loadChange(selectedPair);}},15000);}
 
 function updatePairDropdown(b){
-  const list=document.getElementById('selList');list.innerHTML='';
+  const list=document.getElementById('pairDDList');list.innerHTML='';
   const weekend=isWeekend();
   (BROKER_PAIRS[b]||[]).forEach(p=>{
-    const div=document.createElement('div');div.className='opt';
-    const crypto=isCrypto(p.v);let tag='';
-    if(crypto){tag='<span class="opt-crypto-tag">✓ 24/7</span>';}
-    else if(weekend){tag='<span class="opt-otc-tag">⚠️ OTC</span>';}
-    div.innerHTML='<span class="'+(p.ok?'opt-ok':'opt-no')+'">'+(p.ok?'✓':'✗')+'</span> <span class="'+(p.ok?'opt-name-ok':'opt-name-no')+'">'+p.n+'</span>'+tag;
-    div.onclick=()=>pickPair(p.v);
+    const div=document.createElement('div');
+    div.className='opt';
+    const crypto=isCrypto(p.v);
+    let tag='';
+    if(crypto)tag='<span class="tag crypto">24/7</span>';
+    else if(weekend)tag='<span class="tag otc">OTC</span>';
+    div.innerHTML='<span>'+(p.ok?'✓ ':'✗ ')+p.n+'</span>'+tag;
+    if(p.v===selectedPair)div.classList.add('active');
+    div.onclick=()=>selectPairFromDD(p.v);
     list.appendChild(div);
   });
-  if((BROKER_PAIRS[b]||[]).length>0)selectedPair=BROKER_PAIRS[b][0].v;
+  if((BROKER_PAIRS[b]||[]).length>0&&!(BROKER_PAIRS[b]||[]).find(x=>x.v===selectedPair))selectedPair=BROKER_PAIRS[b][0].v;
   updatePairCard();
 }
 
 function selectBroker(n){
   selectedBroker=n;localStorage.setItem(KEY_BROKER,n);
-  document.querySelectorAll('.brokerBtn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#brokerDropdown .cpDDList .opt').forEach(b=>b.classList.remove('active'));
   if(n==='Quotex')document.getElementById('b-quotex').classList.add('active');
   if(n==='Pocket Option')document.getElementById('b-pocket').classList.add('active');
   if(n==='Pocket Broker')document.getElementById('b-pbroker').classList.add('active');
   if(n==='XM')document.getElementById('b-xm').classList.add('active');
+  document.getElementById('brokerDDText').textContent=n;
+  document.getElementById('brokerDropdown').classList.remove('open');
   document.getElementById('brokerShow').textContent='Broker: '+n;
   updatePairDropdown(n);showToast('✅ '+n);
 }
 
 function loadBroker(){const s=localStorage.getItem(KEY_BROKER);if(s)selectBroker(s);else selectBroker('Quotex');}
 
-function loadPasswordSetting(){
-  const enabled=localStorage.getItem(KEY_PASS_ENABLED);
-  const toggle=document.getElementById('passToggle');
-  const statusText=document.getElementById('passStatusText');
-  const changeSection=document.getElementById('passChangeSection');
-  if(!toggle||!statusText)return;
-  if(enabled==='no'){toggle.checked=false;statusText.textContent='Password OFF';statusText.style.color='#f85149';if(changeSection)changeSection.style.display='none';}
-  else{toggle.checked=true;statusText.textContent='Password ON';statusText.style.color='#3fb950';if(changeSection)changeSection.style.display='block';}
-}
-
-function togglePasswordFeature(){
-  const toggle=document.getElementById('passToggle');
-  const statusText=document.getElementById('passStatusText');
-  const changeSection=document.getElementById('passChangeSection');
-  if(toggle.checked){localStorage.setItem(KEY_PASS_ENABLED,'yes');statusText.textContent='Password ON';statusText.style.color='#3fb950';if(changeSection)changeSection.style.display='block';showToast('🔐 Password ON');}
-  else{localStorage.setItem(KEY_PASS_ENABLED,'no');statusText.textContent='Password OFF';statusText.style.color='#f85149';if(changeSection)changeSection.style.display='none';sessionStorage.setItem('sb_session','active');showToast('🔓 Password OFF');}
-}
+function loadPasswordSetting(){const enabled=localStorage.getItem(KEY_PASS_ENABLED);const toggle=document.getElementById('passToggle');const statusText=document.getElementById('passStatusText');const changeSection=document.getElementById('passChangeSection');if(!toggle||!statusText)return;if(enabled==='no'){toggle.checked=false;statusText.textContent='Password OFF';statusText.style.color='#f85149';if(changeSection)changeSection.style.display='none';}else{toggle.checked=true;statusText.textContent='Password ON';statusText.style.color='#3fb950';if(changeSection)changeSection.style.display='block';}}
+function togglePasswordFeature(){const toggle=document.getElementById('passToggle');const statusText=document.getElementById('passStatusText');const changeSection=document.getElementById('passChangeSection');if(toggle.checked){localStorage.setItem(KEY_PASS_ENABLED,'yes');statusText.textContent='Password ON';statusText.style.color='#3fb950';if(changeSection)changeSection.style.display='block';showToast('🔐 ON');}else{localStorage.setItem(KEY_PASS_ENABLED,'no');statusText.textContent='Password OFF';statusText.style.color='#f85149';if(changeSection)changeSection.style.display='none';sessionStorage.setItem('sb_session','active');showToast('🔓 OFF');}}
 
 function checkLogin(){
   if(sessionStorage.getItem('sb_session')==='active'){document.getElementById('disclaimerScreen').style.display='none';document.getElementById('loginScreen').style.display='none';openBoard();return;}
@@ -768,19 +683,7 @@ function checkLogin(){
   else{document.getElementById('loginTitle').textContent='🔐 Password Daalein';document.getElementById('passConfirm').style.display='none';document.getElementById('hintInput').style.display='none';document.getElementById('loginBtn').textContent='Kholein';document.getElementById('resetLink').style.display='block';const h=localStorage.getItem(KEY_HINT);if(h)document.getElementById('hintShow').textContent='💡 Hint: '+h;}
 }
 
-function handleLogin(){
-  const sp=localStorage.getItem(KEY_PASS);const pass=document.getElementById('passInput').value;const e=document.getElementById('loginError');
-  if(!sp){
-    const c=document.getElementById('passConfirm').value;const h=document.getElementById('hintInput').value;
-    if(pass.length<3){e.textContent='3+ characters';return;}
-    if(pass!==c){e.textContent='Match nahi';return;}
-    localStorage.setItem(KEY_PASS,pass);if(h)localStorage.setItem(KEY_HINT,h);
-    sessionStorage.setItem('sb_session','active');e.textContent='';openBoard();
-  }else{
-    if(pass===sp){sessionStorage.setItem('sb_session','active');e.textContent='';openBoard();}
-    else e.textContent='❌ Galat password';
-  }
-}
+function handleLogin(){const sp=localStorage.getItem(KEY_PASS);const pass=document.getElementById('passInput').value;const e=document.getElementById('loginError');if(!sp){const c=document.getElementById('passConfirm').value;const h=document.getElementById('hintInput').value;if(pass.length<3){e.textContent='3+ chars';return;}if(pass!==c){e.textContent='Match nahi';return;}localStorage.setItem(KEY_PASS,pass);if(h)localStorage.setItem(KEY_HINT,h);sessionStorage.setItem('sb_session','active');e.textContent='';openBoard();}else{if(pass===sp){sessionStorage.setItem('sb_session','active');e.textContent='';openBoard();}else e.textContent='❌ Galat password';}}
 
 function openBoard(){
   document.getElementById('loginScreen').style.display='none';
@@ -789,7 +692,14 @@ function openBoard(){
   document.getElementById('linkDisplay').textContent=BOARD_URL;
   cleanupOldHistory();renderHistory();checkAllPending();checkWeekendBanner();
   setRingProgress(100,'#58a6ff');setRingArrow('wait','#58a6ff');
-  document.addEventListener('click',function(e){const c=document.getElementById('customSelect');if(c&&!c.contains(e.target))c.classList.remove('open');});
+  document.addEventListener('click',function(e){
+    const bd=document.getElementById('brokerDropdown');
+    const pd=document.getElementById('pairDropdown');
+    const td=document.getElementById('tfDropdown');
+    if(bd&&!bd.contains(e.target))bd.classList.remove('open');
+    if(pd&&!pd.contains(e.target))pd.classList.remove('open');
+    if(td&&!td.contains(e.target))td.classList.remove('open');
+  });
   setTimeout(checkAutoWaSend,2000);
 }
 
@@ -803,7 +713,7 @@ function getWatchlist(){try{return JSON.parse(localStorage.getItem(KEY_WATCH)||'
 function saveWatchlist(l){localStorage.setItem(KEY_WATCH,JSON.stringify(l));}
 function addToWatchlist(){const s=document.getElementById('watchPairSelect');const v=s.value;const n=s.options[s.selectedIndex].text.replace('✓ ','').replace('✗ ','');let l=getWatchlist();if(l.find(x=>x.v===v)){showToast('⚠️ Hai');return;}l.push({v:v,n:n});saveWatchlist(l);renderWatchlist();showToast('✅ '+n);}
 function removeFromWatchlist(v){let l=getWatchlist().filter(x=>x.v!==v);saveWatchlist(l);renderWatchlist();showToast('🗑️');}
-function renderWatchlist(){const l=getWatchlist();const b=document.getElementById('watchListBox');const ws=document.getElementById('watchPairSelect');if(ws.children.length===0){Object.keys(PAIR_DATA).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;ws.appendChild(o);});}if(l.length===0){b.innerHTML='<div class="watchEmpty">Abhi koi pair add nahi</div>';return;}b.innerHTML=l.map(x=>{const d=PAIR_DATA[x.v]||{sym:'?',bg:'#30363d'};return '<div class="watchItem"><div class="left"><div class="lg" style="background:'+d.bg+';">'+d.sym+'</div><div class="nm">'+x.n+'</div></div><div class="del" onclick="removeFromWatchlist(\''+x.v+'\')">✖</div></div>';}).join('');}
+function renderWatchlist(){const l=getWatchlist();const b=document.getElementById('watchListBox');const ws=document.getElementById('watchPairSelect');if(ws.children.length===0){Object.keys(PAIR_DATA).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;ws.appendChild(o);});}if(l.length===0){b.innerHTML='<div class="watchEmpty">Koi pair add nahi</div>';return;}b.innerHTML=l.map(x=>{const d=PAIR_DATA[x.v]||{sym:'?',bg:'#30363d'};return '<div class="watchItem"><div class="left"><div class="lg" style="background:'+d.bg+';">'+d.sym+'</div><div class="nm">'+x.n+'</div></div><div class="del" onclick="removeFromWatchlist(\''+x.v+'\')">✖</div></div>';}).join('');}
 
 function getTFMs(tf){const m={'30s':30000,'60s':60000,'1m':60000,'3m':180000,'5m':300000,'15m':900000,'30m':1800000,'1h':3600000,'4h':14400000};return m[tf]||60000;}
 function getHistory(){try{return JSON.parse(localStorage.getItem(KEY_HIST)||'[]');}catch(e){return[];}}
@@ -818,14 +728,8 @@ async function checkOutcome(id){
     const h=getHistory();const idx=h.findIndex(x=>x.id===id);
     if(idx===-1||h[idx].correct!==null)return;
     let exitPrice;
-    if(isCrypto(h[idx].pair)){
-      const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol='+h[idx].pair);
-      const d=await r.json();exitPrice=parseFloat(d.price);
-    }else{
-      const url=`https://api.twelvedata.com/price?symbol=${h[idx].pair}&apikey=${TWELVE_DATA_KEY}`;
-      const r=await fetch(PROXY_URL+encodeURIComponent(url));
-      const d=await r.json();exitPrice=parseFloat(d.price);
-    }
+    if(isCrypto(h[idx].pair)){const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol='+h[idx].pair);const d=await r.json();exitPrice=parseFloat(d.price);}
+    else{const url=`https://api.twelvedata.com/price?symbol=${h[idx].pair}&apikey=${TWELVE_DATA_KEY}`;const r=await fetch(PROXY_URL+encodeURIComponent(url));const d=await r.json();exitPrice=parseFloat(d.price);}
     if(isNaN(exitPrice))return;
     let correct=false;
     if(h[idx].sig==='BUY'&&exitPrice>h[idx].price)correct=true;
@@ -854,9 +758,9 @@ function renderHistory(){
     const weeklyList=document.getElementById('weeklyList');
     if(!stats||!weeklyList)return;
     const overall=statCalc(h);
-    stats.innerHTML='<div class="statItem stat-correct">✓ '+overall.c+'</div>'+'<div class="statItem stat-wrong">✗ '+overall.w+'</div>'+'<div class="statItem stat-pending">⏳ '+overall.p+'</div>'+'<div class="statItem stat-total">📊 '+overall.t+'</div>';
-    winrateBar.innerHTML='<div class="winrateRow"><span>Overall Win Rate</span><b>'+overall.wp+'%</b></div>'+'<div class="winrateProgressBg"><div class="winrateProgressFg" style="width:'+overall.wp+'%"></div></div>';
-    if(h.length===0){weeklyList.innerHTML='<div class="watchEmpty">Abhi koi signal nahi</div>';return;}
+    stats.innerHTML='<div class="statItem stat-correct">✓ '+overall.c+'</div><div class="statItem stat-wrong">✗ '+overall.w+'</div><div class="statItem stat-pending">⏳ '+overall.p+'</div><div class="statItem stat-total">📊 '+overall.t+'</div>';
+    winrateBar.innerHTML='<div class="winrateRow"><span>Win Rate</span><b>'+overall.wp+'%</b></div><div class="winrateProgressBg"><div class="winrateProgressFg" style="width:'+overall.wp+'%"></div></div>';
+    if(h.length===0){weeklyList.innerHTML='<div class="watchEmpty">Koi signal nahi</div>';return;}
     const weeksMap={};
     h.forEach(item=>{const wk=getWeekKey(item.timestamp);if(!weeksMap[wk])weeksMap[wk]=[];weeksMap[wk].push(item);});
     const sortedWeekKeys=Object.keys(weeksMap).sort((a,b)=>parseInt(b)-parseInt(a));
@@ -895,30 +799,22 @@ function loadWaSettings(){const num=localStorage.getItem(KEY_WA_NUM)||'';const d
 function saveWaSettings(){const num=document.getElementById('waNumber').value.replace(/\D/g,'');const day=document.getElementById('waDay').value;const time=document.getElementById('waTime').value;if(num.length<10){document.getElementById('waStatus').style.color='#f85149';document.getElementById('waStatus').textContent='❌ Sahi number likhein';return;}localStorage.setItem(KEY_WA_NUM,num);localStorage.setItem(KEY_WA_DAY,day);localStorage.setItem(KEY_WA_TIME,time);const st=document.getElementById('waStatus');st.style.color='#3fb950';st.textContent='✅ Settings save!';showToast('✅ Saved');}
 function getLastFridayStart(){const now=new Date();const day=now.getDay();const diff=(day-5+7)%7;const fri=new Date(now);fri.setDate(now.getDate()-diff);fri.setHours(0,0,0,0);return fri;}
 function getPreviousFridayStart(){const last=getLastFridayStart();const prev=new Date(last);prev.setDate(last.getDate()-7);return prev;}
-function buildWeeklyReport(){const h=getHistory();const weekStart=getPreviousFridayStart();const weekEnd=getLastFridayStart();const weekStartTs=weekStart.getTime();const weekEndTs=weekEnd.getTime();const weekSignals=h.filter(x=>x.timestamp>=weekStartTs&&x.timestamp<weekEndTs);const fmtFull=(d)=>d.toLocaleDateString('en-PK',{weekday:'long',day:'numeric',month:'long',year:'numeric'});let msg='';msg+='📊 *MOON AI — WEEKLY REPORT*\n';msg+='📅 _'+fmtFull(weekStart)+' se '+fmtFull(weekEnd)+'_\n\n';if(weekSignals.length===0){msg+='⚠️ Is hafte koi signal nahi aaya.\n';return msg;}const total=weekSignals.length;const correct=weekSignals.filter(x=>x.correct===true).length;const wrong=weekSignals.filter(x=>x.correct===false).length;const pending=weekSignals.filter(x=>x.correct===null).length;const buys=weekSignals.filter(x=>x.sig==='BUY').length;const sells=weekSignals.filter(x=>x.sig==='SELL').length;const completed=correct+wrong;const wp=completed>0?Math.round((correct/completed)*100):0;msg+='━━━━━━━━━━━━━━━\n📈 *TOTAL WEEKLY*\n━━━━━━━━━━━━━━━\n';msg+='Total: *'+total+'*\n🟢 BUY: *'+buys+'*\n🔴 SELL: *'+sells+'*\n✅ Correct: *'+correct+'*\n❌ Wrong: *'+wrong+'*\n⏳ Pending: *'+pending+'*\n🎯 Win Rate: *'+wp+'%*\n';msg+='━━━━━━━━━━━━━━━\n_Moon AI Trading Board_\n';return msg;}
-function sendWeeklyReport(){const num=localStorage.getItem(KEY_WA_NUM);if(!num){showToast('⚠️ WhatsApp number save karein');return false;}const msg=buildWeeklyReport();const url='https://wa.me/'+num+'?text='+encodeURIComponent(msg);window.open(url,'_blank');localStorage.setItem(KEY_WA_LAST,new Date().toDateString());return true;}
+function buildWeeklyReport(){const h=getHistory();const weekStart=getPreviousFridayStart();const weekEnd=getLastFridayStart();const weekStartTs=weekStart.getTime();const weekEndTs=weekEnd.getTime();const weekSignals=h.filter(x=>x.timestamp>=weekStartTs&&x.timestamp<weekEndTs);const fmtFull=(d)=>d.toLocaleDateString('en-PK',{weekday:'long',day:'numeric',month:'long',year:'numeric'});let msg='';msg+='📊 *MOON AI — WEEKLY REPORT*\n';msg+='📅 _'+fmtFull(weekStart)+' se '+fmtFull(weekEnd)+'_\n\n';if(weekSignals.length===0){msg+='⚠️ Koi signal nahi aaya.\n';return msg;}const total=weekSignals.length;const correct=weekSignals.filter(x=>x.correct===true).length;const wrong=weekSignals.filter(x=>x.correct===false).length;const pending=weekSignals.filter(x=>x.correct===null).length;const buys=weekSignals.filter(x=>x.sig==='BUY').length;const sells=weekSignals.filter(x=>x.sig==='SELL').length;const completed=correct+wrong;const wp=completed>0?Math.round((correct/completed)*100):0;msg+='━━━━━━━━━━━━━━━\n📈 *TOTAL WEEKLY*\n━━━━━━━━━━━━━━━\n';msg+='Total: *'+total+'*\n🟢 BUY: *'+buys+'*\n🔴 SELL: *'+sells+'*\n✅ Correct: *'+correct+'*\n❌ Wrong: *'+wrong+'*\n⏳ Pending: *'+pending+'*\n🎯 Win Rate: *'+wp+'%*\n';msg+='━━━━━━━━━━━━━━━\n_Moon AI_\n';return msg;}
+function sendWeeklyReport(){const num=localStorage.getItem(KEY_WA_NUM);if(!num){showToast('⚠️ Number save karein');return false;}const msg=buildWeeklyReport();const url='https://wa.me/'+num+'?text='+encodeURIComponent(msg);window.open(url,'_blank');localStorage.setItem(KEY_WA_LAST,new Date().toDateString());return true;}
 function sendWeeklyReportManual(){if(!localStorage.getItem(KEY_WA_NUM)){showToast('⚠️ Profile mein number save karein');switchTab('profile');return;}sendWeeklyReport();}
-function checkAutoWaSend(){const num=localStorage.getItem(KEY_WA_NUM);if(!num)return;const day=parseInt(localStorage.getItem(KEY_WA_DAY)||'5');const hour=parseInt(localStorage.getItem(KEY_WA_TIME)||'15');const last=localStorage.getItem(KEY_WA_LAST)||'';const now=new Date();const today=now.toDateString();if(now.getDay()!==day)return;if(now.getHours()<hour)return;if(last===today)return;setTimeout(()=>{const ok=sendWeeklyReport();if(ok){showToast('📱 WhatsApp report khuli');}},1500);}
+function checkAutoWaSend(){const num=localStorage.getItem(KEY_WA_NUM);if(!num)return;const day=parseInt(localStorage.getItem(KEY_WA_DAY)||'5');const hour=parseInt(localStorage.getItem(KEY_WA_TIME)||'15');const last=localStorage.getItem(KEY_WA_LAST)||'';const now=new Date();const today=now.toDateString();if(now.getDay()!==day)return;if(now.getHours()<hour)return;if(last===today)return;setTimeout(()=>{const ok=sendWeeklyReport();if(ok){showToast('📱 WhatsApp khuli');}},1500);}
 
 function getTFSeconds(tf){const m={'30s':30,'60s':60,'1m':60,'3m':180,'5m':300,'15m':900,'30m':1800,'1h':3600,'4h':14400};return m[tf]||60;}
 function getTFBinance(tf){const m={'30s':'1m','60s':'1m','1m':'1m','3m':'3m','5m':'5m','15m':'15m','30m':'30m','1h':'1h','4h':'4h'};return m[tf]||'1m';}
 
 let liveCountdownInterval=null;
-
-function getSecondsRemaining(tf){
-  const nowMs=Date.now()+serverTimeOffset;
-  const nowSec=Math.floor(nowMs/1000)+manualOffset;
-  const tfSec=getTFSeconds(tf);
-  const elapsed=((nowSec%tfSec)+tfSec)%tfSec;
-  return tfSec-elapsed;
-}
-
+function getSecondsRemaining(tf){const nowMs=Date.now()+serverTimeOffset;const nowSec=Math.floor(nowMs/1000)+manualOffset;const tfSec=getTFSeconds(tf);const elapsed=((nowSec%tfSec)+tfSec)%tfSec;return tfSec-elapsed;}
 function startLiveCountdown(){
   if(liveCountdownInterval)clearInterval(liveCountdownInterval);
   const tick=()=>{
     const tfSelect=document.getElementById('tf');if(!tfSelect)return;
     const tf=tfSelect.value;const rem=getSecondsRemaining(tf);
-    const el=document.getElementById('lcValue');const tfEl=document.getElementById('lcTf');
+    const el=document.getElementById('lcValue');
     if(!el)return;
     let display;
     if(rem>=3600){const h=Math.floor(rem/3600);const m=Math.floor((rem%3600)/60);const s=rem%60;display=h+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
@@ -927,7 +823,6 @@ function startLiveCountdown(){
     el.textContent=display;
     el.classList.remove('warn','danger');
     if(rem<=5)el.classList.add('danger');else if(rem<=10)el.classList.add('warn');
-    if(tfEl)tfEl.textContent=tfSelect.options[tfSelect.selectedIndex].text;
   };
   tick();
   liveCountdownInterval=setInterval(tick,1000);
@@ -954,19 +849,8 @@ function startTimer(tf,tfName){
 }
 
 async function getData(sym,tf,lim){
-  if(isCrypto(sym)){
-    const u='https://api.binance.com/api/v3/klines?symbol='+sym+'&interval='+tf+'&limit='+(lim||100);
-    const r=await fetch(u);const d=await r.json();
-    return d.map(c=>({open:parseFloat(c[1]),high:parseFloat(c[2]),low:parseFloat(c[3]),close:parseFloat(c[4])}));
-  }else{
-    const intervalMap={'30s':'1min','60s':'1min','1m':'1min','3m':'5min','5m':'5min','15m':'15min','30m':'30min','1h':'1h','4h':'4h'};
-    const tdInterval=intervalMap[tf]||'1min';
-    const url=`https://api.twelvedata.com/time_series?symbol=${sym}&interval=${tdInterval}&outputsize=${lim||100}&apikey=${TWELVE_DATA_KEY}`;
-    const r=await fetch(PROXY_URL+encodeURIComponent(url));
-    const d=await r.json();
-    if(d.status==='error'||!d.values)throw new Error('Error');
-    return d.values.map(c=>({open:parseFloat(c.open),high:parseFloat(c.high),low:parseFloat(c.low),close:parseFloat(c.close)})).reverse();
-  }
+  if(isCrypto(sym)){const u='https://api.binance.com/api/v3/klines?symbol='+sym+'&interval='+tf+'&limit='+(lim||100);const r=await fetch(u);const d=await r.json();return d.map(c=>({open:parseFloat(c[1]),high:parseFloat(c[2]),low:parseFloat(c[3]),close:parseFloat(c[4])}));}
+  else{const intervalMap={'30s':'1min','60s':'1min','1m':'1min','3m':'5min','5m':'5min','15m':'15min','30m':'30min','1h':'1h','4h':'4h'};const tdInterval=intervalMap[tf]||'1min';const url=`https://api.twelvedata.com/time_series?symbol=${sym}&interval=${tdInterval}&outputsize=${lim||100}&apikey=${TWELVE_DATA_KEY}`;const r=await fetch(PROXY_URL+encodeURIComponent(url));const d=await r.json();if(d.status==='error'||!d.values)throw new Error('Error');return d.values.map(c=>({open:parseFloat(c.open),high:parseFloat(c.high),low:parseFloat(c.low),close:parseFloat(c.close)})).reverse();}
 }
 
 function ema(p,per){const k=2/(per+1);let e=p.slice(0,per).reduce((a,b)=>a+b,0)/per;for(let i=per;i<p.length;i++)e=p[i]*k+e*(1-k);return e;}
@@ -1000,7 +884,7 @@ async function analyze(){
   const tfName=document.getElementById('tf').options[document.getElementById('tf').selectedIndex].text;
   const pairName=document.getElementById('pairTitle').textContent;
   const bTF=getTFBinance(tf);
-  if(isWeekend()&&!isCrypto(pair)){showToast('⚠️ Weekend! Forex band hai. Crypto select karein.');}
+  if(isWeekend()&&!isCrypto(pair)){showToast('⚠️ Weekend! Forex band.');}
   if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
   document.getElementById('timerBox').classList.remove('active','done');
   document.getElementById('analysisBadge').style.display='none';
@@ -1018,23 +902,26 @@ async function analyze(){
     const price=closes[closes.length-1];
     setRingProgress(85,'#58a6ff');
     let trend='NEUTRAL';
-    try{const tr=await getData(pair,bTF,250);const tc=tr.map(c=>c.close);if(tc.length>=200){const e200=ema(tc,200);trend=price>e200?'BUY':'SELL';}}catch(e){}
-    const e9=ema(closes,9),e21=ema(closes,21);const rv=rsi(closes,14),mv=macd(closes);const sv=stoch(highs,lows,closes,14);const b=bb(closes,20,2);const cp=candlePat(candles);
+    try{const tr=await getData(pair,bTF,100);const tc=tr.map(c=>c.close);if(tc.length>=50){const e50=ema(tc,50);trend=price>e50?'BUY':'SELL';}}catch(e){}
+    const e9=ema(closes,9),e21=ema(closes,21);
+    const rv=rsi(closes,14),mv=macd(closes);
+    const sv=stoch(highs,lows,closes,14);
+    const b=bb(closes,20,2);
+    const cp=candlePat(candles);
     let bv=0,sv2=0,log=[];
     if(e9>e21){bv++;log.push('✅ EMA: BUY');}else{sv2++;log.push('❌ EMA: SELL');}
-    if(rv<40){bv++;log.push('✅ RSI: BUY ('+rv.toFixed(0)+')');}else if(rv>60){sv2++;log.push('❌ RSI: SELL ('+rv.toFixed(0)+')');}else log.push('➖ RSI: Neutral ('+rv.toFixed(0)+')');
+    if(rv<45){bv++;log.push('✅ RSI: BUY ('+rv.toFixed(0)+')');}else if(rv>55){sv2++;log.push('❌ RSI: SELL ('+rv.toFixed(0)+')');}else log.push('➖ RSI: Neutral');
     if(mv>0){bv++;log.push('✅ MACD: BUY');}else{sv2++;log.push('❌ MACD: SELL');}
-    if(sv<30){bv++;log.push('✅ Stoch: BUY ('+sv.toFixed(0)+')');}else if(sv>70){sv2++;log.push('❌ Stoch: SELL ('+sv.toFixed(0)+')');}else log.push('➖ Stoch: Neutral ('+sv.toFixed(0)+')');
+    if(sv<40){bv++;log.push('✅ Stoch: BUY ('+sv.toFixed(0)+')');}else if(sv>60){sv2++;log.push('❌ Stoch: SELL ('+sv.toFixed(0)+')');}else log.push('➖ Stoch: Neutral');
     if(price<b.middle){bv++;log.push('✅ BB: BUY');}else if(price>b.middle){sv2++;log.push('❌ BB: SELL');}else log.push('➖ BB: Neutral');
     if(cp==='BUY'){bv++;log.push('✅ Candle: BUY');}else if(cp==='SELL'){sv2++;log.push('❌ Candle: SELL');}else log.push('➖ Candle: Neutral');
     log.push('━━━ Filter ━━━');
     if(trend==='BUY')log.push('✅ Trend: UP');else if(trend==='SELL')log.push('❌ Trend: DOWN');else log.push('➖ Trend: Unknown');
-    let signal='WAIT',conf=0;const act=bv+sv2;
-    if(bv>=2&&bv>sv2){signal='BUY';conf=act>0?Math.round((bv/act)*100):0;}
-    else if(sv2>=2&&sv2>bv){signal='SELL';conf=act>0?Math.round((sv2/act)*100):0;}
-    else if(bv===1&&sv2===1&&trend!=='NEUTRAL'){if(trend==='BUY'){signal='BUY';conf=55;}else{signal='SELL';conf=55;}}
-    else if(bv>=1&&sv2===0&&trend==='BUY'){signal='BUY';conf=50;}
-    else if(sv2>=1&&bv===0&&trend==='SELL'){signal='SELL';conf=50;}
+    let signal='WAIT',conf=0;
+    if(bv>sv2&&bv>=1){signal='BUY';conf=Math.min(95,55+(bv*8)+(trend==='BUY'?10:0));}
+    else if(sv2>bv&&sv2>=1){signal='SELL';conf=Math.min(95,55+(sv2*8)+(trend==='SELL'?10:0));}
+    else if(bv===1&&sv2===1&&trend!=='NEUTRAL'){if(trend==='BUY'){signal='BUY';conf=60;}else{signal='SELL';conf=60;}}
+    else if(bv===0&&sv2===0){signal='WAIT';conf=0;}
     setRingProgress(100,signal==='BUY'?'#3fb950':signal==='SELL'?'#f85149':'#d29922');
     setRingArrow(signal==='BUY'?'↗':signal==='SELL'?'↘':'wait',signal==='BUY'?'#3fb950':signal==='SELL'?'#f85149':'#d29922');
     const badge=document.getElementById('analysisBadge');badge.style.display='inline-block';badge.className='analysisBadge badge-'+signal.toLowerCase();
@@ -1043,7 +930,7 @@ async function analyze(){
     if(signal==='BUY'||signal==='SELL'){
       const totalV=bv+sv2;const winV=signal==='BUY'?bv:sv2;
       const starsCount=Math.min(5,Math.max(1,Math.round((winV/Math.max(totalV,1))*5)));
-      const wRate=Math.min(95,50+conf/2);
+      const wRate=conf;
       document.getElementById('starsBox').innerHTML=Array(5).fill(0).map((_,i)=>'<span class="star '+(i<starsCount?'filled':'empty')+'">★</span>').join('');
       document.getElementById('confSub').textContent=winV+'/'+totalV;
       const wEl=document.getElementById('winRateVal');wEl.textContent=Math.round(wRate)+'%';
